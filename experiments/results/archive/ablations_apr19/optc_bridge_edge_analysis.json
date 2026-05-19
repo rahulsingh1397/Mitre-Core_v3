@@ -1,0 +1,25 @@
+{
+  "dataset": "OpTC",
+  "source_file": "experiments/results/gate_tuning_results_v17_optc.csv",
+  "n_with_bridge_edges": 9,
+  "n_without_bridge_edges": 9,
+  "ari_with_bridge_edges_mean": 0.28181984385354156,
+  "ari_without_bridge_edges_mean": 0.2152075695380748,
+  "ari_improvement": 0.06661227431546676,
+  "ari_with_bridge_edges_std": 0.047603009283771644,
+  "ari_without_bridge_edges_std": 0.05582793078615174,
+  "t_statistic": 2.568414839490655,
+  "p_value": 0.0207,
+  "statistically_significant": true,
+  "effect_size_cohens_d": 1.283934756782566,
+  "bridge_edge_coverage_mean": 0.212428714878989,
+  "bridge_edge_coverage_max": 0.2707522809095765,
+  "unique_bridge_flows_mean": 281.44444444444446,
+  "bridge_edge_hypothesis_proven": true,
+  "conclusion": "Bridge edges significantly improve OpTC clustering performance under the synthetic gate-tuning comparison.",
+  "comparison_notes": {
+    "with_bridge_edges_condition": "bridge_edge_pct > 0",
+    "without_bridge_edges_condition": "bridge_edge_pct == 0",
+    "metric": "ARI"
+  }
+}

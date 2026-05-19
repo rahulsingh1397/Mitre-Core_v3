@@ -1,0 +1,2 @@
+experiment,total_alerts,unsw_alerts,nslkdd_alerts,ari,nmi,cluster_purity,n_clusters,gate,checkpoint
+multisource_unsw_nslkdd,10000,5000,5000,0.026903524371737507,0.1994442379993272,0.999092779245819,490,0.7,hgnn_checkpoints/multidomain_v2/best_supervised.pt

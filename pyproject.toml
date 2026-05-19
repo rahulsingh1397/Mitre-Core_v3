@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mitre-core-v3"
+version = "0.1.0"
+description = "MITRE-CORE V3 unsupervised and semi-unsupervised alert correlation benchmark scaffold"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "MITRE-CORE" }]
+dependencies = [
+  "numpy>=1.24.0,<2.0.0",
+  "pandas>=2.0.0,<3.0.0",
+  "scikit-learn>=1.3.0,<2.0.0",
+  "scipy>=1.11.0,<2.0.0",
+  "torch>=2.0.0,<3.0.0",
+  "torch-geometric>=2.3.0,<3.0.0",
+  "pyyaml>=6.0.0,<7.0.0",
+  "hdbscan>=0.8.0,<1.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0.0,<9.0.0",
+  "ruff>=0.6.0,<1.0.0",
+]
+
+[project.scripts]
+mitre-core-benchmark = "benchmark.run_benchmark:main"
+mitre-core-run = "mitre_core_run:main"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["mitre_core*", "benchmark*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]

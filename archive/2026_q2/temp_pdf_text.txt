@@ -1,0 +1,759 @@
+Academic Editor: Yu-an Tan
+Received: 14 October 2025
+Revised: 12 November 2025
+Accepted: 17 November 2025
+Published: 24 November 2025
+Citation: Mead, A.J.; Arabo, A. APT
+Attribution Using Heterogeneous
+Graph Neural Networks with
+Contextual Threat Intelligence.
+Electronics 2025, 14, 4597.
+https://doi.org/10.3390/
+electronics14234597
+Copyright: © 2025 by the authors.
+Licensee MDPI, Basel, Switzerland.
+This article is an open access article
+distributed under the terms and
+conditions of the Creative Commons
+Attribution (CC BY) license
+(https://creativecommons.org/
+licenses/by/4.0/).
+Article
+APT Attribution Using Heterogeneous Graph Neural Networks
+with Contextual Threat Intelligence
+Abdirahman Jibril Mead
+ and Abdullahi Arabo *
+Computer Science Research Centre, UWECyber, School of Computing and Creative Technologies, University of
+the West of England (UWE Bristol), Bristol BS16 1QY, UK; abdirahman2.mead@live.uwe.ac.uk
+* Correspondence: abdullahi.arabo@uwe.ac.uk
+Abstract
+This research proposes a heterogeneous graph neural network (GNN) framework to at-
+tribute advanced persistent threat (APT) activity using enriched cyber threat intelligence
+(CTI). We construct a tripartite graph linking APT groups, contextualised Tactics, Tech-
+niques, and Procedures (TTPs), and their Cyber Kill Chain (CKC) stages. TTP nodes are
+embedded with Sentence-BERT (SBERT) vectors for semantic similarity, while CKC stages
+provide procedural context. This design captures both behavioural semantics and attack-
+stage relationships, enabling robust and interpretable attribution. Empirical evaluation
+on the APTNotes corpus achieves a Macro-F1 score of 0.84 and 85% accuracy, addressing
+limitations in baselines such as DeepOP (technique prediction without CKC integration)
+and APT-MMF (no procedural or temporal TTP modelling). The framework is suitable for
+Security Operations Centres (SOCs), enabling faster and more accurate decision-making
+during incident response. Overall, the study advances automated and explainable APT
+attribution for practical SOC deployment.
+Keywords: advanced persistent threats; graph neural networks; cyber threat intelligence;
+MITRE ATT&CK; cyber kill chain; sentence-BERT; APTNotes
+1. Introduction
+Attributing cyberattacks to Advanced Persistent Threat (APT) groups remains a central
+challenge in national cyber defence and incident response [1,2]. Accurate attribution links
+observed indicators to adversary campaigns [3], informs policy decisions while accounting
+for deception risks [4], and enables proactive defence strategies grounded in tactic-level
+modelling [2].
+Traditional attribution approaches, largely based on heuristic rules, hand-crafted sig-
+natures, or expert-driven evaluations [4,5], struggle to generalise to evolving tactics or rare
+adversaries and remain vulnerable to false-flag strategies. In response, recent advances
+in cyber threat intelligence (CTI) have introduced data-driven attribution, where contex-
+tualised relations among tactics, techniques, and procedures (TTPs) provide semantically
+meaningful behavioural patterns [3,6].
+However, many existing models remain incomplete. Sequence-based approaches such
+as DeepOP [7] and DeepAPT [8] capture temporal order but overlook lifecycle semantics,
+conflating actors that employ similar techniques at different operational stages. Others,
+such as CSKG4APT [3], leverage multisource knowledge graphs but rely on static profile
+matching rather than adaptive relational learning.
+Electronics 2025, 14, 4597 https://doi.org/10.3390/electronics14234597
+Electronics 2025, 14, 4597 2 of 17
+To overcome these limitations, this work integrates the Cyber Kill Chain (CKC) [ 9]
+directly into the attribution model, capturing both temporal progression and procedu-
+ral function. A heterogeneous tripartite graph of APT groups, TTPs, and CKC stages
+is constructed, where TTPs are contextualised using Sentence-BERT (SBERT) semantic
+embeddings [10]. This enables relational reasoning over behavioural similarity and lifecy-
+cle position, improving both the accuracy and interpretability of attribution, particularly
+for under-represented groups. Empirical evaluation on data derived from APTNotes
+reports demonstrates the practical effectiveness of this approach, achieving state-of-the-
+art performance and producing insights suitable for deployment in Security Operations
+Centres (SOCs).
+2. Related Work
+APT attribution research spans feature-based, sequential, and graph-centric ap-
+proaches, each with distinct strengths and weaknesses. Early efforts such as Irshad and
+Siddiqui [1] demonstrated that blending technical and behavioural attributes can improve
+attribution, yet their reliance on static embeddings (e.g., Attck2Vec) restricts adaptability to
+evolving TTP vocabularies. Similarly, Hwang and Kim [4] critically exposed the fragility
+of attribution artefacts under false-flag conditions, but their Delphi-AHP method remains
+expert-driven and offers little automation. These studies underscore the difficulty of scaling
+attribution when static features or human judgement dominate.
+Graph-based models aim to overcome such limitations by capturing relationships
+across artefacts. CSKG4APT [3] leverage multi-source knowledge graphs for large-scale
+campaign reasoning but reduce attribution to profile matching, limiting its ability to gener-
+alise beyond known actors. APT-MMF [2] advances this by introducing a heterogeneous
+GNN with multimodal fusion and multi-level attention, yet procedural context such as
+attack-stage information is missing, meaning actors who employ similar techniques in differ-
+ent phases may remain indistinguishable. Sequence-driven methods, including DeepOP [7]
+and DeepAPT [ 8], learn temporal dependencies of ATT&CK TTPs, but neither explic-
+itly models lifecycle semantics, leading to conflation between groups with overlapping
+technique sets.
+Recent graph neural network approaches push further but still exhibit blind spots.
+GRAIN [11] introduces APT–IoC–TTP graphs with attention mechanisms, successfully
+learning heterogeneous relations but lacking temporal or CKC integration. Deepro [12] ap-
+plies provenance-based GNN detection for campaigns, offering strong detection capabilities
+yet not fine-grained actor attribution. IPAttributor [6], in contrast, clusters infrastructure
+artefacts with CTI enrichment, achieving strong results at the infra level but remaining
+disconnected from higher-level behavioural reasoning. At the strategic level, Goel and
+Nussbaum [5] highlight attribution across cyberattack types, but their analysis is qualitative
+and policy-focused, offering little technical guidance for automation.
+Taken together, these studies highlight three persistent gaps: (i) underutilisation of
+procedural context such as the Cyber Kill Chain (CKC), (ii) minimal integration of semantic
+embeddings with structured graph reasoning, and (iii) limited robustness against deceptive
+or low-frequency actors. Building on these insights, our work employs contextualised
+CTI extracted from APTNotes reports, where each APT–TTP pair is mapped to MITRE
+ATT&CK and CKC stages. Table 1 summarises the critical distinctions and shows how our
+proposed model addresses these shortcomings.
+Electronics 2025, 14, 4597 3 of 17
+Table 1. Comparison of existing work and this study.
+Study Limitations How Our Work Responds
+Irshad and Siddiqui [1]
+Relies on static embeddings
+(Attck2Vec) and handcrafted features;
+weak adaptability to evolving TTP
+vocabularies.
+Uses SBERT embeddings for contextual
+semantics, reducing vocabulary bias and
+capturing nuanced
+behavioural similarity.
+Hwang and Kim [4] Identifies false-flag risks but remains
+expert-driven and unscalable.
+Moves beyond expert-driven analysis by
+leveraging SBERT embeddings and
+CKC-aware GNN reasoning, enabling
+scalable detection of false-flag
+operations and deceptive
+actor behaviours.
+CSKG4APT [3]
+Profile matching over large graphs;
+brittle against unseen or evolving
+behaviours.
+Employs GNN reasoning with temporal
+and CKC semantics, generalising to
+novel actor strategies.
+APT-MMF [2]
+Multimodal GNN with attention,
+but lacks lifecycle grounding; actors
+with similar TTP sets remain
+indistinguishable.
+Incorporates CKC-aware TTP
+embeddings to differentiate techniques
+by lifecycle stage.
+DeepOP [7] and
+DeepAPT [8]
+Learn temporal order but omit
+procedural role; weak interpretability.
+Adds CKC stage semantics to temporal
+modelling for operational
+interpretability and
+improved attribution.
+GRAIN [11]
+Models heterogeneous relations but
+ignores CKC and temporal
+progression.
+Adds CKC nodes and temporal TTP
+sequencing, resolving
+stage-order ambiguity.
+Deepro [12]
+Strong for campaign detection but not
+fine-grained attribution; lacks
+procedural features.
+Extends GNN classification to actor
+level with lifecycle-aware reasoning.
+IPAttributor [6]
+Effective at infra-level clustering
+(IPs/domains), but blind to
+behavioural semantics.
+Operates at the operational layer
+(APT–TTP–CKC paths) for
+strategic attribution.
+Goel and Nussbaum [5] Broad policy analysis; lacks temporal
+or technical modelling.
+Provides reproducible, data-driven
+attribution grounded in temporal and
+procedural CTI.
+3. Novelty and Contribution
+The novelty of this work lies in its integration of semantic embeddings, procedural
+lifecycle modelling, and heterogeneous graph reasoning into a single attribution framework.
+Unlike prior approaches that either relied on static artefacts [ 1], expert judgement [ 4],
+or profile matching [3], our design fuses semantic, temporal, and procedural signals to
+capture the operational flow of adversaries based on contextualised cyber threat intelligence
+extracted from APTNotes reports.
+Key contributions include the following:
+• Tripartite Graph Design: Extends beyond APT-MMF [2] and DeepOP [7] by linking
+APTs, TTPs, and Cyber Kill Chain (CKC) stages in a unified graph. This prevents
+conflation of groups that share techniques but differ in lifecycle stage usage.
+• Contextual TTP Embeddings: Builds on semantic advances such as SBERT [ 10] to
+encode technique descriptions into dense vectors, overcoming limitations of static
+embeddings (e.g., Attck2Vec). This enables generalisation across vocabulary variants
+and more nuanced behavioural similarity.
+• Lifecycle-aware Reasoning: Incorporates CKC semantics [ 9] directly into feature
+vectors (Equation (1)), ensuring that identical techniques used in different stages are
+treated differently. This addresses a limitation noted in GRAIN [11] and DeepAPT [8],
+which omit procedural modelling.
+Electronics 2025, 14, 4597 4 of 17
+• Heterogeneous GNN Attribution: Uses relation-specific message passing across APT,
+TTP , and CKC nodes, enabling multi-hop reasoning. Unlike Deepro [ 12] (focused
+on campaign detection) or IPAttributor [6] (infrastructure clustering), our approach
+supports actor-level classification with both semantic and procedural depth.
+• Operational Readiness: Provides an automated NLP-driven graph pipeline that ingests
+APTNotes CTI reports, normalises extracted entities to MITRE ATT&CK and CKC
+stages, and delivers attribution in interpretable form. This reduces analyst workload
+and ensures applicability in real-world SOC environments.
+Taken together, these contributions move beyond static, sequential, or profile-based
+attribution methods by unifying semantic, procedural, and structural intelligence. While
+prior research has often focused on either behavioural similarity or temporal patterns alone,
+our approach integrates both within a unified tripartite graph representation. This design
+provides not only higher attribution accuracy but also interpretable outputs that align with
+how analysts reason about APT campaigns in real-world SOC environments.
+To further substantiate these contributions, the following section introduces the
+methodology used to operationalise this design, detailing how contextual embeddings,
+Cyber Kill Chain semantics, and graph-based learning are combined into a cohesive attri-
+bution framework.
+4. Methodology
+Building on the conceptual advances discussed in Section 3, this section formalises
+the proposed APT attribution framework into an implementable pipeline of three stages,
+which are further analysed below: (1) contextual feature extraction of TTP semantics and
+lifecycle stages, (2) tripartite graph construction linking APTs, TTPs, and CKC nodes,
+and (3) heterogeneous GNN-based classification for actor-level attribution.
+1. Feature Extraction: Contextualising TTPs with SBERT embeddings [10] and Cyber Kill
+Chain semantics [9].
+2. Graph Construction: Assembling a heterogeneous APT–TTP–CKC graph encoding
+usage, lifecycle, and temporal relations.
+3. Classification: Applying GraphSAGE-based message passing for actor-level attribution.
+This design jointly models semantic similarity, procedural role, and temporal order,
+enabling robust and interpretable attribution.
+4.1. Feature Extraction
+The dataset used in this study was sourced exclusively from the APTNotes repository,
+a public corpus of cyber threat intelligence (CTI) reports covering 2018–2024. A Natural
+Language Processing (NLP) pipeline was developed to extract entities labelled astechniques,
+procedures, and groups, while filtering non-actionable artefacts such as URLs or general text.
+Extracted techniques were normalised to MITRE ATT&CK (Enterprise v14) identifiers using
+direct ID matching and cosine similarity to official ATT&CK descriptions. Each TTP was
+then assigned to a corresponding Cyber Kill Chain (CKC) stage using a curated mapping
+file (cleaned_ttp_to_ckc.pkl) derived from MITRE and Lockheed Martin references. A
+10% random sample of these assignments was manually reviewed for consistency. When a
+TTP appeared in multiple CKC stages, its most frequent stage was retained. This process
+resulted in a clean set of APT–TTP–CKC triples for graph construction.
+Figure 1 illustrates the distribution of APT classes in the processed corpus, showing a
+notable imbalance across groups. Figure 2 complements this by showing the distribution
+of extracted TTPs across CKC stages, with higher counts in defense evasion, discovery, and
+Electronics 2025, 14, 4597 5 of 17
+persistence. Together, these empirical characteristics motivate the use of weighted loss
+functions and lifecycle-aware embeddings.
+Figure 1. Distribution of APT classes in the processed CTI dataset. Darker colours indicate higher-
+frequency groups, whereas lighter colours represent less frequent groups. Class imbalance motivates
+weighted loss functions and Macro-F1 evaluation.
+Figure 2. Distribution of TTPs across Cyber Kill Chain (CKC) stages. Higher counts in defense evasion,
+discovery, and persistence highlight the procedural skew of the dataset.
+A summary of the processed dataset is provided in Table 2.
+Table 2. Dataset summary of the processed APTNotes corpus used in this study.
+Property Description / Value
+Source APTNotes (snapshot cloned March 2025)
+Period 2018–2024
+Processing method NLP-based extraction of APTs and TTPs
+Frameworks MITRE ATT&CK v14 (Enterprise), Cyber Kill Chain (CKC)
+TTP→MITRE mapping Direct ID + semantic similarity matching
+TTP→CKC mapping Curated file validated on 10% sample
+Number of APT groups 25 (modelled; 42 extracted before filtering)
+Number of TTP nodes ≈980
+Number of CKC stages 7 (Reconnaissance to Actions on Objectives)
+Average TTP per APT ≈22
+Total edges ≈8000 heterogeneous links
+Split strategy Temporal 80/20 (train/test) with campaign isolation
+Licensing APTNotes (CC-BY-SA 4.0 equivalent)
+Electronics 2025, 14, 4597 6 of 17
+TTP–CKC Embeddings.
+Each TTP is represented using two complementary components: (1) a 384-dimensional
+Sentence-BERT (SBERT) embedding capturing semantic meaning, and (2) a one-hot CKC
+stage vector providing procedural context. The combined TTP feature vector is defined as:
+TTPfeature =
+
+SBERT384(TTP) ∥one_hot14(CKC)
+
+. (1)
+This representation ensures that techniques with similar textual meaning remain close
+in semantic space while those used in different CKC stages are distinguished procedurally.
+Implementation.
+Embeddings were generated using the all-MiniLM-L6-v2 SBERT model (Hugging-
+Face v4.41). Graph preprocessing and tripartite graph construction were implemented
+in Python 3.10 using PyTorch 2.2 and PyTorch Geometric 2.5, with random seed 42 for
+reproducibility. Figure 3 visualises the resulting embedding space and the aggregation
+process used to compute TTP-level and APT-level semantic representations.
+Figure 3. Semantic embedding process. TTPs are encoded as 384-dimensional SBERT vectors and
+aggregated. Cosine similarity between TTP and APT embeddings supports semantic attribution and
+generalisation across related behaviours.
+4.2. Graph Construction
+The contextualised TTP feature vectors described in Section 4.1 are used to construct
+a heterogeneous tripartite graph linking APT groups, TTPs, and Cyber Kill Chain (CKC)
+stages. Each node type captures a distinct aspect of adversary behaviour: actor identity
+(APT nodes), behavioural technique (TTP nodes), and operational phase (CKC nodes).
+Relationships among these nodes are encoded using three edge types:
+• APT–TTP edges: connect APT groups to the techniques they employ in reported
+campaigns;
+• TTP–CKC edges: link each technique to its corresponding CKC stage, providing lifecy-
+cle grounding;
+• Temporal TTP–TTP edges: capture the observed order of technique usage within the
+same campaign, supporting temporal reasoning.
+Formally, the heterogeneous graph is defined as:
+G = (V, E), V = VAPT ∪ VTTP ∪ VCKC, E = EAPT→TTP ∪ ETTP→CKC ∪ E(temporal)
+TTP→TTP . (2)
+Electronics 2025, 14, 4597 7 of 17
+Here, VAPT, VTTP, and VCKC represent the node sets for APT groups, techniques/
+procedures, and CKC stages, respectively. The edge sets encode behavioural relations
+(EAPT→TTP), procedural mappings (ETTP→CKC), and temporal dependencies (E(temporal)
+TTP→TTP ).
+Figure 4 provides a visual overview of a representative subset of the learned tripartite
+heterogeneous structure. The complete APT–TTP–CKC graph contains nearly one thousand
+TTP nodes and thousands of edges, making a full rendering too dense for meaningful
+inspection. To preserve interpretability, the figure therefore shows only a small, illustrative
+subset consisting of three representative APT groups together with the TTPs and CKC
+stages most strongly associated with them in the learned model.
+Colours indicate node types (APT = red, TTP = blue, CKC = green), while line styles
+denote the different relation types (behavioural APT–TTP , procedural TTP–CKC, and
+temporal TTP–TTP). Some overlapping or intersecting visual elements occur due to graph-
+layout constraints; however, these do not affect scientific interpretation. The purpose of the
+figure is to demonstrate the relational structure learned by the model—not to convey exact
+spatial geometry—and to highlight how different APTs may employ similar techniques or
+operate within similar CKC stages at different points in their campaigns.
+Figure 4. Tripartite heterogeneous graph linking representative APT (red), TTP (blue), and CKC
+(green) nodes. Edges encode behavioural (APT–TTP), procedural (TTP–CKC), and temporal
+(TTP–TTP) relationships. Colours denote node type; line styles denote relation type.
+This graph formulation extends prior heterogeneous GNN-based attribution ap-
+proaches (e.g., APT-MMF [ 2]) by explicitly integrating procedural CKC mappings and
+temporal transitions between techniques. As a result, the model can reason about both
+what techniques are used and when they occur within the adversarial lifecycle, improving
+attribution accuracy and interpretability.
+4.3. Model Input and Classification
+The heterogeneous APT–TTP–CKC graph constructed in Section 4.2 is transformed
+into node-feature matrices and adjacency structures suitable for GraphSAGE. APT nodes
+are initialised with SBERT profile embeddings, TTP nodes use the contextualised TTP–CKC
+vectors defined in Equation (1), and CKC nodes are represented as one-hot stage encodings
+Electronics 2025, 14, 4597 8 of 17
+GraphSAGE performs neighbourhood aggregation across these relations. For a node
+of type τ ∈ {APT, TTP, CKC} at layer ℓ, message passing is defined as:
+H(ℓ+1)
+τ = ϕτ
+
+H(ℓ)
+τ , {ψr(H(ℓ)
+src(r), Er) : r ∈ Rτ}
+
+, (3)
+where ψr denotes the relation-specific aggregation function (mean or SAGE-based) and ϕτ
+combines neighbour messages with the node’s previous representation. This follows the
+message-passing formulation introduced by Gilmer et al. [13].
+Figure 5 illustrates this process, showing how APT, TTP , and CKC nodes exchange
+information over multiple hops in the heterogeneous graph. The diagram highlights the
+flow of messages from TTP nodes to APT nodes via both procedural (CKC) and behavioural
+(TTP) relations, enabling multi-layer reasoning across campaigns.
+APT attribution is formulated as a multi-class classification task. Following [10], two
+embeddings u and v are concatenated with their element-wise difference|u − v| and passed
+through a softmax classifier parameterised by Wt ∈ R3n×C:
+o = softmax(Wt[u, v, |u − v|]). (4)
+To address class imbalance, a class-weighted cross-entropy loss [14,15] is applied:
+LCE = − ∑
+i∈L
+C
+∑
+c=1
+wc yi,c log(softmax(ZAPT)i,c), (5)
+where weights wc are inversely proportional to class frequency.
+Figure 5. GraphSAGE-based heterogeneous GNN architecture used for APT attribution. The model
+aggregates information across APT, TTP , and CKC nodes, enabling multi-hop reasoning over be-
+havioural and procedural relations in the tripartite graph.
+5. Training and Evaluation
+The attribution model is trained and evaluated on the heterogeneous APT–TTP–CKC
+graph introduced in Section 4.2. APT nodes are divided into an 80/20 train–validation
+split while preserving class distribution. Optimisation uses the Adam optimiser [16] with
+Electronics 2025, 14, 4597 9 of 17
+a learning rate of 0.005, L2 weight decay, batch size of 32, and early stopping based on
+validation Macro-F1.
+5.1. Evaluation Metrics
+Three standard metrics for imbalanced multi-class classification are reported following
+prior work [2,3,7]:
+Accuracy = Correct predictions
+Total predictions , (6)
+Macro-F1 = 1
+C
+C
+∑
+c=1
+F1c, (7)
+Weighted-F1 = 1
+N
+C
+∑
+c=1
+nc · F1c, (8)
+where C denotes the number of classes, F1c the per-class F1 score, nc the support for class c,
+and N the total number of samples. Together, these metrics balance overall accuracy with
+robustness to under-represented APT groups.
+5.2. Architectural Comparison
+Four neural architectures are benchmarked: (1) an LSTM baseline, (2) a GATConv-
+based heterogeneous GNN, (3) a hybrid GAT + GraphSAGE variant, and (4) the proposed
+GraphSAGE model.
+The results are summarised in Table 3, which presents Macro-F1 and accuracy across
+architectures. Figure 6 provides a visual comparison of the same metrics.
+Table 3. Comparison of baseline and heterogeneous GNN variants for APT attribution. All models
+operate on the tripartite APT–TTP–CKC graph; the difference lies in the message-passing operator.
+Model Macro-F 1 Accuracy
+LSTM (Temporal baseline) 0.481 0.553
+HeteroGNN (GATConv) 0.544 0.671
+HeteroGNN (GraphSAGE) 0.842 0.850
+HeteroGNN (Hybrid: GAT + SAGE) 0.596 0.611
+Figure 6. Macro-F1 and accuracy across all evaluated models. The GraphSAGE architecture achieves
+the highest performance (Macro-F1 = 0.842, Accuracy = 0.850), demonstrating the benefit of incorpo-
+rating CKC-stage semantics into TTP embeddings for APT attribution.
+Electronics 2025, 14, 4597 10 of 17
+6. Performance Analysis
+6.1. Overall Performance
+The HeteroGNN (GraphSAGE) model consistently outperforms all baselines across
+both Macro-F1 and Accuracy. As presented in Table 3 and Figure 6, this model achieves
+the highest overall performance, demonstrating that combining semantic (SBERT) and
+procedural (CKC) information within the tripartite graph provides stronger representations
+of APT groups compared with sequence-only (LSTM) or attention-based (HeteroGNN with
+GATConv) approaches.
+In contrast, the Hybrid HeteroGNN (GAT + SAGE) performs the weakest, falling below
+both individual GNN variants. This indicates that simply combining multiple operators
+does not necessarily improve results and may introduce additional complexity without
+clear benefit. Overall, the findings confirm that a heterogeneous GNN with GraphSAGE is
+the most effective approach for modelling APT attribution in this setting.
+6.2. Representation Quality (t-SNE and Class-Wise F1)
+To further analyse the quality of the learned representations, we project the APT
+embeddings into two dimensions using t-SNE and evaluate per-class F1 scores to assess
+attribution stability across actors. The combination of visual clustering and quantitative
+class-wise performance provides insight into how well the HeteroGNN model separates
+behaviourally distinct and overlapping APT groups.
+For each APT class c, the F1 score is defined as
+F1c = 2 · Precisionc · Recallc
+Precisionc + Recallc
+, (9)
+following established benchmarking practice [2,7,11]. Well-supported and distinctive APTs
+(e.g., IDs 8, 14, 18, 21, 24) achieve near-perfect attribution, while under-represented or
+behaviourally ambiguous groups (e.g., IDs 1, 12, 17) exhibit lower scores. Even so, the
+distribution is substantially more balanced than that of sequence-only models such as
+LSTM and prior heterogeneous methods such as APT-MMF.
+Figure 7 shows (a) the t-SNE projection of the APT embeddings and (b) the corre-
+sponding per-class F1 distribution used to quantify attribution robustness.
+(a) t-SNE projection of APT embeddings.
+ (b) F1 scores per APT class.
+Figure 7. Representation-quality analysis for the HeteroGNN (GraphSAGE) model. ( a) t-SNE
+visualisation showing well-separated APT clusters. (b) Class-wise F1 distribution highlighting strong
+attribution for distinctive or well-supported actors.
+6.3. Confusion-Matrix Analysis
+To further examine prediction behaviour, we analysed the confusion matrix shown in
+Figure 8. Diagonal dominance indicates strong overall attribution, while misclassifications
+Electronics 2025, 14, 4597 11 of 17
+mainly occur among behaviourally similar groups (e.g., APT12 vs. APT17). This highlights
+where the model confuses adversaries with overlapping TTP profiles, suggesting potential
+benefit from incorporating additional temporal or infrastructure-based features.
+Figure 8. Confusion matrix for the best-performing model, HeteroGNN (GraphSAGE), showing
+normalised classification outcomes across all 25 APT groups. Darker diagonal cells indicate correct
+attributions, while lighter off-diagonal values highlight confusions between behaviourally similar
+actors (e.g., APT12 and APT17).
+6.4. Classification Report
+Beyond aggregate metrics such as Accuracy and Macro-F1, Table 4 presents the per-
+class Precision, Recall, F1-score, and Support for all APT groups in the test set. This detailed
+breakdown provides a transparent numerical view of model performance and enables
+reproducible comparison across classes.
+The model achieves strong and balanced performance across most APT groups, with
+Precision and Recall typically exceeding 0.80 for well-represented actors. Lower scores
+appear primarily in sparse or behaviourally overlapping groups (e.g., APT12 and APT17),
+reflecting the inherent difficulty of distinguishing rare adversaries with similar technique
+profiles. This trend is also noted in prior work such as APT-MMF [2], where class imbalance
+reduces Macro-F1. However, unlike APT-MMF, the incorporation of SBERT semantics and
+CKC contextualisation helps maintain high Precision even for minority classes, indicating
+improved robustness under imbalance.
+Electronics 2025, 14, 4597 12 of 17
+Table 4. Per-class Precision, Recall, F1-score, and Support for each APT group in the test set. Overall
+Accuracy = 0.85, Macro-F1 = 0.84.
+APT ID Precision Recall F 1-Score Support
+0 0.60 0.79 0.68 19
+1 0.82 0.47 0.60 19
+2 1.00 0.76 0.86 21
+3 0.87 0.83 0.85 24
+4 0.80 0.95 0.87 38
+5 0.91 0.77 0.83 26
+6 0.67 1.00 0.80 44
+7 0.75 1.00 0.86 24
+8 0.88 1.00 0.94 23
+9 0.76 0.59 0.67 27
+10 0.96 0.92 0.94 25
+11 0.66 1.00 0.79 21
+12 1.00 0.49 0.65 37
+13 0.89 0.83 0.86 30
+14 0.78 1.00 0.88 25
+15 1.00 0.75 0.86 24
+16 0.90 0.83 0.86 23
+17 1.00 0.57 0.72 30
+18 1.00 1.00 1.00 23
+19 1.00 0.93 0.97 30
+20 0.86 0.84 0.85 57
+21 0.84 1.00 0.91 32
+22 0.91 1.00 0.95 30
+23 0.93 0.78 0.85 18
+24 1.00 1.00 1.00 24
+Accuracy 0.85 694
+Macro avg 0.87 0.84 0.84 694
+Weighted avg 0.87 0.85 0.84 694
+6.5. Learning Dynamics
+Validation accuracy per epoch is computed as in Equation (10), and the progression is
+visualised in Figure 9.
+ValAcc(t) = Correct predictions at epoch t
+Total validation samples , (10)
+Figure 9. Validation accuracy across training epochs for GraphSAGE. Rapid early gains followed by
+stable convergence indicate effective generalisation.
+Electronics 2025, 14, 4597 13 of 17
+Figure 9 shows that ValAcc(t) steadily increases from approximately 10% at epoch
+10 to above 80% by epoch 100. Steep gains between epochs 30–50 indicate rapid feature
+consolidation, after which convergence stabilises. The absence of strong oscillations indi-
+cates generalisation and no overfitting, aided by the heterogeneous tripartite structure and
+SBERT embeddings.
+6.6. Summary Metrics
+Table 5 reports the final summary metrics, confirming that the heterogeneous GNN
+balances under-represented classes while retaining high accuracy. These results further
+validate the superiority of the GraphSAGE-based framework over prior APT-attribution
+approaches such as APT-MMF [2] and DeepOP [7].
+Table 5. Summary of final model performance.
+Metric Value
+Accuracy 85.0%
+Macro-F1 84.7%
+Weighted-F1 84.2%
+The complete attribution pipeline—including graph construction, embedding genera-
+tion, and inference—executes within seconds on an RTX-class GPU (or under one minute
+on CPU), demonstrating that the proposed framework is computationally efficient and
+scalable for integration into real-time SOC workflows.
+7. Benchmarking Against Prior Work
+We benchmark the proposed model against four representative attribution approaches:
+APT-MMF, DeepOP , CSKG4APT, and GRAIN. These baselines reflect diverse methodolog-
+ical directions, including heterogeneous GNNs, sequence modelling, CTI text analysis,
+and IoC–TTP graph reasoning. Results are summarised in Table 6, with confusion-matrix
+behaviour illustrated in Figure 8.
+APT-MMF.Xiao et al. [2] introduce a heterogeneous GNN using metapaths and multi-
+level fusion, achieving a reported Macro-F1 of 0.687. Although effective on frequent TTPs,
+the approach struggles with long-tail classes due to limited lifecycle modelling. By explic-
+itly incorporating CKC stages and temporal transitions, our model improves balance across
+rare classes and achieves substantially higher performance (Macro-F1 = 0.842; Table 6).
+DeepOP .Zhang et al. [7] propose a sequential model that predicts technique progres-
+sions, reporting F 1 = 0.894 at the technique level. However, DeepOP does not model
+actor-level context, causing sequence-only reasoning to conflate behaviourally similar
+actors (e.g., APT12 vs. APT17), as shown in Figure 8. Our model mitigates this limita-
+tion by combining SBERT semantics with CKC-aware embeddings, yielding clearer actor
+separation.
+CSKG4APT. Ren et al. [3] leverage BERT-based text modelling, achieving F1 ≈ 0.739
+on CTI relation extraction. While effective for sentence-level interpretation, the method
+does not support end-to-end actor attribution and generalises poorly to unseen behaviours.
+In contrast, our graph-based formulation integrates semantic and lifecycle context directly
+into model decision-making, improving robustness (Table 6).
+GRAIN. Xiao et al. [11] explore heterogeneous GNNs over IoC–TTP graphs, reporting
+F1 = 0.815 for their best FastText configuration. However, GRAIN lacks CKC integration and
+temporal dependencies, limiting interpretability and lifecycle grounding. By embedding
+CKC stages alongside SBERT features, our model achieves higher accuracy and richer
+behavioural understanding.
+Electronics 2025, 14, 4597 14 of 17
+Summary. Across all baselines, the proposed GraphSAGE-based heterogeneous model
+demonstrates state-of-the-art performance, driven by the integration of semantic, tempo-
+ral, and lifecycle-aware features. It outperforms multimodal, sequential, text-only, and
+heterogeneous alternatives (Table 6; Figure 8).
+Table 6. Comparison with related attribution models. Metrics are reproduced from prior work.
+DeepOP reports technique-sequence F 1, whereas this study evaluates actor-level attribution on
+contextualised CTI (APTNotes).
+Model Approach Features Graph Type /
+Task Metric(s) Remarks
+APT-MMF [2]
+Triple-attention
+heterogeneous
+GNN
+Text + Metapaths
++ Topology
+Heterogeneous
+Graph Macro-F1 = 0.687
+Multimodal fusion but lacks
+lifecycle semantics; sensitive to
+class imbalance.
+DeepOP [7]
+Transformer-
+based sequence
+model
+MITRE ATT&CK
+sequences
+Sequential
+Prediction
+F1 = 0.894
+(technique-level)
+High sequence prediction
+accuracy; does not model
+actor-level context.
+CSKG4APT [3] BERT-based CTI
+modelling
+CTI sentences +
+entity relations
+Knowledge
+Graph F1 ≈ 0.739
+Good relation extraction but
+limited generalisation and no
+actor-level attribution.
+GRAIN [11]
+IoC–TTP
+heterogeneous
+GNN
+IoC + semantic
+embeddings
+(FastText)
+Heterogeneous
+Graph F1 = 0.815
+Captures IoC–TTP links but
+lacks CKC and temporal
+reasoning.
+This Work
+SBERT-based
+HeteroGNN
+(GraphSAGE)
+TTP SBERT
+embeddings +
+CKC stage
+vectors
+Tripartite
+APT–TTP–CKC
+Graph
+Macro-F1 = 0.842,
+Accuracy = 0.85
+Highest balanced performance;
+integrates semantic and
+procedural context for
+interpretable attribution.
+8. Future Work and Recommendations
+While the proposed framework demonstrates strong attribution performance, several
+promising research and operational directions remain for further development:
+• Few-shot and meta-learning. Future work should explore meta-learning and few-shot
+adaptation techniques to enable attribution of emerging or under-represented APT
+groups from limited CTI samples. Such methods are essential for newly observed
+adversaries and zero-day campaigns where labelled data are scarce.
+• Synthetic CTI generation. Generative models such as large language models (LLMs)
+or generative adversarial networks (GANs) could be used to create realistic synthetic
+CTI for minority APT classes. This would mitigate the long-tail imbalance present in
+APTNotes and stabilise training for rare actors.
+• Adversarial augmentation. Incorporating adversarial perturbations and semantic
+rephrasings of TTP descriptions during training could improve robustness against
+deception and false-flag attacks, where adversaries intentionally modify observable
+behaviours or reporting language.
+• Multi-task learning. Jointly predicting Cyber Kill Chain (CKC) stages alongside APT
+attribution may capture deeper temporal–procedural interactions and strengthen the
+alignment between model reasoning and adversary lifecycle behaviours.
+• Hybrid architectures. Combining heterogeneous GNNs with sequential models such
+as LSTMs or Transformers could enhance temporal modelling across multiple CTI
+reports, enabling richer tracking of multi-report campaign evolution.
+• Self-supervised pretraining. Leveraging large unlabelled CTI corpora for contrastive
+or self-supervised pretraining may improve TTP embedding quality and increase
+resilience in low-data regimes.
+Electronics 2025, 14, 4597 15 of 17
+• Explainability and SOC integration. Embedding-based visualisation tools (e.g., UMAP
+or t-SNE) and confusion-matrix dashboards should be incorporated into SOC work-
+flows. These tools would support analyst interpretation of actor clusters, confidence
+scores, and cross-campaign attribution behaviour in real time.
+Data Splitting and Temporal Isolation
+Although a temporal 80/20 split with campaign-level isolation was conceptually
+applied to reduce the risk of graph leakage, a more comprehensive validation—training
+strictly on older campaigns and testing on newer ones—remains future work. Implement-
+ing rigorous temporal stratification and campaign-aware subgraph partitioning will help
+ensure that shared TTP nodes or temporal edges do not unintentionally transfer infor-
+mation across splits, strengthening generalisability and addressing peer-review concerns
+regarding leakage.
+Explainability Enhancement
+Future iterations will integrate explanation frameworks such as GNNExplainer and
+attention-based path tracing to identify and visualise the top-k TTP–CKC paths influencing
+an attribution decision. These methods will provide interpretable, case-level insights to
+assist SOC analysts, particularly in scenarios involving deception, ambiguous reporting, or
+similar adversary behaviours.
+Model Card and Failure Analysis
+Future work will include the publication of a detailed model card documenting dataset
+composition, training configuration, limitations, and failure modes. Special focus will be
+placed on misclassifications arising from deceptive reporting or false-flag operations, where
+adversaries intentionally mimic another group’s behavioural profile. Such documentation
+supports transparency, responsible model deployment, and alignment with emerging best
+practices for AI-driven cyber threat intelligence systems.
+Collectively, these directions aim to advance the proposed attribution framework
+toward full operational readiness. By improving adaptability, robustness, and inter-
+pretability, future extensions will enhance the ability of cyber defence centres to inte-
+grate automated graph-based intelligence with analyst-led contextual reasoning in live
+incident-response environments.
+9. Conclusions
+This paper presented a heterogeneous graph neural network framework for APT
+attribution that fuses semantic embeddings, Cyber Kill Chain (CKC) procedural context,
+and multi-relational message passing. The proposed tripartite design achieves state-of-the-
+art accuracy and interpretability, demonstrating its potential for operational deployment in
+SOC environments. While strong empirical results were achieved, residual risks of temporal
+or campaign-level graph leakage remain an area for refinement and will be addressed
+through time-aware retraining and campaign-stratified evaluation in future work.
+Empirical evaluation (Section 5.2) demonstrated superior attribution performance
+with 85% accuracy and a Macro-F1 of 0.84, outperforming baselines such as APT-MMF
+and DeepOP . The confusion matrix and class-wise analysis confirmed robustness against
+long-tail imbalance, while benchmarking (Section 7) highlighted competitive advantages
+over infrastructure- or rule-based attribution models. These findings validate the novelty
+claims made in Section 3: that fusing semantic, procedural, and structural intelligence
+yields more accurate and interpretable attribution.
+Critically, this work also exposes ongoing limitations. While the automated
+CTI→graph pipeline (Section 4) supports reproducibility and near real-time workflows,
+Electronics 2025, 14, 4597 16 of 17
+challenges remain around rare-class generalisation, deception resistance, and SOC-level
+explainability. Addressing these issues requires integrating the future research direc-
+tions discussed in Section 8, especially few-shot learning, hybrid architectures, and inter-
+pretable dashboards.
+In conclusion, this study not only advances state-of-the-art attribution accuracy but
+also lays the groundwork for operationally relevant, explainable, and scalable attribution
+systems. By bridging unstructured CTI with structured graph-based learning, it provides
+both technical innovation and a clear path toward deployment in real-world cyber de-
+fence environments.
+Author Contributions: Conceptualization, A.J.M. and A.A.; methodology, A.J.M. and A.A.; software,
+A.J.M.; validation, A.J.M. and A.A.; formal analysis, A.J.M.; investigation, A.J.M.; resources, A.A.;
+data curation, A.J.M.; writing—original draft preparation, A.J.M.; writing—review and editing, A.A.;
+visualization, A.J.M.; supervision, A.A.; project administration, A.A.; funding acquisition, A.A. All
+authors have read and agreed to the published version of the manuscript.
+Funding: This research received no external funding.
+Data Availability Statement: The processed graph artefacts (node/edge indices and configuration
+files) and the training/evaluation scripts are available from the corresponding author on reasonable
+request for research purposes. Raw CTI sources originate from the APTNotes corpus (publicly
+available); any redistribution will respect the original licenses.
+Conflicts of Interest: The authors declare no conflict of interest.
+References
+1. Irshad, E.; Siddiqui, A.B. Cyber threat attribution using unstructured reports in cyber threat intelligence. Egypt. Inform. J. 2023,
+24, 43–59. [CrossRef]
+2. Xiao, N.; Lang, B.; Wang, T.; Chen, Y. APT-MMF: An advanced persistent threat actor attribution method based on multimodal
+and multilevel feature fusion. Comput. Secur. 2024, 144, 103960. [CrossRef]
+3. Ren, Y.; Xiao, Y.; Zhou, Y.; Zhang, Z.; Tian, Z. CSKG4APT: A cybersecurity knowledge graph for advanced persistent threat
+organization attribution. IEEE Trans. Knowl. Data Eng. 2023, 35, 5695–5709. [CrossRef]
+4. Hwang, S.; Kim, T.S. An exploratory study on artifacts for cyber attack attribution considering false flag: Using Delphi and AHP
+methods. IEEE Access 2023, 11, 74533–74544. [CrossRef]
+5. Goel, S.; Nussbaum, B. Attribution across cyber attack types: Network intrusions and information operations. IEEE Open J.
+Commun. Soc. 2021, 2, 942–953. [CrossRef]
+6. Xiang, X.; Liu, H.; Zeng, L.; Zhang, H.; Gu, Z. IPAttributor: Cyber attacker attribution with threat intelligence-enriched intrusion
+data. Mathematics 2024, 12, 1364. [CrossRef]
+7. Zhang, S.; Xue, X.; Su, X. DeepOP: A hybrid framework for MITRE ATT&CK sequence prediction via deep learning and ontology.
+Electronics 2025, 14, 257. [CrossRef]
+8. Rosenberg, I.; Sicard, G.; David, E. DeepAPT: Nation-state APT attribution using end-to-end deep neural networks. In Proceedings
+of the Artificial Neural Networks and Machine Learning—ICANN 2017 ; Lecture Notes in Computer Science; Springer: Cham,
+Switzerland, 2017; Volume 10614, pp. 91–99. [CrossRef]
+9. Hutchins, E.M.; Cloppert, M.J.; Amin, R.M. Intelligence-Driven Computer Network Defense Informed by Analysis of Adversary
+Campaigns and Intrusion Kill Chains; Technical Report LM White Paper; Lockheed Martin: San Jose, CA, USA, 2011.
+10. Reimers, N.; Gurevych, I. Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks. In Proceedings of the 2019
+Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural
+Language Processing (EMNLP-IJCNLP), Hong Kong, China, 3–7 November 2019; Association for Computational Linguistics:
+Stroudsburg, PA, USA, 2019; pp. 3982–3992. [CrossRef]
+11. Xiao, F.; Chen, S.; Yang, J.; He, H.; Jiang, X.; Tan, X.; Jin, D. GRAIN: Graph neural network and reinforcement learning aided
+causality discovery for multi-step attack scenario reconstruction. Comput. Secur. 2025, 148, 104180. [CrossRef]
+12. Yan, N.; Zhu, H.; Zhang, J.; Peng, T.; Zhang, X.; Zhang, H.; Huang, T.; Lin, X.; Liu, S.; Liu, X. Deepro: Provenance-based APT
+campaigns detection via GNN. In Proceedings of the IEEE IInternational Conference on Trust, Security and Privacy in Computing
+and Communications (TrustCom), Wuhan, China, 9–11 December 2022; pp. 747–758. [CrossRef]
+Electronics 2025, 14, 4597 17 of 17
+13. Gilmer, J.; Schoenholz, S.S.; Riley, P .F.; Vinyals, O.; Dahl, G.E. Neural Message Passing for Quantum Chemistry. In Proceedings of
+the 34th International Conference on Machine Learning (ICML), Sydney, Australia, 6–11 August 2017; Volume 70, pp. 1263–1272.
+14. He, H.; Garcia, E.A. Learning from imbalanced data. IEEE Trans. Knowl. Data Eng. 2009, 21, 1263–1284. [CrossRef]
+15. Cui, Y.; Jia, M.; Lin, T.Y.; Song, Y.; Belongie, S. Class-Balanced Loss Based on Effective Number of Samples. In Proceedings of the
+CVPR, Long Beach, CA, USA, 15–20 June 2019.
+16. Kingma, D.P .; Ba, J. Adam: A Method for Stochastic Optimization. arXiv 2014, arXiv:1412.6980. [CrossRef]
+Disclaimer/Publisher’s Note: The statements, opinions and data contained in all publications are solely those of the individual
+author(s) and contributor(s) and not of MDPI and/or the editor(s). MDPI and/or the editor(s) disclaim responsibility for any injury to
+people or property resulting from any ideas, methods, instructions or products referred to in the content.

@@ -1,0 +1,8 @@
+{
+  "dataset_sha256": "29d0919999e2a1cc952a5cc6826b0906d3b5862108f68dc151e739415e4bb706",
+  "label_col": "tactic",
+  "sample_seed": 42,
+  "sample_size": 10000,
+  "source_row_count": 125973,
+  "split_group": "nsl_kdd"
+}

@@ -1,0 +1,16 @@
+{
+  "kmeans_ari": 0.11641852095503556,
+  "gmm_ari": 0.29917409367722037,
+  "supervised_gbm_ari": 1.0,
+  "hgnn_ari": 0.722,
+  "dataset": "nsl_kdd",
+  "n_samples": 274490,
+  "n_features": 4,
+  "n_clusters": 10,
+  "feature_columns": [
+    "tactic",
+    "alert_type",
+    "protocol",
+    "service"
+  ]
+}

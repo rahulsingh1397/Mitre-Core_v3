@@ -1,0 +1,15 @@
+dataset,method,mode,ari,ami,source,notes
+CICIDS2017,Zero-shot HGNN,unsupervised,0.284,,full_scale_best_config_v1.csv,network_v9_v3
+CICIDS2017,BGMM,unsupervised,,,cicids_bgmm.csv,Bayesian GMM
+NSL-KDD,Prototype,supervised,0.595,,prototype_final.csv,jointly-trained backbone
+NSL-KDD,Zero-shot HGNN,unsupervised,0.743,,zeroshot_baseline_final.csv,network_v9_v3
+NSL-KDD,Feature GMM,unsupervised,0.299,,flow_feature_baseline.json,raw 6 features
+OpTC,Zero-shot HGNN,unsupervised,0.0481793958523846,0.1492322143112127,zeroshot_baseline_final.csv,"network_v9_v3, gate=0.55 | n_clusters=25, gate=0.40"
+SQTK_SIEM,SupCon v3 + ZCA,semi-supervised,,,sqtk_zca_eps0.1.csv,siem_supcon_v3
+SQTK_SIEM,Prototype,supervised,0.053,,prototype_final.csv,jointly-trained backbone
+SQTK_SIEM,Zero-shot HGNN,unsupervised,,,zeroshot_baseline_final.csv,kcluster baseline
+TON_IoT,Prototype,supervised,0.845,,prototype_final.csv,jointly-trained backbone
+TON_IoT,Zero-shot HGNN,unsupervised,0.0816279293075732,0.4274710956877592,zeroshot_baseline_final.csv,"network_v9_v3 | n_clusters=50, gate=0.75"
+UNSW-NB15,SupCon v7 + Spectral,semi-supervised,0.538,,unsw_supcon_v7_final.csv,"unsw_supcon_v7, k=8"
+UNSW-NB15,Prototype,supervised,0.497,,prototype_final.csv,jointly-trained backbone
+UNSW-NB15,Zero-shot HGNN,unsupervised,0.5381949691817287,0.664230027636069,zeroshot_baseline_final.csv,"network_v9_v3 HDBSCAN | n_clusters=8, gate=0.40"

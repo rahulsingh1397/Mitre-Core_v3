@@ -1,0 +1,16 @@
+dataset,true_cosine_sim_pre_zca,assessment,notes
+UNSW-NB15,0.9208,MODERATE_COLLAPSE,0.80-0.95 range - ZCA beneficial
+TON_IoT,0.7252,GOOD,< 0.80 - healthy embeddings
+NSL-KDD,0.7884,GOOD,< 0.80 - healthy embeddings  
+SQTK_SIEM_kcluster,0.9091,MODERATE_COLLAPSE,0.80-0.95 range - ZCA beneficial
+
+# Assessment Summary:
+# - TON_IoT and NSL-KDD: No real collapse (cosine_sim < 0.80)
+# - UNSW-NB15 and SQTK_SIEM: Moderate collapse (0.80-0.95 range)
+# - NO datasets have severe collapse (> 0.95)
+# - ZCA whitening effective for all datasets (post-ZCA ~0.02)
+#
+# Decision: Proceed with Track 3 (re-run prototype training)
+# - The "embedding collapse > 1000" was indeed a measurement bug
+# - Prior prototype ARIs (TON_IoT=0.916, SQTK=0.814) may still be valid
+# - Need to retrain prototypes with clean diagnostics

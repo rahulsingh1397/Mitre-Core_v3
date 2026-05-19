@@ -1,0 +1,49 @@
+datasets:
+  - name: NSL-KDD-dev
+    enabled: false
+    kind: mitre_format
+    path: datasets/nsl_kdd/mitre_format.csv
+    split_group: nsl_kdd
+    label_col: tactic
+    checkpoint: hgnn_checkpoints/network_v9_v3/network_it_best.pt
+    seeds: [42, 43, 44]
+    sample_size: 10000
+    sample_seed: 42
+    stratified_sample: true
+    n_clusters: 10
+    hdbscan_min_cluster_size: 5
+    dbscan_eps: 0.3
+    clustering_method: hdbscan
+    engine_kwargs:
+      device: cpu
+      num_layers: 1
+      hdbscan_min_cluster_size: 5
+      hdbscan_pca_components: 16
+      hdbscan_cluster_selection_epsilon: 0.1
+      use_geometric_confidence: true
+
+  - name: NSL-KDD
+    kind: mitre_format
+    path: datasets/nsl_kdd/mitre_format.csv
+    split_group: nsl_kdd
+    label_col: tactic
+    alt_label_cols:
+      - alert_type
+      - campaign_id
+    checkpoint: hgnn_checkpoints/network_v9_v3/network_it_best.pt
+    seeds: [42, 43, 44]
+    sample_size: 10000
+    sample_seed: 142
+    exclude_sample_seeds: [42]
+    stratified_sample: true
+    n_clusters: 10
+    hdbscan_min_cluster_size: 5
+    dbscan_eps: 0.3
+    clustering_method: hdbscan
+    engine_kwargs:
+      device: cpu
+      num_layers: 1
+      hdbscan_min_cluster_size: 5
+      hdbscan_pca_components: 16
+      hdbscan_cluster_selection_epsilon: 0.1
+      use_geometric_confidence: true

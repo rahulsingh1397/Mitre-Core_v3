@@ -1,0 +1,2 @@
+dataset,gate_value,ari,binary_ari,nmi,ami,alt_label_col,alt_ari,alt_ami,homogeneity,completeness,v_measure,n_clusters,n_hgnn_clusters,n_uf_clusters,pct_uf_routed,avg_confidence,p25_confidence,threshold_used,confidence_mode,skip_gate_sweep,latency_s,git_hash,bridge_edge_records,bridge_edge_pct,unique_bridge_flows
+UNSW-NB15,0.65,0.12802354167099156,,0.2109508426581974,0.20515458974105114,attack_cat,,,0.23827075278666274,0.1892514425373895,0.21095084265819744,8,0,0,0.0,1.0,1.0,,gaec,False,37.61783629999263,8d02195f074800ae1f02da8408e4dfa9058253e6,0,0.0,0

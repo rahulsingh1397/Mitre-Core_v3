@@ -1,0 +1,10 @@
+services:
+  benchmark:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: mitre-core-v3:latest
+    container_name: mitre-core-v3-benchmark
+    command: ["python", "-m", "benchmark.run_benchmark", "--output", "benchmark/results/compose_benchmark.csv"]
+    volumes:
+      - ./benchmark/results:/app/benchmark/results

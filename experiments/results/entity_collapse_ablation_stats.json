@@ -1,0 +1,101 @@
+{
+  "study_info": {
+    "n_seeds": 3,
+    "checkpoint": "network_v9_v3",
+    "gate_value": 0.65,
+    "dataset": "OpTC",
+    "hypothesis": "Entity collapse improves clustering by creating shared host neighbors"
+  },
+  "performance_comparison": {
+    "ari_with_entity_collapse": {
+      "mean": -0.007985907636925567,
+      "std": 0.00018498521190786583,
+      "values": [
+        -0.0081408297728916,
+        -0.0080910079059712,
+        -0.0077258852319139
+      ]
+    },
+    "ari_without_entity_collapse": {
+      "mean": -0.007985907636925567,
+      "std": 0.00018498521190786583,
+      "values": [
+        -0.0081408297728916,
+        -0.0080910079059712,
+        -0.0077258852319139
+      ]
+    },
+    "nmi_with_entity_collapse": {
+      "mean": 0.038739661618921,
+      "std": 0.000377172602562777,
+      "values": [
+        0.0383868661614018,
+        0.0385695910489124,
+        0.0392625276464488
+      ]
+    },
+    "nmi_without_entity_collapse": {
+      "mean": 0.038739661618921,
+      "std": 0.000377172602562777,
+      "values": [
+        0.0383868661614018,
+        0.0385695910489124,
+        0.0392625276464488
+      ]
+    }
+  },
+  "statistical_tests": {
+    "ari_paired_ttest": {
+      "t_statistic": NaN,
+      "p_value": NaN,
+      "significant": false,
+      "effect_size_cohen_d": 0.0
+    },
+    "nmi_paired_ttest": {
+      "t_statistic": NaN,
+      "p_value": NaN,
+      "significant": false
+    },
+    "ari_wilcoxon": {
+      "statistic": 0.0,
+      "p_value": 1.0,
+      "significant": false
+    }
+  },
+  "interpretation": {
+    "ari_improvement": 0.0,
+    "nmi_improvement": 0.0,
+    "conclusion": "Entity collapse does not show statistically significant improvement",
+    "effect_size_interpretation": "Negligible effect",
+    "practical_significance": "Minimal impact"
+  },
+  "seed_by_seed": [
+    {
+      "seed": 42,
+      "ari_with": -0.0081408297728916,
+      "ari_without": -0.0081408297728916,
+      "ari_diff": 0.0,
+      "nmi_with": 0.0383868661614018,
+      "nmi_without": 0.0383868661614018,
+      "nmi_diff": 0.0
+    },
+    {
+      "seed": 44,
+      "ari_with": -0.0080910079059712,
+      "ari_without": -0.0080910079059712,
+      "ari_diff": 0.0,
+      "nmi_with": 0.0385695910489124,
+      "nmi_without": 0.0385695910489124,
+      "nmi_diff": 0.0
+    },
+    {
+      "seed": 45,
+      "ari_with": -0.0077258852319139,
+      "ari_without": -0.0077258852319139,
+      "ari_diff": 0.0,
+      "nmi_with": 0.0392625276464488,
+      "nmi_without": 0.0392625276464488,
+      "nmi_diff": 0.0
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+dataset,ami_mean,ami_std,ami_count,ari_mean,ari_std,ari_count,binary_ari_mean,binary_ari_std,binary_ari_count,n_clusters_mean,n_clusters_std,n_clusters_count
+CICIDS2017,0.5101,0.063,3,0.4601,0.0946,3,,,0,53.3333,5.5076,3
+NSL-KDD,0.6676,0.0,3,0.7388,0.0,3,,,0,14.0,0.0,3
+OpTC,0.148,0.0,3,0.0472,0.0,3,0.9986,0.0,3,24.0,0.0,3
+SQTK_SIEM_kcluster,0.3424,,1,0.1839,,1,,,0,11.0,,1
+TON_IoT,0.7167,0.0,3,0.4312,0.0,3,,,0,37.0,0.0,3
+UNSW-NB15,0.6142,0.0385,3,0.4336,0.0336,3,,,0,8.0,0.0,3

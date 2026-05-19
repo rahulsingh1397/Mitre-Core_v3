@@ -1,0 +1,106 @@
+{
+  "architecture": {
+    "verdict": "PASS",
+    "checks": {
+      "HeteroConv": true,
+      "GATConv": true,
+      "num_layers=1": true,
+      "alert_dim=6": true,
+      "hidden_dim=128": true,
+      "num_heads=4": true,
+      "has_cluster_head": true,
+      "has_layer_norms": true,
+      "has_raw_proj": true,
+      "has_get_backbone": true,
+      "has_get_attention": true
+    }
+  },
+  "datasets": {
+    "verdict": "PARTIAL",
+    "checks": {
+      "UNSW-NB15": true,
+      "TON_IoT": true,
+      "NSL-KDD": true,
+      "OpTC": false,
+      "SQTK_SIEM": false,
+      "CICIDS2017": true
+    }
+  },
+  "checkpoints": {
+    "verdict": "PASS",
+    "checks": {
+      "multidomain_v2": true,
+      "network_v9_v3": true,
+      "unsw_supcon_v7": true,
+      "nsl_kdd": true
+    }
+  },
+  "explainability": {
+    "verdict": "PASS",
+    "checks": {
+      "HGNNExplainer_exists": true,
+      "AttentionExtractor_exists": true,
+      "has_explain_clusters": true,
+      "has_plot_embedding_scatter": true,
+      "has_explain_single_alert": true,
+      "has_get_top_features": true
+    }
+  },
+  "contrastive_loss": {
+    "verdict": "PASS",
+    "checks": {
+      "NTXentLoss": true,
+      "TemporalNTXentLoss": true,
+      "CrossGraphNTXentLoss": true
+    }
+  },
+  "tactic_map": {
+    "verdict": "PASS",
+    "checks": {
+      "has_mitre_tactics": true,
+      "has_unsw_mappings": true,
+      "has_nsl_mappings": true
+    }
+  },
+  "existing_results": {
+    "verdict": "PASS",
+    "checks": {
+      "UNSW-NB15_zeroshot_ari": 0.5382,
+      "UNSW-NB15_zeroshot_ami": 0.6642,
+      "TON_IoT_zeroshot_ari": 0.0816,
+      "TON_IoT_zeroshot_ami": 0.4275,
+      "NSL-KDD_zeroshot_ari": 0.7428,
+      "NSL-KDD_zeroshot_ami": 0.6379,
+      "SQTK_SIEM_kcluster_zeroshot_ari": 0.1839,
+      "SQTK_SIEM_kcluster_zeroshot_ami": 0.3424,
+      "OpTC_zeroshot_ari": 0.0482,
+      "OpTC_zeroshot_ami": 0.1492,
+      "UNSW-NB15_mitre_ari": 0.0078,
+      "NSL-KDD_mitre_ari": 0.5951,
+      "CICIDS2017_mitre_ari": 0.1731,
+      "TON_IoT_mitre_ari": 0.6095,
+      "SQTK_SIEM_kcluster_mitre_ari": 0.4281,
+      "OpTC_mitre_ari": 0.0578,
+      "UNSW-NB15_final_v3_ari": 0.4638,
+      "UNSW-NB15_final_v3_ami": 0.6581,
+      "TON_IoT_final_v3_ari": 0.4312,
+      "TON_IoT_final_v3_ami": 0.7167,
+      "OpTC_final_v3_ari": 0.0472,
+      "OpTC_final_v3_ami": 0.148,
+      "NSL-KDD_final_v3_ari": 0.7388,
+      "NSL-KDD_final_v3_ami": 0.6676,
+      "SQTK_SIEM_kcluster_final_v3_ari": 0.1839,
+      "SQTK_SIEM_kcluster_final_v3_ami": 0.3424
+    }
+  },
+  "e2e_test": {
+    "verdict": "PASS",
+    "checks": {
+      "e2e_ari": 0.5031,
+      "e2e_ami": 0.623,
+      "e2e_clusters": 35,
+      "e2e_time_s": 1.5,
+      "e2e_checkpoint": "hgnn_checkpoints/network_v9_v3/network_it_best.pt"
+    }
+  }
+}

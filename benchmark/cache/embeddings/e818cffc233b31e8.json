@@ -1,0 +1,10 @@
+{
+  "checkpoint_path": "E:\\Private\\MITRE-CORE 2\\MITRE-CORE_V3\\hgnn_checkpoints\\network_v9_v3\\network_it_best.pt",
+  "checkpoint_sha256": "c74da9b1ca6f1b7439d7a71480d0cd5da3a900df7178eb4587694734dfc48b4e",
+  "dataset_name": "NSL-KDD-dev",
+  "embedding_dim": 128,
+  "extracted_at": "2026-05-19T00:09:47",
+  "n_alerts": 10000,
+  "split_indices_path": "E:\\Private\\MITRE-CORE 2\\MITRE-CORE_V3\\benchmark\\splits\\nsl_kdd_10000_seed42.npy",
+  "split_indices_sha256": "7f2eadb356647e947508c9dfca964355c5a0e87462358001a87eb88451db3838"
+}

@@ -1,0 +1,2 @@
+dataset,gate_value,ari,binary_ari,nmi,ami,alt_label_col,alt_ari,alt_ami,homogeneity,completeness,v_measure,n_clusters,n_hgnn_clusters,n_uf_clusters,pct_uf_routed,avg_confidence,p25_confidence,threshold_used,confidence_mode,skip_gate_sweep,latency_s,git_hash,bridge_edge_records,bridge_edge_pct,unique_bridge_flows
+TON_IoT,0.6,0.24234121234061592,,0.43773155728252683,0.4370044141954393,,,,0.35824475941638945,0.5625490857930925,0.43773155728252683,6,6,0,0.0,0.7134609222412109,0.5152342319488525,,gaec,False,82.92280560001382,302676aa8255fe3a483d3e386b1a44c5cef60515,0,0.0,0

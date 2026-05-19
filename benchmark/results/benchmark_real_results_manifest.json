@@ -1,0 +1,108 @@
+{
+  "command": [
+    "C:\\Users\\rahul\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+    "-m",
+    "benchmark.run_benchmark",
+    "--methods",
+    "benchmark/methods.yaml",
+    "--datasets",
+    "benchmark/datasets_real.yaml",
+    "--output",
+    "benchmark/results/benchmark_real_results.csv"
+  ],
+  "command_line": "C:\\Users\\rahul\\AppData\\Local\\Programs\\Python\\Python312\\python.exe -m benchmark.run_benchmark --methods benchmark/methods.yaml --datasets benchmark/datasets_real.yaml --output benchmark/results/benchmark_real_results.csv",
+  "datasets": [
+    {
+      "benchmark_seeds": [
+        42,
+        43,
+        44
+      ],
+      "checkpoint_path": "E:\\Private\\MITRE-CORE 2\\MITRE-CORE_V3\\hgnn_checkpoints\\network_v9_v3\\network_it_best.pt",
+      "checkpoint_sha256": "c74da9b1ca6f1b7439d7a71480d0cd5da3a900df7178eb4587694734dfc48b4e",
+      "clustering_method": "hdbscan",
+      "engine_kwargs": {
+        "device": "cpu",
+        "hdbscan_cluster_selection_epsilon": 0.1,
+        "hdbscan_min_cluster_size": 5,
+        "hdbscan_pca_components": 16,
+        "num_layers": 1,
+        "use_geometric_confidence": true
+      },
+      "exclude_sample_seeds": [
+        42
+      ],
+      "excluded_split_paths": [
+        "E:\\Private\\MITRE-CORE 2\\MITRE-CORE_V3\\benchmark\\splits\\nsl_kdd_10000_seed42.npy"
+      ],
+      "kind": "mitre_format",
+      "label_col": "tactic",
+      "n_clusters": 10,
+      "name": "NSL-KDD",
+      "sample_seed": 142,
+      "sample_size": 10000,
+      "selected_row_count": 10000,
+      "source_path": "E:\\Private\\MITRE-CORE 2\\MITRE-CORE_V3\\datasets\\nsl_kdd\\mitre_format.csv",
+      "source_row_count": 125973,
+      "source_sha256": "29d0919999e2a1cc952a5cc6826b0906d3b5862108f68dc151e739415e4bb706",
+      "split_group": "nsl_kdd",
+      "split_indices_path": "E:\\Private\\MITRE-CORE 2\\MITRE-CORE_V3\\benchmark\\splits\\nsl_kdd_10000_seed142.npy",
+      "split_indices_sha256": "f35f127a8adcceb186b07969e069529d6ac31d66df32ab643ccd52314a39b202"
+    }
+  ],
+  "datasets_config_path": "E:\\Private\\MITRE-CORE 2\\MITRE-CORE_V3\\benchmark\\datasets_real.yaml",
+  "gpu": {
+    "available": true,
+    "device_count": 1,
+    "devices": [
+      "NVIDIA GeForce RTX 5060 Ti"
+    ],
+    "peak_gpu_gb": 0.0
+  },
+  "host": {
+    "cpu_count": 16,
+    "machine": "AMD64",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "processor": "AMD64 Family 25 Model 33 Stepping 2, AuthenticAMD",
+    "python_executable": "C:\\Users\\rahul\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+    "release": "11",
+    "system": "Windows"
+  },
+  "methods": [
+    {
+      "entry": "kmeans_raw",
+      "name": "K-Means (raw)",
+      "type": "baseline"
+    },
+    {
+      "entry": "dbscan_raw",
+      "name": "DBSCAN (raw)",
+      "type": "baseline"
+    },
+    {
+      "entry": "hdbscan_raw",
+      "name": "HDBSCAN (raw)",
+      "type": "baseline"
+    },
+    {
+      "entry": "mitre_core_v3",
+      "name": "MITRE-CORE V3",
+      "type": "mitre_core_v3"
+    }
+  ],
+  "methods_config_path": "E:\\Private\\MITRE-CORE 2\\MITRE-CORE_V3\\benchmark\\methods.yaml",
+  "packages": {
+    "hdbscan": "0.8.41",
+    "numpy": "2.3.5",
+    "pandas": "2.3.1",
+    "python": "3.12.10",
+    "pyyaml": "6.0.2",
+    "scikit-learn": "1.8.0",
+    "torch": "2.10.0+cu128",
+    "torch-geometric": "2.7.0"
+  },
+  "peak_gpu_gb": 0.0,
+  "results_path": "E:\\Private\\MITRE-CORE 2\\MITRE-CORE_V3\\benchmark\\results\\benchmark_real_results.csv",
+  "summary_path": "E:\\Private\\MITRE-CORE 2\\MITRE-CORE_V3\\benchmark\\results\\benchmark_real_results_summary.csv",
+  "wall_time_seconds": 69.18424479999999
+}

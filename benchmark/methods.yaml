@@ -1,0 +1,53 @@
+methods:
+  - name: K-Means (raw)
+    type: baseline
+    entry: kmeans_raw
+    enabled: true
+  - name: DBSCAN (raw)
+    type: baseline
+    entry: dbscan_raw
+    enabled: true
+  - name: HDBSCAN (raw)
+    type: baseline
+    entry: hdbscan_raw
+    enabled: true
+  - name: K-Means (emb)
+    type: baseline
+    entry: kmeans_emb
+    enabled: true
+  - name: Spectral (emb)
+    type: baseline
+    entry: spectral_emb
+    enabled: true
+  - name: HDBSCAN (emb)
+    type: baseline
+    entry: hdbscan_emb
+    enabled: true
+  - name: AE + K-Means
+    type: baseline
+    entry: ae_kmeans
+    enabled: false
+  - name: MAGIC
+    type: baseline
+    entry: magic
+    enabled: false
+  - name: FLASH
+    type: baseline
+    entry: flash
+    enabled: false
+  - name: MITRE-CORE V3
+    type: mitre_core_v3
+    entry: mitre_core_v3
+    enabled: true
+  - name: HGT
+    type: baseline
+    entry: hgt
+    enabled: false
+  - name: HAN
+    type: baseline
+    entry: han
+    enabled: false
+  - name: R-GCN
+    type: baseline
+    entry: rgcn
+    enabled: false

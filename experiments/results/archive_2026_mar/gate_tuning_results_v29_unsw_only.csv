@@ -1,0 +1,10 @@
+dataset,gate_value,ari,nmi,n_clusters,n_hgnn_clusters,n_uf_clusters,pct_uf_routed,avg_confidence,p25_confidence,threshold_used,confidence_mode,skip_gate_sweep,latency_s,git_hash,bridge_edge_records,bridge_edge_pct,unique_bridge_flows
+UNSW-NB15,0.4,-0.00012216968543553043,0.0007888190249977835,2,2,0,0.0,0.14516989886760712,0.14615759998559952,,softmax,False,13.26232119999986,a6cee90f2068e95838fd710d6cd82300ddff1215,0,0.0,0
+UNSW-NB15,0.5,0.0,0.0,1,1,0,0.0,1.0,1.0,,softmax,False,13.4482136000006,a6cee90f2068e95838fd710d6cd82300ddff1215,0,0.0,0
+UNSW-NB15,0.55,0.0,0.0,1,1,0,0.0,1.0,1.0,,softmax,False,13.266822300000058,a6cee90f2068e95838fd710d6cd82300ddff1215,0,0.0,0
+UNSW-NB15,0.6,0.0,0.0,1,1,0,0.0,1.0,1.0,,softmax,False,13.331452999998874,a6cee90f2068e95838fd710d6cd82300ddff1215,0,0.0,0
+UNSW-NB15,0.65,0.0,0.0,1,1,0,0.0,1.0,1.0,,softmax,False,13.445629099998769,a6cee90f2068e95838fd710d6cd82300ddff1215,0,0.0,0
+UNSW-NB15,0.7,0.0,0.0,1,1,0,0.0,1.0,1.0,,softmax,False,13.407492099999217,a6cee90f2068e95838fd710d6cd82300ddff1215,0,0.0,0
+UNSW-NB15,0.75,0.0,0.0,1,1,0,0.0,1.0,1.0,,softmax,False,13.48014780000085,a6cee90f2068e95838fd710d6cd82300ddff1215,0,0.0,0
+UNSW-NB15,0.8,0.0,0.0,1,1,0,0.0,1.0,1.0,,softmax,False,13.36238570000205,a6cee90f2068e95838fd710d6cd82300ddff1215,0,0.0,0
+UNSW-NB15,0.9,0.0,0.0,1,1,0,0.0,1.0,1.0,,softmax,False,13.402418800000305,a6cee90f2068e95838fd710d6cd82300ddff1215,0,0.0,0

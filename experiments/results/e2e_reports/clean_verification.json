@@ -1,0 +1,56 @@
+{
+  "network_v9_v3/UNSW-NB15": {
+    "ari": 0.5031,
+    "ami": 0.623,
+    "clusters": 35,
+    "time_s": 1.7
+  },
+  "network_v9_v3/NSL-KDD": {
+    "ari": 0.4973,
+    "ami": 0.6229,
+    "clusters": 24,
+    "time_s": 1.1
+  },
+  "network_v9_v3/TON_IoT": {
+    "ari": 0.2938,
+    "ami": 0.6463,
+    "clusters": 61,
+    "time_s": 1.1
+  },
+  "siem_supcon_v4/UNSW-NB15": {
+    "ari": 0.527,
+    "ami": 0.6315,
+    "clusters": 34,
+    "time_s": 1.3
+  },
+  "siem_supcon_v4/NSL-KDD": {
+    "ari": 0.4427,
+    "ami": 0.5709,
+    "clusters": 26,
+    "time_s": 1.1
+  },
+  "siem_supcon_v4/TON_IoT": {
+    "ari": 0.2928,
+    "ami": 0.6427,
+    "clusters": 58,
+    "time_s": 1.1
+  },
+  "unsw_supcon_v7/UNSW-NB15": {
+    "ari": 0.5344,
+    "ami": 0.6447,
+    "clusters": 30,
+    "time_s": 1.2
+  },
+  "unsw_supcon_v7/NSL-KDD": {
+    "ari": 0.4775,
+    "ami": 0.5897,
+    "clusters": 27,
+    "time_s": 1.0
+  },
+  "unsw_supcon_v7/TON_IoT": {
+    "ari": 0.2998,
+    "ami": 0.6534,
+    "clusters": 58,
+    "time_s": 1.1
+  }
+}

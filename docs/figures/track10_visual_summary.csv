@@ -1,0 +1,12 @@
+metric,value,gate,type
+Best UNSW-NB15,0.582,0.400,baseline
+Best TON_IoT,0.287,0.900,baseline
+Best OpTC,0.149,0.400,baseline
+Best NSL-KDD,0.673,0.400,baseline
+Best SQTK_SIEM_kcluster,0.342,0.400,baseline
+CS AMI delta TON_IoT,0.188,N/A,cs_finetune
+CS ARI delta TON_IoT,0.108,N/A,cs_finetune
+CS AMI delta UNSW-NB15,0.000,N/A,cs_finetune
+CS ARI delta UNSW-NB15,0.000,N/A,cs_finetune
+Precedes ARI delta,-0.004,N/A,ablation
+Precedes AMI delta,-0.004,N/A,ablation

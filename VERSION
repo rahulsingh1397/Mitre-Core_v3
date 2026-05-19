@@ -1,0 +1,21 @@
+# MITRE-CORE Version History
+
+## Current Version: 3.0.0-alpha
+
+### Version 3.0.0-alpha (2026-05-17)
+**Release Type:** Major - V3 cleanup baseline
+
+#### Repository Defaults
+- Benchmark-first repository layout
+- Unsupervised-safe inference entrypoints
+- V3 `mitre_core/` package surface
+- Smoke benchmark and invariant CI coverage
+
+#### Breaking Changes
+- Default root CLI no longer points to supervised checkpoints
+- Default container workflow is benchmark-oriented, not app-server oriented
+- V3 package exports are the preferred integration surface
+
+## Historical Context
+
+The V2 experimental history remains preserved in `MEMORY.md` and `MITRE-design.md`. Legacy scripts, experiments, and checkpoints remain in the repository for migration and audit purposes, but they are no longer the default product surface for the repository.

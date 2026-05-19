@@ -1,0 +1,10 @@
+dataset,temporal_window_hours,lambda_sup,lambda_pseudo,train_time_seconds,final_loss,temporal_loss,supervised_loss,pseudo_loss,checkpoint_path
+TON_IoT,0.5,1.0,0.5,517.6141605377197,17.9669,17.9669,nan,nan,hgnn_checkpoints\week4_temporal_sweep\TON_IoT_window_0.5h\best.pt
+TON_IoT,2.0,1.0,0.5,822.6115770339966,17.9669,17.9669,nan,nan,hgnn_checkpoints\week4_temporal_sweep\TON_IoT_window_2.0h\best.pt
+TON_IoT,6.0,1.0,0.5,805.7506816387177,17.9669,17.9669,nan,nan,hgnn_checkpoints\week4_temporal_sweep\TON_IoT_window_6.0h\best.pt
+TON_IoT,24.0,1.0,0.5,766.5239272117615,17.9669,17.9669,nan,nan,hgnn_checkpoints\week4_temporal_sweep\TON_IoT_window_24.0h\best.pt
+UNSW-NB15,2.0,1.0,0.5,295.22385239601135,11.9779,11.9779,nan,0.0000,hgnn_checkpoints/week4_lambda_ablation/UNSW_sup1.0_pseudo0.5/best.pt
+UNSW-NB15,2.0,0.5,0.5,296.94367003440857,11.9779,11.9779,nan,0.0000,hgnn_checkpoints/week4_lambda_ablation/UNSW_sup0.5_pseudo0.5/best.pt
+UNSW-NB15,2.0,1.0,0.0,298.0285565853119,11.9779,11.9779,nan,0.0000,hgnn_checkpoints/week4_lambda_ablation/UNSW_sup1.0_pseudo0.0/best.pt
+UNSW-NB15,2.0,0.0,1.0,296.774044752121,11.9779,11.9779,nan,0.0000,hgnn_checkpoints/week4_lambda_ablation/UNSW_sup0.0_pseudo1.0/best.pt
+UNSW-NB15,2.0,0.0,0.0,295.8937740325928,11.9779,11.9779,nan,0.0000,hgnn_checkpoints/week4_lambda_ablation/UNSW_sup0.0_pseudo0.0/best.pt

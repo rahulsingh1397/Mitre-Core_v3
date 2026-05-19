@@ -1,0 +1,2 @@
+dataset,gate_value,ari,binary_ari,nmi,ami,alt_label_col,alt_ari,alt_ami,homogeneity,completeness,v_measure,n_clusters,n_hgnn_clusters,n_uf_clusters,pct_uf_routed,avg_confidence,p25_confidence,threshold_used,confidence_mode,skip_gate_sweep,latency_s,git_hash,bridge_edge_records,bridge_edge_pct,unique_bridge_flows
+NSL-KDD,0.6,0.7428034219139222,,0.6407718675841652,0.6379001967959177,,,,0.9626113383617076,0.4802163388826624,0.6407718675841652,20,20,0,0.0,0.9736189842224121,1.0,,gaec,False,2.6394430000000284,302676aa8255fe3a483d3e386b1a44c5cef60515,0,0.0,0

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MITRE-CORE Track 10 Visual Results</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; }
+        h1 { color: #333; }
+        h2 { color: #555; border-bottom: 2px solid #ddd; padding-bottom: 10px; }
+        .kpi-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 20px 0; }
+        .kpi-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 8px; }
+        .kpi-card h3 { margin: 0 0 10px 0; font-size: 14px; }
+        .kpi-card .value { font-size: 28px; font-weight: bold; }
+        .figure { margin: 30px 0; text-align: center; }
+        .figure img { max-width: 100%; border-radius: 4px; }
+        .figure-caption { margin-top: 10px; font-style: italic; color: #666; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: #f8f9fa; }
+        .supported { color: #2ca02c; font-weight: bold; }
+        .not-supported { color: #d62728; font-weight: bold; }
+        .mixed { color: #ff7f0e; font-weight: bold; }
+        .section { margin: 40px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>MITRE-CORE Track 10 Visual Results</h1>
+        
+        <div class="kpi-cards">
+            <div class="kpi-card">
+                <h3>UNSW AMI</h3>
+                <div class="value">0.582</div>
+                <div>Target: ≥0.55</div>
+            </div>
+            <div class="kpi-card">
+                <h3>TON_IoT ARI</h3>
+                <div class="value">0.008</div>
+                <div>Gold: 0.737</div>
+            </div>
+            <div class="kpi-card">
+                <h3>CS-3 ARI Delta</h3>
+                <div class="value">-0.004</div>
+                <div>precedes=False better</div>
+            </div>
+            <div class="kpi-card">
+                <h3>OpTC Purity</h3>
+                <div class="value">1.000</div>
+                <div>Multi-source: 0.999</div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>What is the headline result?</h2>
+            <p><strong>UNSW-NB15</strong> meets Track 10 AMI target (0.582 ≥ 0.55). <strong>TON_IoT</strong> CS fine-tuning fails due to architecture mismatch; gold checkpoint (0.737 ARI) remains valid. <strong>CS-3 kill-chain ordering</strong> shows no benefit (precedes=False ARI=0.139 > precedes=True ARI=0.115).</p>
+        </div>
+        
+        <div class="section">
+            <h2>Executive Scorecard</h2>
+            <div class="figure">
+                <img src="../figures/track10/fig1_executive_scorecard.png" alt="Executive Scorecard">
+                <div class="figure-caption">Figure 1: Key metrics (AMI, ARI, purity, attack F1) per dataset. AMI is the primary metric.</div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>AMI vs Confidence Gate</h2>
+            <div class="figure">
+                <img src="../figures/track10/fig2_ami_vs_gate.png" alt="AMI vs Gate">
+                <div class="figure-caption">Figure 2: AMI (primary) and ARI (secondary) across confidence gates. Best gate marked with green star.</div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>CS Fine-Tune Delta</h2>
+            <div class="figure">
+                <img src="../figures/track10/fig3_cs_finetune_delta.png" alt="CS Fine-tune Delta">
+                <div class="figure-caption">Figure 3: Before/after CS fine-tuning. UNSW meets AMI target; TON_IoT excluded from CS claim due to architecture mismatch.</div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>CS-3 Precedes Ablation</h2>
+            <div class="figure">
+                <img src="../figures/track10/fig4_precedes_ablation.png" alt="Precedes Ablation">
+                <div class="figure-caption">Figure 4: Kill-chain ordering edges show no benefit. precedes=False outperforms precedes=True.</div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Trust Metrics</h2>
+            <div class="figure">
+                <img src="../figures/track10/fig5_trust_metrics.png" alt="Trust Metrics">
+                <div class="figure-caption">Figure 5: Cluster purity and attack F1. OpTC binary ARI/purity interpretation: perfect Benign/RedTeam separation.</div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Result Decision Matrix</h2>
+            <div class="figure">
+                <img src="../figures/track10/fig6_decision_matrix.png" alt="Decision Matrix">
+                <div class="figure-caption">Figure 6: Which claims are supported by evidence metrics. Green=Supported, Orange=Mixed, Red=Not Supported.</div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>What to Claim</h2>
+            <ul>
+                <li><span class="supported">✓</span> AMI is the primary clustering metric</li>
+                <li><span class="supported">✓</span> UNSW CS recovery meets AMI target (0.582)</li>
+                <li><span class="supported">✓</span> Multi-source purity validates cross-sensor story (0.999)</li>
+                <li><span class="supported">✓</span> TON_IoT gold checkpoint (0.737 ARI) remains valid for publication</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2>What Not to Claim</h2>
+            <ul>
+                <li><span class="not-supported">✗</span> TON_IoT CS fine-tuning improves performance (architecture mismatch)</li>
+                <li><span class="not-supported">✗</span> CS-3 kill-chain ordering edges improve clustering (no benefit)</li>
+                <li><span class="not-supported">✗</span> CS fine-tuning generalizes across domains (TON_IoT failure)</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

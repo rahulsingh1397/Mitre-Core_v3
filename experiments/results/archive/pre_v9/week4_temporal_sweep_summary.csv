@@ -1,0 +1,5 @@
+dataset,temporal_window_hours,train_time_seconds,checkpoint_path
+TON_IoT,0.5,517.6141605377197,hgnn_checkpoints\week4_temporal_sweep\TON_IoT_window_0.5h\best.pt
+TON_IoT,2.0,822.6115770339966,hgnn_checkpoints\week4_temporal_sweep\TON_IoT_window_2.0h\best.pt
+TON_IoT,6.0,805.7506816387177,hgnn_checkpoints\week4_temporal_sweep\TON_IoT_window_6.0h\best.pt
+TON_IoT,24.0,766.5239272117615,hgnn_checkpoints\week4_temporal_sweep\TON_IoT_window_24.0h\best.pt

@@ -1,0 +1,86 @@
+{
+  "study_info": {
+    "n_seeds": 7,
+    "checkpoint": "network_v9_v3_bridge_v2",
+    "gate_value": 0.65,
+    "dataset": "OpTC"
+  },
+  "performance_comparison": {
+    "ari_with_bridge_edges": {
+      "mean": -0.007856566814228758,
+      "std": 0.0003828673896314666,
+      "values": [
+        -0.0081408297728916,
+        -0.0078019523773666,
+        -0.0080910079059712,
+        -0.0077258852319139,
+        -0.007064700983763,
+        -0.0078229836820004,
+        -0.0083486077456946
+      ]
+    },
+    "ari_without_bridge_edges": {
+      "mean": -0.007856566814228758,
+      "std": 0.0003828673896314666,
+      "values": [
+        -0.0081408297728916,
+        -0.0078019523773666,
+        -0.0080910079059712,
+        -0.0077258852319139,
+        -0.007064700983763,
+        -0.0078229836820004,
+        -0.0083486077456946
+      ]
+    },
+    "nmi_with_bridge_edges": {
+      "mean": 0.039469624289223834,
+      "std": 0.0008498696719986277,
+      "values": [
+        0.0383868661614018,
+        0.039887752087171,
+        0.0385695910489124,
+        0.0392625276464488,
+        0.0410817410220641,
+        0.0398988318927006,
+        0.0392000601658681
+      ]
+    },
+    "nmi_without_bridge_edges": {
+      "mean": 0.039469624289223834,
+      "std": 0.0008498696719986277,
+      "values": [
+        0.0383868661614018,
+        0.039887752087171,
+        0.0385695910489124,
+        0.0392625276464488,
+        0.0410817410220641,
+        0.0398988318927006,
+        0.0392000601658681
+      ]
+    }
+  },
+  "statistical_tests": {
+    "ari_paired_ttest": {
+      "t_statistic": NaN,
+      "p_value": NaN,
+      "significant": false,
+      "effect_size_cohen_d": NaN
+    },
+    "nmi_paired_ttest": {
+      "t_statistic": NaN,
+      "p_value": NaN,
+      "significant": false
+    },
+    "ari_wilcoxon": {
+      "statistic": 0.0,
+      "p_value": 1.0,
+      "significant": false
+    }
+  },
+  "interpretation": {
+    "ari_improvement": 0.0,
+    "nmi_improvement": 0.0,
+    "conclusion": "Bridge edges do not show statistically significant improvement",
+    "effect_size_interpretation": "Negligible effect"
+  }
+}

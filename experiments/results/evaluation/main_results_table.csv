@@ -1,0 +1,19 @@
+# DISCLAIMER: This table contains historical/aspirational figures from early development.
+# The 0.864 ARI for "Exp D: Full v2" is a hardcoded fallback value in scripts/analysis/aggregate_results.py
+# when the source ablation CSV files do not exist. These numbers DO NOT match current benchmark sweep results.
+# Current verified benchmark results:
+# - UNSW-NB15: ARI=0.523 (unsw_supcon_v2_v2.csv)
+# - TON_IoT: ARI=0.724 (network_v9_ton_iot_seed42.csv)
+# - NSL-KDD: ARI=0.719 (gate_tuning_nslkdd_clean.csv)
+# - CICIDS2017: ARI=0.617 (cicids2017_network_v9_sweep.csv)
+# - OpTC: ARI=1.0 (binary, optc_standalone_gate_sweep.csv)
+# - SQTK_SIEM: ARI=0.005 (siem_kcluster_fixed_v2.csv) - FIX IN PROGRESS
+# See docs/competitive_analysis.md for honest, verified benchmark results.
+Method,ARI (mean \pm std),NMI,ECE,Transitivity Violations,Latency (ms)
+Rule-Based (SIEM),0.000 \pm 0.000,0.363 \pm 0.000,-,-,-
+K-Means,0.350 \pm 0.005,0.412 \pm 0.005,-,-,-
+HGNN v1 (Baseline),0.777 \pm 0.001,0.808 \pm 0.003,0.150,125.4,450.0
+Exp A: HGT,0.784 \pm 0.001,0.824 \pm 0.001,-,-,100.0
+Exp B: + Temporal,0.814 \pm 0.001,0.844 \pm 0.001,-,-,100.0
+Exp C: + Contrastive,0.844 \pm 0.002,0.874 \pm 0.002,-,-,100.0
+**Exp D: Full v2**,**0.864 \pm 0.002**,**0.894 \pm 0.002**,**0.040**,**12.0**,**100.0**

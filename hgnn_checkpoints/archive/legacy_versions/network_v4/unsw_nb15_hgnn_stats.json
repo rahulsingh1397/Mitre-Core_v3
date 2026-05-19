@@ -1,0 +1,14 @@
+{
+    "dataset": "unsw_nb15",
+    "num_seeds": 1,
+    "mean_accuracy": 0.0,
+    "std_accuracy": 0.0,
+    "seed_accuracies": [
+        0.0
+    ],
+    "seeds_used": [
+        42
+    ],
+    "baseline_accuracy": 0.0,
+    "improvement_over_baseline": 0.0
+}

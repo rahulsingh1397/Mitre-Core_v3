@@ -1,0 +1,6 @@
+lambda_sup,lambda_pseudo,train_time_seconds,checkpoint_path
+1.0,0.5,295.22385239601135,hgnn_checkpoints/week4_lambda_ablation/UNSW_sup1.0_pseudo0.5/best.pt
+0.5,0.5,296.94367003440857,hgnn_checkpoints/week4_lambda_ablation/UNSW_sup0.5_pseudo0.5/best.pt
+1.0,0.0,298.0285565853119,hgnn_checkpoints/week4_lambda_ablation/UNSW_sup1.0_pseudo0.0/best.pt
+0.0,1.0,296.774044752121,hgnn_checkpoints/week4_lambda_ablation/UNSW_sup0.0_pseudo1.0/best.pt
+0.0,0.0,295.8937740325928,hgnn_checkpoints/week4_lambda_ablation/UNSW_sup0.0_pseudo0.0/best.pt

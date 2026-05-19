@@ -1,0 +1,18 @@
+dataset,training_ari,inference_ari,zero_shot_ari,cosine_sim_pre_zca,assessment,notes
+TON_IoT,0.9309,0.2423,0.737,0.7252,GOOD embeddings,Production inference lower than training - sample size difference?
+NSL-KDD,0.5318,-0.0433,0.722,0.7884,GOOD embeddings,Production inference negative - severe train/test mismatch
+UNSW-NB15,0.4836,0.0268,0.7428,0.9208,MODERATE collapse,Production inference very low - label mismatch?
+SQTK_SIEM_kcluster,0.3693,0.0455,0.174,0.9091,MODERATE collapse,Production inference low but beats zero-shot
+
+# Key Findings:
+# 1. Measurement bug fixed - cosine_sim > 1000 was artifact, true values < 1.0
+# 2. No severe embedding collapse (> 0.95) - only moderate collapse on UNSW/SQTK
+# 3. Training ARIs are much higher than production inference ARIs
+# 4. Sample size and train/test split differences causing performance gaps
+# 5. Prototype inference integrated successfully but needs alignment fixes
+
+# Recommendations:
+# 1. Align training and inference sample sizes
+# 2. Fix label column mismatches between training and evaluation
+# 3. Consider using held-out test sets for prototype training evaluation
+# 4. TON_IoT shows most promise with training ARI=0.9309

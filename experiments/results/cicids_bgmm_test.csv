@@ -1,0 +1,2 @@
+dataset,gate_value,ari,binary_ari,nmi,ami,alt_label_col,alt_ari,alt_ami,homogeneity,completeness,v_measure,n_clusters,n_hgnn_clusters,n_uf_clusters,pct_uf_routed,avg_confidence,p25_confidence,threshold_used,confidence_mode,skip_gate_sweep,latency_s,git_hash,bridge_edge_records,bridge_edge_pct,unique_bridge_flows
+CICIDS2017,0.65,0.10989729099889248,,0.5022234413822061,0.49959099835550197,,,,0.9241875191722908,0.34479670596428696,0.5022234413822062,16,16,0,0.0,0.9997578263282776,0.9999999403953552,,gaec,False,90.94836569999461,8d02195f074800ae1f02da8408e4dfa9058253e6,0,0.0,0

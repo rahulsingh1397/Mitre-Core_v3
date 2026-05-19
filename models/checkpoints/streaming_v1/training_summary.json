@@ -1,0 +1,10 @@
+{
+  "total_epochs": 1,
+  "total_steps": 2140,
+  "final_avg_loss": 0.6928361165189297,
+  "nan_count": 0,
+  "hyperparameters": {
+    "epochs": 1,
+    "use_amp": true
+  }
+}

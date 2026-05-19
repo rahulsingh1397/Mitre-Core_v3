@@ -1,0 +1,218 @@
+[
+  {
+    "dataset": "UNSW-NB15",
+    "method": "KMeans",
+    "ari": 4.2951593456573376e-05,
+    "ami": 0.006634115362893051,
+    "n_clusters_found": 8,
+    "n_true_clusters": 8,
+    "hgnn_ari_reference": 0.057,
+    "features_used": [
+      "src_bytes",
+      "dst_bytes"
+    ]
+  },
+  {
+    "dataset": "UNSW-NB15",
+    "method": "GMM",
+    "ari": 0.02801400350758942,
+    "ami": 0.11577597885262926,
+    "n_clusters_found": 8,
+    "n_true_clusters": 8,
+    "hgnn_ari_reference": 0.057,
+    "features_used": [
+      "src_bytes",
+      "dst_bytes"
+    ]
+  },
+  {
+    "dataset": "UNSW-NB15",
+    "method": "BGMM",
+    "ari": 0.005800337305029546,
+    "ami": 0.06151752241665128,
+    "n_clusters_found": 9,
+    "n_true_clusters": 8,
+    "hgnn_ari_reference": 0.057,
+    "features_used": [
+      "src_bytes",
+      "dst_bytes"
+    ]
+  },
+  {
+    "dataset": "UNSW-NB15",
+    "method": "HDBSCAN",
+    "ari": 0.21936618980602998,
+    "ami": 0.3995182741292322,
+    "n_clusters_found": 30,
+    "n_true_clusters": 8,
+    "hgnn_ari_reference": 0.057,
+    "features_used": [
+      "src_bytes",
+      "dst_bytes"
+    ]
+  },
+  {
+    "dataset": "CICIDS2017",
+    "method": "KMeans",
+    "ari": 0.21820524623713092,
+    "ami": 0.48340029515961414,
+    "n_clusters_found": 16,
+    "n_true_clusters": 16,
+    "hgnn_ari_reference": 0.284,
+    "features_used": [
+      "src_port",
+      "dst_port",
+      "label"
+    ]
+  },
+  {
+    "dataset": "CICIDS2017",
+    "method": "GMM",
+    "ari": 0.30468725137239316,
+    "ami": 0.6303911532150127,
+    "n_clusters_found": 16,
+    "n_true_clusters": 16,
+    "hgnn_ari_reference": 0.284,
+    "features_used": [
+      "src_port",
+      "dst_port",
+      "label"
+    ]
+  },
+  {
+    "dataset": "CICIDS2017",
+    "method": "BGMM",
+    "ari": 0.10992893867086975,
+    "ami": 0.5104026465344484,
+    "n_clusters_found": 14,
+    "n_true_clusters": 16,
+    "hgnn_ari_reference": 0.284,
+    "features_used": [
+      "src_port",
+      "dst_port",
+      "label"
+    ]
+  },
+  {
+    "dataset": "CICIDS2017",
+    "method": "HDBSCAN",
+    "ari": 0.09537872770610414,
+    "ami": 0.47074950767794893,
+    "n_clusters_found": 8,
+    "n_true_clusters": 16,
+    "hgnn_ari_reference": 0.284,
+    "features_used": [
+      "src_port",
+      "dst_port",
+      "label"
+    ]
+  },
+  {
+    "dataset": "TON_IoT",
+    "method": "KMeans",
+    "ari": 0.16806057060070465,
+    "ami": 0.4289201026080164,
+    "n_clusters_found": 9,
+    "n_true_clusters": 9,
+    "hgnn_ari_reference": 0.737,
+    "features_used": [
+      "src_port",
+      "dst_port",
+      "label"
+    ]
+  },
+  {
+    "dataset": "TON_IoT",
+    "method": "GMM",
+    "ari": 0.23316985854420186,
+    "ami": 0.5410488549210886,
+    "n_clusters_found": 9,
+    "n_true_clusters": 9,
+    "hgnn_ari_reference": 0.737,
+    "features_used": [
+      "src_port",
+      "dst_port",
+      "label"
+    ]
+  },
+  {
+    "dataset": "TON_IoT",
+    "method": "BGMM",
+    "ari": 0.14740639323483684,
+    "ami": 0.49871480025313225,
+    "n_clusters_found": 14,
+    "n_true_clusters": 9,
+    "hgnn_ari_reference": 0.737,
+    "features_used": [
+      "src_port",
+      "dst_port",
+      "label"
+    ]
+  },
+  {
+    "dataset": "TON_IoT",
+    "method": "HDBSCAN",
+    "ari": 0.12654376957745994,
+    "ami": 0.48196106949949036,
+    "n_clusters_found": 11,
+    "n_true_clusters": 9,
+    "hgnn_ari_reference": 0.737,
+    "features_used": [
+      "src_port",
+      "dst_port",
+      "label"
+    ]
+  },
+  {
+    "dataset": "NSL-KDD",
+    "method": "KMeans",
+    "ari": 0.0016592297123614506,
+    "ami": 0.017771842361957838,
+    "n_clusters_found": 4,
+    "n_true_clusters": 4,
+    "hgnn_ari_reference": 0.722,
+    "features_used": [
+      "src_bytes",
+      "dst_bytes"
+    ]
+  },
+  {
+    "dataset": "NSL-KDD",
+    "method": "GMM",
+    "ari": 0.004668067899813536,
+    "ami": 0.0544433824818931,
+    "n_clusters_found": 4,
+    "n_true_clusters": 4,
+    "hgnn_ari_reference": 0.722,
+    "features_used": [
+      "src_bytes",
+      "dst_bytes"
+    ]
+  },
+  {
+    "dataset": "NSL-KDD",
+    "method": "BGMM",
+    "ari": 0.0631669765256975,
+    "ami": 0.2692235808196357,
+    "n_clusters_found": 5,
+    "n_true_clusters": 4,
+    "hgnn_ari_reference": 0.722,
+    "features_used": [
+      "src_bytes",
+      "dst_bytes"
+    ]
+  },
+  {
+    "dataset": "NSL-KDD",
+    "method": "HDBSCAN",
+    "ari": 0.6095642577659593,
+    "ami": 0.7449424695920852,
+    "n_clusters_found": 13,
+    "n_true_clusters": 4,
+    "hgnn_ari_reference": 0.722,
+    "features_used": [
+      "src_bytes",
+      "dst_bytes"
+    ]
+  }
+]

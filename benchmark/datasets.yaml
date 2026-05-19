@@ -1,0 +1,4 @@
+datasets:
+  - name: synthetic_smoke
+    kind: synthetic
+    seeds: [42, 43, 44]

@@ -1,0 +1,2 @@
+dataset,method,runtime_seconds,n_true_classes,ari,nmi,n_pred_clusters,binary_ari,coverage
+UNSW-NB15,DeepCluster,22.105538368225098,8,0.0023408079094951145,0.005550752357334777,8,,1.0

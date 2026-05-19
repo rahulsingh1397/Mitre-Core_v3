@@ -1,0 +1,2 @@
+dataset,gate_value,ari,binary_ari,nmi,n_clusters,n_hgnn_clusters,n_uf_clusters,pct_uf_routed,avg_confidence,p25_confidence,threshold_used,confidence_mode,skip_gate_sweep,latency_s,git_hash,bridge_edge_records,bridge_edge_pct,unique_bridge_flows
+OpTC,0.65,-0.008091007905971252,0.0,0.038569591048912485,12,12,0,0.0,0.8690277934074402,1.0,,gaec,False,19.949613099975977,bebaaded64e9fd18f89326b26fb8c420016923c8,6532,0.6532653265326532,6532

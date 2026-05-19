@@ -1,0 +1,57 @@
+{
+  "verification_date": "2026-03-05",
+  "method": "Full training pipeline audit + figure generation audit + runtime E2E test",
+  "reports": {
+    "architecture": {
+      "accuracy": 1.0,
+      "verdict": "PASS",
+      "key_finding": "All 11 architectural sub-claims verified. HeteroGAT, single layer, 6-dim, 128 hidden, 4 heads."
+    },
+    "datasets": {
+      "accuracy": 0.90,
+      "verdict": "PASS",
+      "key_finding": "All 6 public datasets present. AMI 0.717 max confirmed (TON_IoT). Real SOC deployment infrastructure exists but no deployment data."
+    },
+    "self_supervised": {
+      "accuracy": 0.35,
+      "verdict": "FAIL",
+      "key_findings": [
+        "NTXentLoss is dead code - never used in canonical training pipeline",
+        "multidomain_v2 trained with SimCLR + supervised CrossEntropyLoss on campaign labels",
+        "network_v9_v3 trained with custom topological_ntxent_loss (67%) + SimCLR (33%)",
+        "train_hybrid_v10.py (only NT-Xent user) marked as FAILED by authors",
+        "Zero-shot works on only 2/5 datasets (NSL-KDD 0.743, UNSW-NB15 0.538)",
+        "Topological = co-occurrence edges, not mathematical topology"
+      ]
+    },
+    "explainability": {
+      "accuracy": 0.95,
+      "verdict": "PASS",
+      "key_finding": "HGNNExplainer, AttentionExtractor, PCA/UMAP all functional. SHAP needs manual install."
+    },
+    "design_decisions": {
+      "accuracy": 0.19,
+      "verdict": "FAIL",
+      "key_findings": [
+        "All 15 ablation CSV files contain identical placeholder values",
+        "generate_figures.py uses hardcoded values for all 10 figures",
+        "aggregate_results.py computes statistics on placeholder data",
+        "Hardcoded figure values exceed all real experimental results",
+        "Zero-shot beats per-dataset training is false on 3/5 datasets",
+        "Systematic fabrication of experimental validation section"
+      ],
+      "smoking_gun": "scripts/analysis/generate_figures.py lines 9-12: aris = [0.777, 0.784, 0.814, 0.844, 0.864]"
+    }
+  },
+  "e2e_test": {
+    "checkpoint": "hgnn_checkpoints/network_v9_v3/network_it_best.pt",
+    "dataset": "UNSW-NB15",
+    "samples": 2000,
+    "ari": 0.5031,
+    "ami": 0.6230,
+    "clusters": 35,
+    "time_s": 1.5
+  },
+  "overall_weighted_accuracy": 0.68,
+  "summary": "Architecture and explainability claims are accurate (~95%). Dataset claims mostly accurate (~90%). Self-supervised/zero-shot narrative is misleading (35%) - NT-Xent is dead code, canonical checkpoint uses supervised labels. Experimental validation is systematically fabricated (19%) - all ablation CSVs are placeholders, all figures use hardcoded values."
+}
