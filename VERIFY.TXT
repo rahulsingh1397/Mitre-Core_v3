@@ -1,0 +1,35 @@
+Verification Results
+NSL-KDD Baseline Table
+Status: VERIFIED — All values match benchmark/results/frozen/nsl_kdd/v1.0/summary.csv (mean across seeds 42/43/44, label_col track).
+
+Method	ARI	AMI	attack_f1_demoted	noise_fraction	Source
+K-Means (raw)	-0.0001	-0.0001	0.667	0.0	summary.csv line 6
+DBSCAN (raw)	0.000	0.000	0.0	1.0	summary.csv line 2
+HDBSCAN (raw)	0.005	0.001	0.840	0.192	summary.csv line 4
+Spectral (raw)	0.414	0.521	0.979	0.0	summary.csv line 11
+PCA + K-Means	0.303	0.442	0.981	0.0	summary.csv line 9
+PCA + HDBSCAN	0.183	0.335	0.982	0.173	summary.csv line 8
+K-Means (emb)	0.189	0.400	0.996	0.0	summary.csv line 5
+Spectral (emb)	0.218	0.481	0.998	0.0	summary.csv line 10
+HDBSCAN (emb)	0.039	0.255	0.977	0.173	summary.csv line 3
+MITRE-CORE V3	0.602	0.685	0.997	—	summary.csv line 7
+UNSW-NB15 v1.0 Completion Claims
+Status: FULLY VERIFIED
+
+Claim	Evidence	Status
+Git tag unsw-nb15-v1.0 exists	git tag -l output	✓
+Commit 14fd185 (Part III scaffolding)	git log --oneline shows "scaffold(Part III): lifecycle templates, frozen manifest test, repo layout doc"	✓
+docs/datasets/_template/ — 3 files	README.md, decision_log.md, subplan.md present	✓
+docs/repo_layout.md exists and current	Last updated 2026-05-19	✓
+tests/test_frozen_results_have_manifests.py exists	3 tests parametrized over frozen dirs	✓
+IMPROVEMENT_LOG.md converted to index format	Header: "Improvement Log (Index)", per-dataset tables with one-line entries	✓
+Stage 1 — 175,341 rows	unsw_nb15_10000_seed42.json line 6; v1.0_baseline.md	✓
+attack_cat (10 classes) primary; tactic + alert_type secondary/binary	v1.0_baseline.md "Label Tracks" section	✓
+Stage 2 — Frozen splits seed 42 (dev) + seed 142 (eval), disjoint, hashes recorded	manifest.json lines 32-34, 69-74; test_dev_eval_splits_are_disjoint passes	✓
+Stage 3 — 10 methods × 3 seeds × 3 tracks, no crashes	results.csv lines 92-181 = exactly 90 UNSW rows, no missing values	✓
+Stage 4 — Path A: V3 ARI=0.564 vs best baseline 0.354 (+0.210 margin)	summary.csv lines 17-18: V3=0.5639, PCA+HDBSCAN=0.3543; v1.0_baseline.md line 104	✓
+Stage 5 — Full 12-metric set; dominant_confusion_accuracy demoted (constant 1.0)	v1.0_baseline.md "Degenerate Metrics" section	✓
+Stage 6 — 11 artifacts in benchmark/results/frozen/unsw_nb15/v1.0/	Counted: results.csv, summary.csv, manifest.json, engine_config.yaml, checkpoint_sha256.txt, dataset_sha256.txt, environment.txt, 2× .npy, 2× .json = 11	✓
+test_unsw_nb15_v1_frozen.py (6 passing)	6 non-slow tests (2 artifact + 3 hash + 1 disjoint); 2 slow tests deselected	✓
+Test suite: 34 passed, 1 skipped, 4 deselected (slow)	Reproduced with PYTHONPATH=<repo> pytest tests/ -q: 34 passed, 1 skipped, 4 deselected	✓
+Note: The 4 collection errors I initially encountered were due to PYTHONPATH not being set in my shell. Once corrected ($env:PYTHONPATH="E:\Private\MITRE-CORE 2\MITRE-CORE_V3"), the exact test counts you reported reproduced cleanly.
