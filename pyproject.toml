@@ -41,6 +41,7 @@ include = ["mitre_core*", "benchmark*"]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
 addopts = "-m 'not slow'"
+pythonpath = ["."]
 markers = [
     "slow: full pipeline re-run; excluded from normal CI. Run with: pytest -m slow",
 ]
