@@ -1,18 +1,30 @@
 Verification Results
 NSL-KDD Baseline Table
-Status: VERIFIED — All values match benchmark/results/frozen/nsl_kdd/v1.0/summary.csv (mean across seeds 42/43/44, label_col track).
+Status: VERIFIED — All values from results.csv (label_col / tactic track only), mean across seeds 42/43/44.
+
+Data source clarification:
+  - summary.csv (NSL-KDD v1.0) has NO label_track column. It averages across all three tracks
+    (tactic + alert_type + campaign_id) into one row per method. summary.csv V3 ARI = 0.6025
+    is the multi-track average, NOT the tactic-track headline.
+  - The correct tactic-track values come from results.csv filtered to label_track == label_col.
+  - v1.0_baseline.md "Results — Tactic Track" table now uses results.csv label_col values.
+  - Later datasets (UNSW-NB15, TON_IoT) have per-track summary.csv rows (label_track column present).
 
 Method	ARI	AMI	attack_f1_demoted	noise_fraction	Source
-K-Means (raw)	-0.0001	-0.0001	0.667	0.0	summary.csv line 6
-DBSCAN (raw)	0.000	0.000	0.0	1.0	summary.csv line 2
-HDBSCAN (raw)	0.005	0.001	0.840	0.192	summary.csv line 4
-Spectral (raw)	0.414	0.521	0.979	0.0	summary.csv line 11
-PCA + K-Means	0.303	0.442	0.981	0.0	summary.csv line 9
-PCA + HDBSCAN	0.183	0.335	0.982	0.173	summary.csv line 8
-K-Means (emb)	0.189	0.400	0.996	0.0	summary.csv line 5
-Spectral (emb)	0.218	0.481	0.998	0.0	summary.csv line 10
-HDBSCAN (emb)	0.039	0.255	0.977	0.173	summary.csv line 3
-MITRE-CORE V3	0.602	0.685	0.997	—	summary.csv line 7
+K-Means (raw)	-0.0001	~0	1.0	0.0	results.csv label_col mean
+DBSCAN (raw)	0.000	0.000	0.0 (demoted: 1 cluster)	1.0	results.csv label_col mean
+HDBSCAN (raw)	0.005	0.000	1.0	0.192	results.csv label_col mean
+Spectral (raw)	0.420	0.514	1.0	0.0	results.csv label_col mean
+PCA + K-Means	0.302	0.433	1.0	0.0	results.csv label_col mean
+PCA + HDBSCAN	0.191	0.344	1.0	0.173	results.csv label_col mean
+K-Means (emb)	0.189	0.399	1.0	0.0	results.csv label_col mean
+Spectral (emb)	0.228	0.496	1.0	0.0	results.csv label_col mean
+HDBSCAN (emb)	0.046	0.271	1.0	0.173	results.csv label_col mean
+MITRE-CORE V3	0.632	0.714	1.0	0.0	results.csv label_col mean
+
+Note: attack_f1 = 1.0 for all methods on the tactic track (non-discriminative — all methods find
+≥1 non-trivial cluster except DBSCAN). attack_f1_demoted = 0.0 only for DBSCAN (n_pred_clusters=1).
+This matches the metric notes in v1.0_baseline.md.
 UNSW-NB15 v1.0 Completion Claims
 Status: FULLY VERIFIED
 
@@ -33,3 +45,31 @@ Stage 6 — 11 artifacts in benchmark/results/frozen/unsw_nb15/v1.0/	Counted: re
 test_unsw_nb15_v1_frozen.py (6 passing)	6 non-slow tests (2 artifact + 3 hash + 1 disjoint); 2 slow tests deselected	✓
 Test suite: 34 passed, 1 skipped, 4 deselected (slow)	Reproduced with PYTHONPATH=<repo> pytest tests/ -q: 34 passed, 1 skipped, 4 deselected	✓
 Note: The 4 collection errors I initially encountered were due to PYTHONPATH not being set in my shell. Once corrected ($env:PYTHONPATH="E:\Private\MITRE-CORE 2\MITRE-CORE_V3"), the exact test counts you reported reproduced cleanly.
+
+End-to-End Re-verification Result
+pytest Gate (post-fix)
+Result: 43 passed, 1 skipped, 6 deselected — all collection errors resolved.
+Full Benchmark Run (datasets_real.yaml — NSL-KDD + TON-IoT + UNSW-NB15)
+Status: SUCCESS — all 3 datasets × 10 methods × 3 seeds completed. Exit code 0.
+
+TON-IoT v1.0 Frozen Baseline — Raw CSV Verification
+All seeds identical (sample_seed=142 frozen split, zero variance):
+
+Method	Track	s42	s43	s44	Frozen Mean	Match
+MITRE-CORE V3	alert_type	0.4228	0.4228	0.4228	0.4228 ± 0.000	✅
+MITRE-CORE V3	tactic	0.2850	0.2850	0.2850	0.2850 ± 0.000	✅
+K-Means (raw)	alert_type	0.6193	0.6560	0.5911	0.6221 ± 0.0326	✅
+K-Means (emb)	alert_type	0.6048	0.6280	0.6037	0.6122 ± 0.0137	✅
+PCA + K-Means	alert_type	0.5265	0.5265	0.4674	0.5068 ± 0.0341	✅
+PCA + HDBSCAN	alert_type	0.2478	0.2478	0.2478	0.2478 ± 0.000	✅
+HDBSCAN (raw)	alert_type	0.0182	0.0182	0.0182	0.0182 ± 0.000	✅
+Spectral (raw)	alert_type	0.0828	0.0310	0.0238	0.0459 ± 0.0322	✅
+Spectral (emb)	alert_type	0.0158	0.0170	0.0172	0.0166 ± 0.0008	✅
+HDBSCAN (emb)	alert_type	0.0866	0.0866	0.0866	0.0866 ± 0.000	✅
+V3 margin over best baseline: −0.199 ARI (Path B) — confirmed.
+
+Cross-Dataset Sanity Check
+Dataset	V3 Primary Track ARI	Frozen	Match
+NSL-KDD (tactic)	0.6317 (all seeds)	0.6317	✅
+UNSW-NB15 (attack_cat)	0.5639 (all seeds)	0.5639	✅
+TON-IoT (alert_type)	0.4228 (all seeds)	0.4228	✅

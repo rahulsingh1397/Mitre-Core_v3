@@ -22,7 +22,19 @@ REPO_ROOT = Path(__file__).parent.parent
 FROZEN_DIR = REPO_ROOT / "benchmark" / "results" / "frozen" / "nsl_kdd" / "v1.0"
 MANIFEST_PATH = FROZEN_DIR / "manifest.json"
 
-# Frozen metric targets (eval split, mean over seeds 42/43/44)
+# Frozen metric targets (eval split, mean over seeds 42/43/44, ALL label tracks).
+#
+# IMPORTANT: These values (0.6025 ARI, 0.6852 AMI) are the multi-track averages
+# produced by run_benchmark() across all three label tracks (tactic/label_col,
+# alert_type, campaign_id). They match what summary.csv stores (no label_track
+# column in the NSL-KDD v1.0 frozen summary.csv — legacy format).
+#
+# The canonical per-track headline is the tactic-only (label_col) track:
+#   V3 ARI (tactic) = 0.6317, V3 AMI (tactic) = 0.7139
+# See docs/datasets/nsl_kdd/v1.0_baseline.md "Results — Tactic Track".
+#
+# The slow re-run test below pins to the multi-track average because
+# run_benchmark() returns all tracks and v3["ari"].mean() averages them.
 FROZEN_V3_ARI_MEAN = 0.6025
 FROZEN_V3_AMI_MEAN = 0.6852
 TOLERANCE = 0.01  # allow ±1% for floating-point nondeterminism
