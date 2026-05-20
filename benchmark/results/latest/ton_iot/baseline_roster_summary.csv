@@ -1,0 +1,21 @@
+method,label_track,ari_mean,ari_std,ami_mean,attack_f1_demoted_mean,n_pred_clusters_mean
+DBSCAN (raw),label_col,0.0,0.0,0.0,0.0,1.0
+DBSCAN (raw),tactic,0.0,0.0,0.0,0.0,1.0
+HDBSCAN (emb),label_col,0.0866,0.0,0.5612,0.9981,278.0
+HDBSCAN (emb),tactic,0.0519,0.0,0.4751,1.0,278.0
+HDBSCAN (raw),label_col,0.0182,0.0,0.3966,0.9735,619.0
+HDBSCAN (raw),tactic,0.0108,0.0,0.3375,1.0,619.0
+K-Means (emb),label_col,0.6122,0.0137,0.7841,0.9349,10.0
+K-Means (emb),tactic,0.4241,0.0107,0.6623,1.0,10.0
+K-Means (raw),label_col,0.6221,0.0326,0.7685,0.9753,10.0
+K-Means (raw),tactic,0.4433,0.0159,0.6576,1.0,10.0
+MITRE-CORE V3,label_col,0.4228,0.0,0.7054,0.9978,55.0
+MITRE-CORE V3,tactic,0.285,0.0,0.6223,1.0,55.0
+PCA + HDBSCAN,label_col,0.2478,0.0,0.6211,0.9916,185.0
+PCA + HDBSCAN,tactic,0.1533,0.0,0.527,1.0,185.0
+PCA + K-Means,label_col,0.5068,0.0341,0.7276,0.9869,10.0
+PCA + K-Means,tactic,0.3664,0.0252,0.6228,1.0,10.0
+Spectral (emb),label_col,0.0166,0.0008,0.1037,0.8658,10.0
+Spectral (emb),tactic,-0.0023,0.0047,0.0789,1.0,10.0
+Spectral (raw),label_col,0.0459,0.0322,0.2609,0.8766,10.0
+Spectral (raw),tactic,0.0419,0.0373,0.2318,1.0,10.0

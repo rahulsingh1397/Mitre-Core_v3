@@ -36,7 +36,12 @@ For the pre-freeze NSL-KDD execution history (Phases 0–5), see `docs/archive/v
 
 | Date | Entry | Pointer |
 |------|-------|---------|
-| (queued) | — | `docs/datasets/ton_iot/` |
+| 2026-05-20 | Stage 1 — Audit: 211,043 rows parquet, alert_type primary (10 classes), tactic secondary; schema diff vs NSL-KDD documented; graph feasibility confirmed (IP-only, 0% noise) | `docs/datasets/ton_iot/audit.md` |
+| 2026-05-20 | Stage 2 — Protocol freeze: 10K sample, seed 42 dev / seed 142 eval, disjoint; parquet handled natively by benchmark.py | `docs/datasets/ton_iot/protocol.md` |
+| 2026-05-20 | Stage 3 — Baseline roster: 10 methods × 3 seeds; K-Means(raw) leads at ARI=0.622 (n_clusters=10 privileged prior) | `benchmark/results/latest/ton_iot/baseline_roster.csv` |
+| 2026-05-20 | Stage 4 — Path B: V3 ARI=0.423 vs K-Means 0.622 (−0.199); HDBSCAN over-segmentation (55 clusters for 10 classes) diagnosed; full-engine sweep (mcs=300 winner, eval ARI=0.474, gap=0.148 > honest cap) | `docs/datasets/ton_iot/investigation.md` |
+| 2026-05-20 | Stage 5 — dominant_confusion_accuracy demoted (constant 1.0, third consecutive dataset — structurally degenerate) | `docs/datasets/ton_iot/decision_log.md` |
+| 2026-05-20 | **v1.0 FROZEN** — V3 loses (ARI=0.423 ± 0.000); K-Means(raw) wins (ARI=0.622 ± 0.033); honest Path B result; git tag `ton-iot-v1.0` | `docs/datasets/ton_iot/v1.0_baseline.md` |
 
 ---
 

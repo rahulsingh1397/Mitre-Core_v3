@@ -28,31 +28,32 @@ Lifecycle stages covered: 1–6
 - [ ] Verify splits are disjoint
 - **Exit criterion:** splits on disk, disjoint, hashes recorded, manifest emitted
 
-## Stage 3 — Baseline Roster
-- [ ] Run all 10 baselines + V3 on eval subset, seeds 42/43/44
-- [ ] Output to `benchmark/results/latest/ton_iot/baseline_roster.csv`
-- **Exit criterion:** all 10 rows produced, no method crashed
+## Stage 3 — Baseline Roster ✅
+- [x] Run all 10 baselines + V3 on eval subset, seeds 42/43/44
+- [x] Output to `benchmark/results/latest/ton_iot/baseline_roster.csv`
+- **Exit criterion:** all 10 rows produced, no method crashed ✅
 
-## Stage 4 — Decision Gate
-- [ ] Compare V3 ARI vs best baseline on each label track
-- [ ] **Path A (margin >0.1 ARI):** skip sweep → Stage 5
-- [ ] **Path B (margin ≤0.1 or V3 loses):** write `investigation.md` first,
-      then sweep via `benchmark/clustering_sweep_full_engine.py` (NOT standalone)
-- [ ] Record choice in `decision_log.md`
-- **Honest expectation:** V3 may not dominate on IoT (per master plan). Publish either way.
-- **Exit criterion:** decision recorded; either sweep complete or Path A confirmed
+**Results (alert_type, mean ARI):** K-Means(raw)=0.622, V3=0.423
 
-## Stage 5 — Metrics + Demotion
-- [ ] Confirm 12-metric set emitted (inc. attack_f1_demoted, n_pred_clusters, noise_fraction)
-- [ ] Flag any degenerate metric (constant across methods)
-- [ ] Note mitm class behavior (~49 rows in 10K subset)
-- **Exit criterion:** full metric set in results CSV, degenerate metrics documented
+## Stage 4 — Decision Gate ✅ (Path B)
+- [x] V3 ARI=0.423 vs K-Means(raw)=0.622 — margin=-0.199 → **PATH B**
+- [x] Wrote `investigation.md` before sweep
+- [x] Ran targeted mcs sweep (full engine, dev split)
+- [x] Swept winner mcs=300 evaluated on eval: ARI=0.474 (gap=0.148 > honest cap 0.05)
+- [x] Freeze with Path B result — V3 loses on TON_IoT (documented finding)
+- **Exit criterion:** decision recorded; sweep run; honest result frozen ✅
 
-## Stage 6 — Freeze v1.0
-- [ ] Copy artifacts → `benchmark/results/frozen/ton_iot/v1.0/`
-- [ ] Write `v1.0_baseline.md`
-- [ ] Add `tests/test_ton_iot_v1_frozen.py`
-- [ ] Commit + git tag `ton-iot-v1.0`
-- [ ] Append one-line entry to `IMPROVEMENT_LOG.md`
-- [ ] Fill `learnings.md` before moving to next dataset
-- **Exit criterion:** all 5 subplan exit criteria in master plan section VII.5 satisfied
+## Stage 5 — Metrics + Demotion ✅
+- [x] All 12 metrics present
+- [x] `dominant_confusion_accuracy` demoted (constant 1.0 — third dataset to confirm structural degeneracy)
+- [x] mitm class: ~49 rows in 10K subset — sparse but represented
+- **Exit criterion:** full metric set, degenerate metrics documented ✅
+
+## Stage 6 — Freeze v1.0 ✅
+- [x] Copy artifacts → `benchmark/results/frozen/ton_iot/v1.0/` (11 files)
+- [x] Write `v1.0_baseline.md` (with honest "V3 loses" headline)
+- [x] Add `tests/test_ton_iot_v1_frozen.py` (6 passed, 2 deselected slow)
+- [x] Commit + git tag `ton-iot-v1.0`
+- [x] Append one-line entry to `IMPROVEMENT_LOG.md`
+- [x] Fill `learnings.md`
+- **Exit criterion:** all 5 subplan exit criteria satisfied ✅

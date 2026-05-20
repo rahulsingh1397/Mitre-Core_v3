@@ -1,0 +1,8 @@
+{
+  "dataset_sha256": "0d307cb86b64099efb13088d94096a7863f3b5500396887eab437fb88ca0ce6f",
+  "label_col": "alert_type",
+  "sample_seed": 42,
+  "sample_size": 10000,
+  "source_row_count": 211043,
+  "split_group": "ton_iot"
+}
