@@ -1,0 +1,8 @@
+{
+  "dataset_sha256": "c7856d8428fd7b35ffd233ccece378be3e0b2ba9d23c6b7bfe37dab13441b892",
+  "label_col": "attack_cat",
+  "sample_seed": 42,
+  "sample_size": 10000,
+  "source_row_count": 175341,
+  "split_group": "unsw_nb15"
+}
