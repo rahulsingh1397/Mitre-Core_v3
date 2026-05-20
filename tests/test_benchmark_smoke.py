@@ -224,7 +224,7 @@ def test_multi_track_label_evaluation(tmp_path) -> None:
 
 
 def test_clustering_sweep_caches_embeddings_and_selects_winner(tmp_path) -> None:
-    from benchmark.clustering_sweep import (
+    from benchmark.clustering_sweep_standalone import (
         _cache_dir,
         _cache_key,
         _load_cached_embeddings,

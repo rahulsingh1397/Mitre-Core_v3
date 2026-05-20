@@ -1,6 +1,16 @@
 """
-benchmark/clustering_sweep.py
--------------------------------
+benchmark/clustering_sweep_standalone.py
+-----------------------------------------
+WARNING: Standalone HDBSCAN sweeps on cached embeddings do NOT transfer to the
+full V3 pipeline. NSL-KDD Phase 3 demonstrated catastrophic ARI degradation
+(0.632 → 0.078) when a sweep winner was ported to V3CorrelationEngine. Root
+cause: EmbeddingConfidenceScorer post-processing changes the effective embedding
+geometry in ways a standalone HDBSCAN call does not replicate.
+
+Use benchmark/clustering_sweep_full_engine.py for sweeps whose winners
+will actually be used. This file is retained only as historical reference.
+
+Original docstring:
 Clustering hyperparameter sweep on cached HGNN embeddings for a frozen-split
 dev subset.  Extracts embeddings once, then re-clusters with a controlled HDBSCAN
 grid.  Winner is selected on the primary label track and locked into the
