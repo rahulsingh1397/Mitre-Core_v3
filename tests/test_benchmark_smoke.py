@@ -42,6 +42,9 @@ def test_benchmark_smoke(tmp_path, monkeypatch) -> None:
         "K-Means (emb)",
         "Spectral (emb)",
         "HDBSCAN (emb)",
+        "Spectral (raw)",
+        "PCA + K-Means",
+        "PCA + HDBSCAN",
         "MITRE-CORE V3",
     }
 

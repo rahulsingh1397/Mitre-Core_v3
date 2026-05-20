@@ -12,6 +12,8 @@ import pandas as pd
 import yaml
 import hdbscan
 from sklearn.cluster import DBSCAN, KMeans
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import StratifiedShuffleSplit
 
 from mitre_core.evaluation.manifest import build_run_manifest, sha256_file
@@ -343,6 +345,20 @@ def _run_baseline(method: str, features: np.ndarray, seed: int, dataset: dict[st
         return SpectralClustering(n_clusters=n_clusters, random_state=seed, affinity="nearest_neighbors").fit_predict(data)
     if method == "hdbscan_emb":
         return hdbscan.HDBSCAN(min_cluster_size=dataset.get("hdbscan_min_cluster_size", 5), metric="euclidean").fit_predict(data)
+    if method == "spectral_raw":
+        from sklearn.cluster import SpectralClustering
+        data_std = StandardScaler().fit_transform(features)
+        return SpectralClustering(n_clusters=n_clusters, random_state=seed, affinity="nearest_neighbors").fit_predict(data_std)
+    if method == "pca_kmeans":
+        data_std = StandardScaler().fit_transform(features)
+        pca_components = min(dataset.get("pca_components", 16), data_std.shape[1])
+        data_pca = PCA(n_components=pca_components, random_state=seed).fit_transform(data_std)
+        return KMeans(n_clusters=n_clusters, random_state=seed, n_init=10).fit_predict(data_pca)
+    if method == "pca_hdbscan":
+        data_std = StandardScaler().fit_transform(features)
+        pca_components = min(dataset.get("pca_components", 16), data_std.shape[1])
+        data_pca = PCA(n_components=pca_components, random_state=seed).fit_transform(data_std)
+        return hdbscan.HDBSCAN(min_cluster_size=dataset.get("hdbscan_min_cluster_size", 5)).fit_predict(data_pca)
     raise ValueError(f"Unknown baseline method: {method}")
 
 

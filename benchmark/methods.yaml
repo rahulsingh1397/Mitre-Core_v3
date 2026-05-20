@@ -23,6 +23,18 @@ methods:
     type: baseline
     entry: hdbscan_emb
     enabled: true
+  - name: Spectral (raw)
+    type: baseline
+    entry: spectral_raw
+    enabled: true
+  - name: PCA + K-Means
+    type: baseline
+    entry: pca_kmeans
+    enabled: true
+  - name: PCA + HDBSCAN
+    type: baseline
+    entry: pca_hdbscan
+    enabled: true
   - name: AE + K-Means
     type: baseline
     entry: ae_kmeans

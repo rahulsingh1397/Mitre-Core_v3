@@ -212,3 +212,49 @@ For each dataset pass, record the following:
   - MITRE-CORE V3 maintains a clear margin over all baselines, validating that the confidence-scored clustering and full pipeline add genuine value beyond simple reclustering of embeddings.
 - **Decision**: Phase 4 is complete. The benchmark now includes a meaningful unsupervised comparison ladder.
 - **Next action**: Proceed to Phase 5 (reporting refinement, graph ablations, or any remaining cleanup).
+
+### Dataset: `NSL-KDD` — Phase 5 Reporting & Gap Closure
+- **Date**: 2026-05-19
+- **Objective**: Close gaps identified in the verification report: missing baselines, missing metrics, and attack_f1 demotion.
+- **Implementation**:
+  - Added three new raw-feature baselines to `mitre_core/evaluation/benchmark.py`:
+    - `spectral_raw` — Spectral Clustering on standardized raw features
+    - `pca_kmeans` — PCA(16) + K-Means on standardized raw features
+    - `pca_hdbscan` — PCA(16) + HDBSCAN on standardized raw features
+  - Added five new metrics to `mitre_core/evaluation/unsupervised_metrics.py`:
+    - `n_pred_clusters` — number of predicted clusters (including noise)
+    - `noise_fraction` — fraction of points labeled -1 (noise)
+    - `coverage` — 1 - noise_fraction
+    - `dominant_confusion_accuracy` — per-true-class dominant-prediction accuracy
+    - `attack_f1_demoted` — attack_f1 zeroed when clustering is trivial (≤1 non-noise cluster)
+  - Enabled new baselines in `benchmark/methods.yaml`.
+  - Updated smoke-test assertion to include new methods.
+  - Verified `tests/test_split_disjoint.py` exists and passes (verification report incorrectly flagged it as missing).
+- **Verification**:
+  - `python -m pytest tests/test_benchmark_smoke.py tests/test_split_disjoint.py -q` → 5 passed
+  - Real NSL-KDD benchmark rerun completed successfully.
+- **Artifacts generated**:
+  - `benchmark/results/benchmark_real_results_phase5.csv`
+  - `benchmark/results/benchmark_real_results_phase5_summary.csv`
+- **NSL-KDD comparison ladder on frozen eval split (primary `tactic` track, mean ARI across seeds 42–44)**:
+
+| Method | ARI | AMI | purity | attack_f1 | attack_f1_demoted | n_pred_clusters | noise_fraction |
+|--------|-----|-----|--------|-----------|-------------------|-----------------|----------------|
+| K-Means (raw) | -0.0001 | -0.0001 | 0.535 | 0.667 | 0.667 | 10 | 0.0 |
+| DBSCAN (raw) | 0.000 | 0.000 | 0.535 | 0.667 | **0.0** | 1 | **1.0** |
+| HDBSCAN (raw) | 0.005 | 0.001 | 0.580 | 0.840 | 0.840 | 582 | 0.192 |
+| **Spectral (raw)** | **0.414** | **0.521** | **0.916** | **0.979** | **0.979** | 10 | 0.0 |
+| **PCA + K-Means** | **0.303** | **0.442** | **0.894** | **0.981** | **0.981** | 10 | 0.0 |
+| **PCA + HDBSCAN** | **0.183** | **0.335** | **0.933** | **0.982** | **0.982** | 233 | 0.173 |
+| K-Means (emb) | 0.189 | 0.400 | 0.912 | 0.996 | 0.996 | 10 | 0.0 |
+| Spectral (emb) | 0.218 | 0.481 | 0.942 | 0.998 | 0.998 | 10 | 0.0 |
+| HDBSCAN (emb) | 0.039 | 0.255 | 0.928 | 0.977 | 0.977 | 414 | 0.173 |
+| **MITRE-CORE V3** | **0.602** | **0.685** | **0.984** | **0.997** | **0.997** | 25 | 0.0 |
+
+- **Key findings**:
+  - **Spectral (raw)** is the strongest baseline overall (ARI=0.414), outperforming all embedding-based baselines except the full V3 pipeline. This confirms that standardization + spectral clustering on raw NSL-KDD features is surprisingly effective.
+  - **PCA + K-Means** (ARI=0.303) also beats embedding-based K-Means (ARI=0.189), suggesting the HGNN embedding space on NSL-KDD is not as informative as a simple PCA projection for centroid-based clustering.
+  - **attack_f1_demotion works correctly**: DBSCAN (raw) now shows 0.0 demoted attack_f1 because it produces a single noise cluster (100% noise, 1 predicted cluster), exposing its trivial behavior.
+  - MITRE-CORE V3 maintains a clear margin (ARI=0.602) over all baselines, including the new stronger raw-feature baselines.
+- **Decision**: Phase 5 is complete. The benchmark now includes a comprehensive comparison ladder with both raw-feature and embedding-based baselines, richer diagnostics, and proper attack_f1 demotion for trivial clusterings.
+- **Next action**: Phase 6 (conditional ablations) remains deferred because V3 maintains a strong margin.
