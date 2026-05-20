@@ -45,3 +45,38 @@ Include: alternatives considered, rationale, pointer to artifact that motivated 
 **Rationale:** Keeping 10,000 makes cross-dataset ARI comparisons directly interpretable and halves compute cost. The Worms class caveat (130 rows full corpus, ~7 in 10K subset) is documented as a known limitation rather than a reason to increase sample size.
 
 **Pointer:** Master plan Part VII.2, Stage 2 note on sample size.
+
+---
+
+## 2026-05-19 — Stage 4: Path A (skip sweep)
+
+**Choice:** Proceed directly to Stage 5 without clustering hyperparameter sweep.
+
+**Alternatives considered:**
+- Path B: investigate + sweep via `benchmark/clustering_sweep_full_engine.py`
+
+**Rationale:** V3 ARI on attack_cat = 0.5639 vs best baseline (PCA+HDBSCAN) = 0.3543. Margin = +0.2096, well above the >0.1 threshold for Path A. Sweep is not warranted.
+
+**Pointer:** `benchmark/results/latest/unsw_nb15/baseline_roster_summary.csv`
+
+---
+
+## 2026-05-19 — Stage 5: dominant_confusion_accuracy demoted
+
+**Choice:** Demote `dominant_confusion_accuracy` from UNSW-NB15 reporting (constant 1.0 across all 10 methods).
+
+**Alternatives considered:** Keep it and note it's uninformative.
+
+**Rationale:** A metric constant across all methods is not discriminative and misleads readers about relative performance. Same demotion logic as `attack_f1` on NSL-KDD.
+
+**Pointer:** `benchmark/results/latest/unsw_nb15/baseline_roster_summary.csv` — dominant_confusion_accuracy column, all values 1.0.
+
+---
+
+## 2026-05-19 — Freeze v1.0
+
+**Choice:** Freeze UNSW-NB15 results as v1.0 at this point.
+
+**Rationale:** All 6 lifecycle stages complete. V3 maintains a strong margin (+0.21 ARI on attack_cat). No additional tuning or sweep was needed.
+
+**Pointer:** `benchmark/results/frozen/unsw_nb15/v1.0/`

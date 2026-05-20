@@ -1,8 +1,8 @@
 # UNSW-NB15 — Dataset Status
 
-**Current version:** IN PROGRESS (Stage 2 — Protocol Freeze)
+**Current version:** v1.0 FROZEN
 **Master plan section:** Part IV.2
-**Git tag:** (pending — set at freeze)
+**Git tag:** `unsw-nb15-v1.0`
 
 ## Summary
 
@@ -12,8 +12,8 @@ UNSW-NB15 is a synthetic network intrusion detection dataset generated at the Au
 
 | Method | ARI mean ± std (attack_cat) | AMI mean ± std (attack_cat) |
 |---|---|---|
-| **MITRE-CORE V3** | TBD | TBD |
-| Best baseline | TBD | TBD |
+| **MITRE-CORE V3** | **0.564 ± 0.000** | **0.646 ± 0.000** |
+| Best baseline (PCA + HDBSCAN) | 0.354 ± 0.000 | 0.614 ± 0.000 |
 
 ## Files in this folder
 
@@ -24,4 +24,4 @@ UNSW-NB15 is a synthetic network intrusion detection dataset generated at the Au
 | [protocol.md](protocol.md) | Split + seed decisions (Stage 2) |
 | [decision_log.md](decision_log.md) | Chronological non-trivial choices |
 | [learnings.md](learnings.md) | Carry-forward findings for next datasets |
-| [v1.0_baseline.md](v1.0_baseline.md) | (created at freeze) Full frozen baseline |
+| [v1.0_baseline.md](v1.0_baseline.md) | Full frozen baseline ✅ |

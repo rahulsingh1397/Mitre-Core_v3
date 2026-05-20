@@ -23,7 +23,12 @@ For the pre-freeze NSL-KDD execution history (Phases 0–5), see `docs/archive/v
 
 | Date | Entry | Pointer |
 |------|-------|---------|
-| (pending) | Stage 1 — Audit | `docs/datasets/unsw_nb15/audit.md` |
+| 2026-05-19 | Stage 1 — Audit: 175,341 rows, attack_cat primary (10 classes), tactic secondary, alert_type binary | `docs/datasets/unsw_nb15/audit.md` |
+| 2026-05-19 | Stage 2 — Protocol freeze: 10K sample, seed 42 dev / seed 142 eval, disjoint | `docs/datasets/unsw_nb15/protocol.md` |
+| 2026-05-19 | Stage 3 — Baseline roster: 10 methods × 3 seeds × 3 tracks complete | `benchmark/results/latest/unsw_nb15/baseline_roster.csv` |
+| 2026-05-19 | Stage 4 — Path A: V3 ARI=0.564 vs best baseline 0.354 (+0.210 margin); no sweep | `docs/datasets/unsw_nb15/decision_log.md` |
+| 2026-05-19 | Stage 5 — dominant_confusion_accuracy demoted (constant 1.0 across all methods) | `docs/datasets/unsw_nb15/decision_log.md` |
+| 2026-05-19 | **v1.0 FROZEN** — V3 ARI=0.564 ± 0.000 (attack_cat), margin +0.210 ARI over PCA+HDBSCAN | `docs/datasets/unsw_nb15/v1.0_baseline.md` |
 
 ---
 
