@@ -31,7 +31,7 @@ Thumbs.db
 
 # Project data and outputs (do NOT commit sensitive or large files)
 Data/
-datasets/
+/datasets/
 evaluation_results/
 Plots/
 Testing/

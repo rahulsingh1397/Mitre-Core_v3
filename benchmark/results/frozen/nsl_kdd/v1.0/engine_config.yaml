@@ -1,0 +1,31 @@
+# NSL-KDD v1.0 — Engine configuration locked at freeze time
+# DO NOT EDIT — this file is part of an immutable frozen baseline.
+# Changing engine_kwargs for a frozen dataset produces a new version (v1.1);
+# this file stays as the v1.0 record.
+
+checkpoint: hgnn_checkpoints/network_v9_v3/network_it_best.pt
+checkpoint_sha256: c74da9b1ca6f1b7439d7a71480d0cd5da3a900df7178eb4587694734dfc48b4e
+
+dataset: datasets/nsl_kdd/mitre_format.csv
+dataset_sha256: 29d0919999e2a1cc952a5cc6826b0906d3b5862108f68dc151e739415e4bb706
+dataset_rows: 125973
+
+eval_split: benchmark/splits/nsl_kdd_10000_seed142.npy
+eval_split_sha256: f35f127a8adcceb186b07969e069529d6ac31d66df32ab643ccd52314a39b202
+dev_split: benchmark/splits/nsl_kdd_10000_seed42.npy
+
+label_col: tactic
+sample_size: 10000
+sample_seed: 142
+exclude_sample_seeds: [42]
+benchmark_seeds: [42, 43, 44]
+
+engine_kwargs:
+  device: cpu
+  num_layers: 1
+  hdbscan_min_cluster_size: 5
+  hdbscan_pca_components: 16
+  hdbscan_cluster_selection_epsilon: 0.1
+  use_geometric_confidence: true
+
+clustering_method: hdbscan

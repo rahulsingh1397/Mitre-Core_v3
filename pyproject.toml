@@ -40,6 +40,10 @@ include = ["mitre_core*", "benchmark*"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
+addopts = "-m 'not slow'"
+markers = [
+    "slow: full pipeline re-run; excluded from normal CI. Run with: pytest -m slow",
+]
 
 [tool.ruff]
 line-length = 100
