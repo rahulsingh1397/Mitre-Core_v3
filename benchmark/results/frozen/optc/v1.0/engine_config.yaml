@@ -1,0 +1,10 @@
+checkpoint: hgnn_checkpoints/multidomain_v2_optc_finetuned/best_supervised.pt
+clustering_method: hdbscan
+n_clusters: 2
+engine_kwargs:
+  device: cpu
+  num_layers: 1
+  hdbscan_min_cluster_size: 5
+  hdbscan_pca_components: 16
+  hdbscan_cluster_selection_epsilon: 0.1
+  use_geometric_confidence: true

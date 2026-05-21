@@ -75,4 +75,9 @@ For the pre-freeze NSL-KDD execution history (Phases 0–5), see `docs/archive/v
 
 | Date | Entry | Pointer |
 |------|-------|---------|
-| (queued) | — | `docs/datasets/darpa_optc/` |
+| 2026-05-21 | Stage 1 — Audit: 4,656,650 rows, 29 cols, CampaignId primary (binary: Benign 95.8% / RedTeam_Sep23 4.2%), tactic degenerate (Execution only); richest graph in benchmark (src_ip, dst_ip, hostname, username all present) | `docs/datasets/optc/audit.md` |
+| 2026-05-21 | Stage 2 — Protocol freeze: 10K sample, seed 42 dev / seed 142 eval, disjoint; checkpoint = `multidomain_v2_optc_finetuned/best_supervised.pt` (GAEC overrides) | `docs/datasets/optc/protocol.md` |
+| 2026-05-21 | Stage 3 — Baseline roster: 10 methods x 3 seeds x 2 tracks complete; standard ARI ~0.05 for all methods by design on 2-class dataset | `benchmark/results/latest/optc/baseline_roster.csv` |
+| 2026-05-21 | Stage 4 — Path A: V3 binary_ARI=0.999 (tied with HDBSCAN emb), >0.1 margin over all baselines; no sweep | `docs/datasets/optc/decision_log.md` |
+| 2026-05-21 | Stage 5 — dominant_confusion_accuracy demoted (sixth consecutive dataset, constant 1.0); standard ARI annotated as structurally low on 2-class; tactic track degenerate | `docs/datasets/optc/decision_log.md` |
+| 2026-05-21 | **v1.0 FROZEN** — V3 binary_ARI=0.999, AMI=0.203, ARI=0.059 (campaign_id track); near-perfect binary separation; 11 frozen artifacts; git tag `darpa-optc-v1.0` | `docs/datasets/optc/v1.0_baseline.md` |

@@ -226,3 +226,53 @@ datasets:
       hdbscan_pca_components: 16
       hdbscan_cluster_selection_epsilon: 0.1
       use_geometric_confidence: true
+
+  - name: DARPA-OpTC-dev
+    enabled: false
+    kind: mitre_format
+    path: datasets/DARPA_OpTC/processed_optc_full.csv
+    split_group: optc
+    label_col: CampaignId
+    alt_label_cols:
+      - Tactic
+    checkpoint: hgnn_checkpoints/multidomain_v2_optc_finetuned/best_supervised.pt
+    seeds: [42, 43, 44]
+    sample_size: 10000
+    sample_seed: 42
+    stratified_sample: true
+    n_clusters: 2
+    hdbscan_min_cluster_size: 5
+    dbscan_eps: 0.3
+    clustering_method: hdbscan
+    engine_kwargs:
+      device: cpu
+      num_layers: 1
+      hdbscan_min_cluster_size: 5
+      hdbscan_pca_components: 16
+      hdbscan_cluster_selection_epsilon: 0.1
+      use_geometric_confidence: true
+
+  - name: DARPA-OpTC
+    kind: mitre_format
+    path: datasets/DARPA_OpTC/processed_optc_full.csv
+    split_group: optc
+    label_col: CampaignId
+    alt_label_cols:
+      - Tactic
+    checkpoint: hgnn_checkpoints/multidomain_v2_optc_finetuned/best_supervised.pt
+    seeds: [42, 43, 44]
+    sample_size: 10000
+    sample_seed: 142
+    exclude_sample_seeds: [42]
+    stratified_sample: true
+    n_clusters: 2
+    hdbscan_min_cluster_size: 5
+    dbscan_eps: 0.3
+    clustering_method: hdbscan
+    engine_kwargs:
+      device: cpu
+      num_layers: 1
+      hdbscan_min_cluster_size: 5
+      hdbscan_pca_components: 16
+      hdbscan_cluster_selection_epsilon: 0.1
+      use_geometric_confidence: true

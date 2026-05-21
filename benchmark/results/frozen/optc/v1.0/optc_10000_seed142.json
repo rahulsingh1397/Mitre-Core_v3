@@ -1,0 +1,8 @@
+{
+  "dataset_sha256": "461f9d872a6cc389cdc4b87d26eef47596aa1d97ff657dd9c04db22953a31fe0",
+  "label_col": "CampaignId",
+  "sample_seed": 142,
+  "sample_size": 10000,
+  "source_row_count": 4656650,
+  "split_group": "optc"
+}
