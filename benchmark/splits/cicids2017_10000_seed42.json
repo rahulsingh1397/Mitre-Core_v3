@@ -1,0 +1,8 @@
+{
+  "dataset_sha256": "ee8c20cb02ee46f5471b4473e28247a4abb63aebea3e839264a15f2bebd604c2",
+  "label_col": "alert_type",
+  "sample_seed": 42,
+  "sample_size": 10000,
+  "source_row_count": 3119345,
+  "split_group": "cicids2017"
+}

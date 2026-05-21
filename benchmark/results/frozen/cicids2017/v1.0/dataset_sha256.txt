@@ -1,0 +1,1 @@
+ee8c20cb02ee46f5471b4473e28247a4abb63aebea3e839264a15f2bebd604c2  datasets\CICIDS2017\mitre_format.parquet

@@ -49,7 +49,12 @@ For the pre-freeze NSL-KDD execution history (Phases 0–5), see `docs/archive/v
 
 | Date | Entry | Pointer |
 |------|-------|---------|
-| (queued) | — | `docs/datasets/cicids2017/` |
+| 2026-05-20 | Stage 1 — Audit: 3,119,345 rows parquet, 10 cols, alert_type primary (15 classes, 288,602 null rows), IP-only graph; 72.9% BENIGN imbalance documented | `docs/datasets/cicids2017/audit.md` |
+| 2026-05-20 | Stage 2 — Protocol freeze: 10K sample, seed 42 dev / seed 142 eval, disjoint; null rows treated as "UNKNOWN" class via benchmark fillna; n_clusters=15 (full schema count) | `docs/datasets/cicids2017/protocol.md` |
+| 2026-05-20 | Stage 3 — Baseline roster: 10 methods × 3 seeds; default config V3 ARI=0.111 (45 clusters); Spectral(emb) leads at ARI=0.333 | `benchmark/results/latest/cicids2017/baseline_roster.csv` |
+| 2026-05-20 | Stage 4 — Path B: V3 ARI=0.111 vs Spectral(emb) 0.333 (−0.222); root cause: BENIGN over-segmentation (mcs=5 → 30 BENIGN sub-clusters); full-engine sweep (168 configs): winner mcs=200/pca=8/eps=0.15, ARI=0.177 (11 clusters); gap −0.156 remains | `docs/datasets/cicids2017/investigation.md` |
+| 2026-05-20 | Stage 5 — dominant_confusion_accuracy demoted (constant 1.0, fourth consecutive dataset); DBSCAN demoted (n_clusters=2, attack_f1_demoted=0.000) | `docs/datasets/cicids2017/decision_log.md` |
+| 2026-05-20 | **v1.0 FROZEN** — V3 ARI=0.177 ± 0.000, AMI=0.570 ± 0.000 (sweep winner, 11 clusters); V3 2nd on ARI, 1st on AMI; Spectral(emb) wins ARI; git tag `cicids2017-v1.0` | `docs/datasets/cicids2017/v1.0_baseline.md` |
 
 ---
 
