@@ -62,7 +62,12 @@ For the pre-freeze NSL-KDD execution history (Phases 0–5), see `docs/archive/v
 
 | Date | Entry | Pointer |
 |------|-------|---------|
-| (queued) | — | `docs/datasets/sqtk_siem/` |
+| 2026-05-21 | Stage 1 — Audit: 5,100 rows, 21 cols, alert_type primary (14 classes), tactic/campaign_id secondary (UNKNOWN 88–89%); kcluster (11) excluded as circular | `docs/datasets/sqtk_siem/audit.md` |
+| 2026-05-21 | Stage 2 — Protocol freeze: full 5,100 rows, no disjoint split (corpus < sample_size); n_clusters=14; first dataset-specific checkpoint (`siem_supcon_v4/best.pt`) | `docs/datasets/sqtk_siem/protocol.md` |
+| 2026-05-21 | Stage 3 — Baseline roster: 10 methods × 3 seeds × 3 tracks complete; checkpoint loading bug fixed (`alert_feature_dim` now read from checkpoint shape) | `benchmark/results/latest/sqtk_siem/baseline_roster.csv` |
+| 2026-05-21 | Stage 4 — Path B: V3 ARI=0.355 vs PCA+HDBSCAN 0.382 (−0.027); root cause: embedding collapse/over-smoothing (mean cosine similarity=0.958); investigation written before retuning | `docs/datasets/sqtk_siem/investigation.md` |
+| 2026-05-21 | Stage 5 — dominant_confusion_accuracy demoted (constant 1.0, fifth consecutive dataset); attack_f1 degenerate (no BENIGN class) | `docs/datasets/sqtk_siem/decision_log.md` |
+| 2026-05-21 | **v1.0 FROZEN** — V3 ARI=0.355 ± 0.000, AMI=0.604 ± 0.000; V3 loses to PCA+HDBSCAN (ARI=0.382); honest Path B result; 9 frozen artifacts; git tag `sqtk-siem-v1.0` | `docs/datasets/sqtk_siem/v1.0_baseline.md` |
 
 ---
 

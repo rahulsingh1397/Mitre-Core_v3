@@ -1673,32 +1673,40 @@ class HGNNCorrelationEngine:
                 if vocab_sizes:
                     logger.info(f"Loaded vocab_sizes from checkpoint: {vocab_sizes}")
 
+                # Detect alert_feature_dim from checkpoint if available
+                ckpt_alert_feature_dim = None
+                alert_raw_weight_key = "alert_raw_proj.weight"
+                if alert_raw_weight_key in state_dict:
+                    ckpt_alert_feature_dim = state_dict[alert_raw_weight_key].shape[1]
+                    logger.info(f"Detected alert_feature_dim={ckpt_alert_feature_dim} from checkpoint.")
+
                 # Check for cluster_classifier shape mismatch
                 k_weight = "cluster_classifier.3.weight"
                 ckpt_clusters = None
+                needs_reinit = False
                 if k_weight in state_dict:
                     ckpt_clusters = state_dict[k_weight].shape[0]
                     model_clusters = self.model.cluster_classifier[3].weight.shape[0]
                     if ckpt_clusters != model_clusters:
                         logger.info(f"Re-initializing model with {ckpt_clusters} clusters to match checkpoint.")
-
-                        self.model = MITREHeteroGNN(
-                            alert_feature_dim=6,  # Must match training: 6 base features
-                            hidden_dim=hidden_dim, num_heads=num_heads, num_layers=num_layers,
-                            num_clusters=ckpt_clusters,
-                            vocab_sizes=vocab_sizes,  # Enable CategoricalAlertEncoder if available
-                            aggr_method=aggr_method
-                        ).to(device)
+                        needs_reinit = True
                     elif vocab_sizes:
-                        # Same num_clusters but need to reinit with vocab_sizes for CategoricalAlertEncoder
                         logger.info("Re-initializing model with CategoricalAlertEncoder from checkpoint.")
-                        self.model = MITREHeteroGNN(
-                            alert_feature_dim=6,  # Must match training: 6 base features
-                            hidden_dim=hidden_dim, num_heads=num_heads, num_layers=num_layers,
-                            num_clusters=ckpt_clusters,
-                            vocab_sizes=vocab_sizes,
-                            aggr_method=aggr_method
-                        ).to(device)
+                        needs_reinit = True
+
+                # Also reinit if alert_feature_dim differs
+                if ckpt_alert_feature_dim is not None and ckpt_alert_feature_dim != self.model.alert_feature_dim:
+                    logger.info(f"Re-initializing model with alert_feature_dim={ckpt_alert_feature_dim} to match checkpoint.")
+                    needs_reinit = True
+
+                if needs_reinit:
+                    self.model = MITREHeteroGNN(
+                        alert_feature_dim=ckpt_alert_feature_dim if ckpt_alert_feature_dim is not None else 6,
+                        hidden_dim=hidden_dim, num_heads=num_heads, num_layers=num_layers,
+                        num_clusters=ckpt_clusters if ckpt_clusters is not None else self.model.num_clusters,
+                        vocab_sizes=vocab_sizes,
+                        aggr_method=aggr_method
+                    ).to(device)
             except Exception as e:
                 logger.warning(f"Failed to inspect checkpoint for num_clusters/vocab_sizes: {e}")
 

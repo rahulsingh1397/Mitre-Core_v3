@@ -163,3 +163,33 @@ UNSW-NB15 (attack_cat)	0.5639	unsw_nb15/summary.csv V3 label_col	✅
 TON-IoT (alert_type)	0.4228	ton_iot/results.csv V3 label_col	✅
 CICIDS2017 (alert_type)	0.1771	cicids2017/results.csv V3 label_col	✅
 Final verdict: CICIDS2017 v1.0 is fully verified. All claimed metrics, git artifacts, frozen files, and pytest results match exactly. No discrepancies found.
+=========================================================SQTK_SIEM v1.0=========================================================
+Metric	Value
+V3 ARI (alert_type)	0.355 ± 0.000
+V3 AMI (alert_type)	0.604 ± 0.000
+Best baseline ARI	0.382 ± 0.000 (PCA + HDBSCAN)
+Margin	−0.027
+Path	B (honest, no retuning)
+Root cause	Embedding collapse (cosine sim = 0.958)
+Frozen artifacts	9/9
+Doc files	8/8
+IMPROVEMENT_LOG entries	6/6
+Regression tests	12/12 passed
+
+1. Frozen Artifacts (9/9) ✓
+All present in benchmark/results/frozen/sqtk_siem/v1.0/:
+
+File	Size
+results.csv	17,099 B
+summary.csv	2,986 B
+manifest.json	4,234 B
+engine_config.yaml	157 B
+checkpoint_sha256.txt	66 B
+dataset_sha256.txt	66 B
+environment.txt	9,077 B
+sqtk_siem_5100_seed42.npy	40,928 B
+sqtk_siem_5100_seed42.json	228 B
+2. Metric Cross-Check ✓
+Method	ARI (seed 42)	ARI (seed 43)	ARI (seed 44)	Mean ± Std
+MITRE-CORE V3	0.3550739	0.3550739	0.3550739	0.355 ± 0.000
+PCA + HDBSCAN	0.3824885	0.3824885	0.3824885	0.382 ± 0.000
