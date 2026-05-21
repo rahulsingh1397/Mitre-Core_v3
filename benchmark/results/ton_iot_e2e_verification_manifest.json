@@ -134,5 +134,5 @@
   "peak_gpu_gb": 0.0,
   "results_path": "E:\\Private\\MITRE-CORE 2\\MITRE-CORE_V3\\benchmark\\results\\ton_iot_e2e_verification.csv",
   "summary_path": "E:\\Private\\MITRE-CORE 2\\MITRE-CORE_V3\\benchmark\\results\\ton_iot_e2e_verification_summary.csv",
-  "wall_time_seconds": 121.29502520000096
+  "wall_time_seconds": 119.77008820000628
 }

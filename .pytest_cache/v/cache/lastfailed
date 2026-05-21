@@ -1,9 +1,0 @@
-{
-  "tests/test_nsl_kdd_v1_frozen.py::TestFrozenMetricsReproducible::test_v3_ari_reproduces": true,
-  "tests/test_nsl_kdd_v1_frozen.py::TestFrozenMetricsReproducible::test_v3_ami_reproduces": true,
-  "tests/test_cross_sensor.py": true,
-  "tests/test_benchmark_smoke.py": true,
-  "tests/test_package_surface.py": true,
-  "tests/test_split_disjoint.py": true,
-  "tests/test_unsupervised_invariant.py": true
-}
