@@ -3,12 +3,17 @@
 **Date:** 2026-05-21
 **Status:** FROZEN — v1.0
 
+> **CORRECTION (2026-05-23):** Learning L1 below ("Embedding collapse") was based on a
+> measurement artifact. The cosine_sim=0.958 figure came from a hardcoded `alert_feature_dim=6`
+> bug in the diagnostic script; the `siem_supcon_v4` checkpoint expects 15-dim. Re-measured
+> value: **0.79**. L1 and the Checkpoint-Specific Notes section are corrected inline below.
+
 ---
 
 ## What Surprised Us
 
 - **V3 underperforms baselines** on the dataset where heterogeneous graph structure is richest. SQTK_SIEM has hostname, username, src_ip, dst_ip — the most graph-rich dataset — yet V3 ARI (0.355) loses to PCA + HDBSCAN on raw features (0.382).
-- **Embedding collapse:** The `siem_supcon_v4` checkpoint produces over-smoothed embeddings (mean pairwise cosine similarity = 0.958). SupCon training appears to have collapsed within-class variance too aggressively.
+- **~~Embedding collapse~~ Measurement artifact corrected (2026-05-23):** The original measurement reported mean pairwise cosine similarity = 0.958 due to a script bug (`alert_feature_dim` hardcoded to 6; `siem_supcon_v4` expects 15-dim inputs). Re-measured with the corrected script: cosine similarity = **0.79** (healthy, below the 0.90 collapse threshold). The −0.027 ARI loss vs PCA + HDBSCAN is real but the root cause is NOT embedding collapse. Pending Exp 2.6 (PCA preprocessing parity hypothesis).
 - **Deterministic V3 results across seeds:** Because the dataset is small (5,100 rows) and V3 uses no sampling randomness, ARI/AMI are identical across all 3 benchmark seeds. The only variance comes from baseline methods that use random_state (K-Means, Spectral, PCA).
 - **No disjoint split needed:** When corpus < sample_size, `_sample_indices()` returns all rows. This is a clean protocol deviation — no special-case code needed.
 
@@ -27,6 +32,6 @@
 
 ## Checkpoint-Specific Notes
 
-- **siem_supcon_v4/best.pt:** Produces collapsed embeddings on SQTK_SIEM. ARI = 0.355, losing to PCA + HDBSCAN (0.382).
+- **siem_supcon_v4/best.pt:** ~~Produces collapsed embeddings on SQTK_SIEM.~~ Produces healthy embeddings (cosine_sim = 0.79, corrected 2026-05-23; original 0.958 figure was a measurement bug). ARI = 0.355, losing to PCA + HDBSCAN (0.382). Root cause reclassified from embedding collapse to clustering-algorithm / preprocessing gap.
 - **Hypothesis:** SupCon training on a larger SIEM corpus may have overfitted to that corpus's class structure, failing to generalize to the 5,100-row SQTK_SIEM snapshot.
 - **Recommended follow-up:** Test `network_v9_v3/network_it_best.pt` on SQTK_SIEM to determine whether the issue is checkpoint-specific or dataset-inherent.

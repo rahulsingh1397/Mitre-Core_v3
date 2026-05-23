@@ -54,7 +54,7 @@ Exit criterion: ✅ All rows produced (90 rows = 10 methods × 3 seeds × 3 trac
 - V3 ARI = 0.3551 ± 0.0000
 - Best baseline ARI = PCA + HDBSCAN 0.3825 ± 0.0000
 - Margin = −0.027 (V3 loses)
-- **Path B taken:** `investigation.md` written before any retuning. Root cause: embedding collapse/over-smoothing (mean cosine similarity = 0.958).
+- **Path B taken:** `investigation.md` written before any retuning. ~~Root cause: embedding collapse/over-smoothing (mean cosine similarity = 0.958).~~ **[CORRECTION 2026-05-23: the cosine_sim figure was a measurement artifact — `alert_feature_dim` hardcoded to 6 in the diagnostic script; actual value = 0.79. Root cause reclassified to clustering-algorithm / preprocessing gap. investigation.md has been invalidated with a banner. See `docs/experiments/multi_layer_depth.md`.]**
 
 ---
 

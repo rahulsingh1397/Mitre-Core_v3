@@ -40,5 +40,5 @@
 
 - **Choice:** Document Path B (V3 loses) and freeze v1.0 without retuning.
 - **Alternative considered:** Immediate retuning via `clustering_sweep_full_engine.py`.
-- **Rationale:** V3 ARI = 0.3551 vs best baseline PCA + HDBSCAN ARI = 0.3825. Margin = -0.027 (< 0.1). Per lifecycle protocol, write `investigation.md` before ANY retuning. The root cause is embedding collapse (over-smoothing, mean cosine similarity = 0.958) from the `siem_supcon_v4` checkpoint.
+- **Rationale:** V3 ARI = 0.3551 vs best baseline PCA + HDBSCAN ARI = 0.3825. Margin = -0.027 (< 0.1). Per lifecycle protocol, write `investigation.md` before ANY retuning. ~~The root cause is embedding collapse (over-smoothing, mean cosine similarity = 0.958) from the `siem_supcon_v4` checkpoint.~~ **[CORRECTION 2026-05-23: the cosine_sim=0.958 figure was a measurement artifact — `alert_feature_dim` was hardcoded to 6 in the diagnostic script while the checkpoint expects 15-dim. Re-measured value = 0.79. Root cause re-opened; investigation.md is invalidated. See `docs/experiments/multi_layer_depth.md` for corrected analysis.]**
 - **Impact:** `investigation.md` written. No retuning initiated. v1.0 freeze captures the honest result.

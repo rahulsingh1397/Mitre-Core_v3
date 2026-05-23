@@ -1,3 +1,39 @@
+> ## ⚠️ INVESTIGATION INVALIDATED — Read this first
+>
+> **Date of invalidation:** 2026-05-23
+>
+> This entire investigation document is based on a faulty cosine-similarity measurement.
+>
+> The "OVER-SMOOTHING DETECTED: mean pairwise cosine similarity=0.9577 > 0.95" warning
+> quoted on line 26 below was produced by `scripts/measure_embedding_collapse.py` with a
+> critical bug: `alert_feature_dim` was hardcoded to 6 inside the script, but the
+> `siem_supcon_v4/best.pt` checkpoint expects 15-dim alert features. The dimension mismatch
+> caused the encoder to produce uniformly garbled embeddings that appeared near-identical
+> by cosine similarity.
+>
+> **Re-measurement after bug fix (2026-05-23):**
+> Mean pairwise cosine similarity = **0.79** (healthy; collapse threshold is 0.90).
+>
+> Every downstream interpretation in this document is NOT supported by evidence:
+> - "Over-smoothing" diagnosis → WRONG (actual cosine_sim = 0.79)
+> - SupCon training causing collapse → UNSUPPORTED
+> - Residual connections as mitigation → irrelevant
+> - `num_layers` reduction as mitigation → irrelevant
+> - t-SNE collapse visualization → based on wrong measurement
+>
+> **The −0.027 ARI loss vs PCA + HDBSCAN is real.** Root cause under investigation:
+> - Exp 2.5: clustering algorithm swap (HDBSCAN → GMM with BIC k-selection)
+> - Exp 2.6: preprocessing parity (V3 emb → PCA(20) → HDBSCAN, matching the winning baseline)
+>
+> See `docs/experiments/multi_layer_depth.md` — corrected analysis with full S1 measurements.
+> See `docs/experiments/revised_failure_map.md` — updated Part X failure map.
+>
+> The body below is preserved verbatim as a historical record and as an illustration of the
+> measurement-discipline lesson: always detect `alert_feature_dim` from the checkpoint
+> (`alert_raw_proj.weight.shape[1]`), never hardcode it.
+
+---
+
 # SQTK_SIEM — Investigation (Stage 4, Path B)
 
 **Date:** 2026-05-21
