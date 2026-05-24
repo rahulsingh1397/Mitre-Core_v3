@@ -93,3 +93,19 @@ the archived V2 placeholders. See `docs/ablations/v3_ablation_record.{csv,md}`.
 
 Currently 12 rows backfilled from Exp 1 / 2.5 / 2.5b / 2.6 / 2.6b. Each subsequent
 experiment appends one row per dataset benchmarked.
+
+### v1.0 Integrity Audit — 2026-05-24
+
+Triggered during Exp 3 (15-dim features) pre-flight. Stage A direct verification + Stage B materiality test confirmed that the v1.0 baseline feature extractor feeds two label-derived columns (`tactics`, `alert_types`) as model inputs. Shuffle test on all v1.0 + v1.1 freezes returned MATERIAL verdict.
+
+**Two findings survive the audit:**
+- TON-IoT v1.1 (GMM+BIC clustering): Δ_clean = −0.011 inert → GENUINE
+- CICIDS2017 v1.0: Δ_clean = +0.009 inert → GENUINE (honest loser)
+
+**All other v1.x freezes are upper bounds.** SQTK_SIEM v1.1 (pca=11) specifically REGRESSES under clean measurement (clean ARI 0.162 < v1.0 clean 0.188) — the pca=11 lift was a leakage interaction artifact.
+
+Full report: `docs/audits/v1.0_input_feature_audit.md`.
+Validity ledger: `docs/plans/MASTER_PLAN_v1.2.md`.
+Raw evidence: `experiments/results/leakage_materiality.csv`.
+
+Frozen artifacts preserved as immutable reproducibility records. Per-dataset baseline docs got correction banners. v2.0 clean-baseline retrain queued.

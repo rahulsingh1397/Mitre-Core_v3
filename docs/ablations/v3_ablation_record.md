@@ -76,3 +76,38 @@ When an experiment runs:
 2. Update this markdown view's "Current Standings" if any dataset's best-known ARI changed
 3. Add an "Exp N — Short Name (DECISION)" section to "Experiments Executed"
 4. If the experiment produced a freeze, ensure `frozen_path` and `frozen_version` columns are populated and the `decision` column is `freeze_v1.x`
+
+---
+
+## 2026-05-24 Audit — Validity Annotations
+
+The v1.0 Integrity Audit (Stage B materiality test) measured V3 ARI when the leaked
+input columns (`tactics`, `alert_types`) are shuffled at inference. Three new
+CSV columns capture the result:
+
+- `clean_treatment_ari` — V3 ARI with leaked inputs shuffled
+- `delta_vs_clean_baseline` — `clean_treatment_ari` minus the v1.0 clean baseline
+   for the same dataset (when the row is a treatment experiment); blank otherwise
+- `clean_verdict` — `improvement_genuine` / `regression` / `not_measured` / `not_applicable`
+
+**Two rows have a definitive clean verdict:**
+
+| Experiment | Dataset | Verdict |
+|---|---|---|
+| 2.5 (GMM+BIC) | TON-IoT v1.1 | **improvement_genuine** — Δ_clean = +0.243 |
+| 2.6b (pca=11) | SQTK_SIEM v1.1 | **regression** — Δ_clean = −0.026 |
+
+**TON-IoT v1.1 is the strongest validated result in the program.** SQTK_SIEM v1.1
+remains a frozen artifact (immutable) but is marked INVALIDATED in MASTER_PLAN_v1.2
+and must not be propagated as a recommendation.
+
+**Other rows** are marked `not_measured` because the materiality test was scoped
+to v1.0 baselines + v1.1 winning configs. Intermediate sweep configs (e.g.
+SQTK_SIEM pca=8/12/20/32/64, CICIDS2017 hard-neg, TON-IoT hard-neg) were not
+re-run with shuffled features. They can be filled in if a future audit pass re-runs
+those configs; for now their `clean_*` cells stay empty.
+
+The audit verdict for each (dataset, version) measured baseline is consolidated
+in the validity ledger in `docs/plans/MASTER_PLAN_v1.2.md`. The per-experiment
+view (this record) and the per-dataset view (master plan ledger) point at the
+same underlying measurements.
