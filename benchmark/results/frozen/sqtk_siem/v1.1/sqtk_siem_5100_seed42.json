@@ -1,0 +1,8 @@
+{
+  "dataset_sha256": "ab2a63166dd79d570147de940edef242bb9e0304eccb1f79953c174874b5c617",
+  "label_col": "alert_type",
+  "sample_seed": 42,
+  "sample_size": 5100,
+  "source_row_count": 5100,
+  "split_group": "sqtk_siem"
+}

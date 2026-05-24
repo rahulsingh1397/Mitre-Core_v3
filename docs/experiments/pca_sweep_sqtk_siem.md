@@ -47,5 +47,33 @@ Combined with Exp 2.5b (CICIDS2017 GMM+BIC, also rejected): **the V3 clustering 
 
 ## Artifacts
 
-- `benchmark/results/latest/exp2.6_pca/results.csv` 
+- `benchmark/results/latest/exp2.6_pca/results.csv`
 - `benchmark/datasets_real.yaml` — 5 `SQTK_SIEM-exp2.6-pca*` entries (kept for reproducibility)
+
+---
+
+## Update 2026-05-23 — Exp 2.6b Narrow Sweep Result
+
+Ran pca11 and pca13 (the immediate neighbors of pca12, the previous best).
+
+| Config | V3 ARI | n_pred_clusters | Decision |
+|---|---|---|---|
+| pca11 | **0.4608** | 23 | ✅ Crosses 0.382 threshold by +0.079 |
+| pca13 | 0.3587 | 25 | ❌ Below v1.1 threshold |
+
+Full PCA shape across all sweep entries:
+
+| pca | ARI |
+|---|---|
+| 8 | 0.3573 |
+| 11 | **0.4608** |
+| 12 | 0.3806 |
+| 13 | 0.3587 |
+| 16 (v1.0) | 0.3550 |
+| 20 | 0.3531 |
+| 32 | 0.3536 |
+| 64 | 0.3534 |
+
+**Verdict:** SQTK_SIEM has a sharp non-monotone optimum at pca=11 worth +0.106 ARI vs v1.0. Frozen as v1.1. Knife-edge sensitivity documented in `docs/datasets/sqtk_siem/v1.1_baseline.md`.
+
+This makes Exp 2.6 a partial-success program overall — the coarse sweep alone would have rejected the hypothesis, but the targeted retry locked the freeze.
