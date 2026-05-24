@@ -14,8 +14,12 @@ SHA256_PATH = REPO_ROOT / "docs" / "plans" / "MASTER_PLAN_v1.0.sha256"
 PLAN_v1_1_PATH = REPO_ROOT / "docs" / "plans" / "MASTER_PLAN_v1.1.md"
 SHA256_v1_1_PATH = REPO_ROOT / "docs" / "plans" / "MASTER_PLAN_v1.1.sha256"
 
+PLAN_v1_2_PATH = REPO_ROOT / "docs" / "plans" / "MASTER_PLAN_v1.2.md"
+SHA256_v1_2_PATH = REPO_ROOT / "docs" / "plans" / "MASTER_PLAN_v1.2.sha256"
+
 FROZEN_SHA256 = "a779e478496b427591e79b2f1808aec48a68c7459d28c0738e61650756a98b54"
 FROZEN_SHA256_v1_1 = "950ba7bfaf4ece0389ea663fc9f7568995641dc461a8aec08cc2ba99cd820234"
+FROZEN_SHA256_v1_2 = "DB1A12EE88AAFF96310D954559B520E60EEE0D9D0411E955510E454530E412DB"
 
 
 def test_master_plan_v1_0_unchanged():
@@ -43,4 +47,22 @@ def test_master_plan_v1_1_unchanged():
         "  1. Create docs/plans/MASTER_PLAN_v1.2.md with a diff summary.\n"
         "  2. Update docs/plans/README.md to point at v1.2 as active.\n"
         "  3. Update the FROZEN_SHA256_v1_1 constant in this test to match v1.2."
+    )
+
+
+def test_master_plan_v1_2_unchanged():
+    """v1.2 must match its SHA256."""
+    import hashlib
+    from pathlib import Path
+    plan_path = Path(__file__).parent.parent / "docs" / "plans" / "MASTER_PLAN_v1.2.md"
+    sha_path = Path(__file__).parent.parent / "docs" / "plans" / "MASTER_PLAN_v1.2.sha256"
+    assert plan_path.exists(), f"Master plan v1.2 missing: {plan_path}"
+    assert sha_path.exists(), f"SHA file missing: {sha_path}"
+    expected = sha_path.read_text().strip().upper()
+    actual = hashlib.sha256(plan_path.read_bytes()).hexdigest().upper()
+    assert actual == expected, (
+        f"MASTER_PLAN_v1.2.md SHA mismatch.\n"
+        f"  Expected: {expected}\n"
+        f"  Actual:   {actual}\n"
+        f"v1.2 is frozen. If you intended to update it, write v1.3 instead."
     )

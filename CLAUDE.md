@@ -1,10 +1,55 @@
 # MITRE-CORE — Claude Code Session Context
 
+> ## ⚠️ 2026-05-24 AUDIT FINDING — Read first
+>
+> The V3 baseline (`network_v9_v3` at `alert_feature_dim=6`) feeds **two label-derived
+> features as inputs at training AND inference time**: `tactics` (from `df['tactic']`)
+> and `alert_types` (binary collapse of `df['alert_type']`). Both columns are also used
+> as evaluation labels — this is input/label leakage.
+>
+> **Materiality test (Stage B, 2026-05-24)** — shuffling the two leaked columns at
+> inference time produces these honest ARIs:
+>
+> | Dataset | Reported | Clean | Δ |
+> |---|---|---|---|
+> | NSL-KDD | 0.602 | 0.093 | −0.509 |
+> | UNSW-NB15 | 0.564 | 0.289 | −0.275 |
+> | TON-IoT v1.0 | 0.423 | 0.350 | −0.073 |
+> | **TON-IoT v1.1 (GMM)** | **0.604** | **0.593** | **−0.011 (inert — GENUINE)** |
+> | CICIDS2017 | 0.177 | 0.186 | +0.009 (inert) |
+> | SQTK_SIEM v1.0 | 0.355 | 0.188 | −0.167 |
+> | SQTK_SIEM v1.1 (pca=11) | 0.461 | 0.162 | −0.299 (regresses vs v1.0 clean) |
+> | DARPA OpTC | 0.999 binary | −0.020 | −1.019 |
+>
+> **What is honest:** TON-IoT v1.1 (GMM+BIC clustering) and CICIDS2017 v1.0.
+> Everything else needs reframing or re-running with a clean baseline.
+>
+> See `experiments/results/leakage_materiality.csv` for raw evidence,
+> `docs/plans/MASTER_PLAN_v1.2.md` for the corrected program plan, and
+> `docs/audits/v1.0_input_feature_audit.md` (planned) for the full audit report.
+>
+> The frozen artifacts (`benchmark/results/frozen/<dataset>/v1.x/`) are immutable
+> historical records of what the pipeline produced — they document the leakage,
+> they don't paper over it.
+
+---
+
 ## What this project is (honest version)
 
-A heterogeneous GNN trained with a topological contrastive objective that learns a 128-dim embedding space where network-layer attack families have geometric separation. On structurally clean datasets (NSL-KDD, UNSW-NB15), it clusters alerts into campaigns without labels at ARI ~0.5–0.74. On IoT and host telemetry, supervised fine-tuning is needed. The architecture is novel in its application to multi-sensor SOC alert correlation; the design choices are reasonable but empirically unvalidated. The explainability infrastructure and GAEC confidence mechanism are functional.
+A heterogeneous GNN trained with a topological contrastive objective that learns
+a 128-dim embedding space for SOC alert correlation. **As of 2026-05-24, the
+v1.0/v1.1 baseline numbers are known to be inflated by input feature leakage**
+(see audit banner above). The architecture and infrastructure are real; the
+specific ARI numbers reported pre-2026-05-24 are upper bounds, not validated
+performance claims.
 
-**This is a legitimate, interesting 70%-complete research project — not a failed one.**
+Two findings DO survive the audit:
+1. **TON-IoT v1.1** (GMM+BIC clustering, 0.604 reported / 0.593 clean) — V3 is
+   genuinely competitive with K-Means(raw) 0.622 on IoT traffic.
+2. **CICIDS2017 v1.0** (0.177 reported / 0.186 clean) — the failure to discover
+   BENIGN sub-structure is real and reproduces under clean measurement.
+
+Everything else needs revalidation against `v2.0` clean baselines (planned).
 
 ## Two distinct problems
 
@@ -22,40 +67,66 @@ A heterogeneous GNN trained with a topological contrastive objective that learns
 - The paper figures were hardcoded — now archived
 - Closing this gap requires running experiments, not rewriting code
 
-## Current state (v2.43, May 17, 2026 — Multi-Seed Validated)
-Dead code removed, checkpoints cleaned, fabricated figures archived, documentation reframed.
-5 canonical checkpoints retained. §3 headline numbers validated over 3 seeds (42, 43, 44).
-See MEMORY.md v2.39–v2.40 for cleanup log and MITRE-design.md v2.43 for current verified results.
+## Current state (v2.50, 2026-05-24 — Audit Finding)
+v1.0/v1.1 frozen baselines retained as historical record. Leakage discovered 2026-05-24
+in baseline feature extraction. v2.0 clean-baseline retrain queued. See `docs/audits/`,
+`docs/plans/MASTER_PLAN_v1.2.md`, and `experiments/results/leakage_materiality.csv`.
 
 ## Canonical checkpoints
 
-| Checkpoint | Best For | ARI | Mode |
-|-----------|----------|-----|------|
-| `network_v9_v3/network_it_best.pt` | NSL-KDD, UNSW, TON_IoT, OpTC, CICIDS2017 | 0.739 (NSL-KDD) | Zero-shot GAEC |
-| `siem_supcon_v4/best.pt` | SQTK_SIEM | 0.184 | GAEC |
-| `unsw_supcon_v7/best.pt` | UNSW-NB15 semi-supervised | 0.538 | SupCon + Spectral |
-| `multidomain_v2/best_supervised.pt` | Historical reference | 0.665 (UNSW) | Supervised softmax |
-| `multidomain_v2_optc_finetuned/best_supervised.pt` | OpTC binary | 0.897 | Supervised softmax |
+| Checkpoint | Best For | Reported ARI | Clean ARI | Mode |
+|-----------|----------|--------------|-----------|------|
+| `network_v9_v3/network_it_best.pt` | All 5 multi-class IDS datasets | 0.602 (NSL-KDD) | 0.093 (NSL-KDD) | Zero-shot GAEC |
+| `siem_supcon_v4/best.pt` | SQTK_SIEM | 0.355 (v1.0) | 0.188 | GAEC |
+| `unsw_supcon_v7/best.pt` | UNSW-NB15 semi-supervised | 0.538 | not tested | SupCon + Spectral |
+| `multidomain_v2/best_supervised.pt` | Historical reference | 0.665 (UNSW) | not tested | Supervised softmax |
+| `multidomain_v2_optc_finetuned/best_supervised.pt` | OpTC binary | 0.897 | not tested (suspect heavy leakage given OpTC clean=−0.02) | Supervised softmax |
 
-## Verified results (post-cleanup E2E sanity test, 2,000 samples, seed=42)
+All checkpoints share the same `AlertToGraphConverter._encode_alert_features` at
+inference time, which produces the leaked dims 0 and 1. The leakage is in the
+INPUT pipeline, not the checkpoint itself. Replacing the converter to skip the
+leaked columns produces the "Clean ARI" values.
 
-> **Note**: These are 2K-sample sanity checks, not the headline numbers. §3 headline table uses 10K stratified samples (or full corpus) over 3 seeds. See MITRE-design.md v2.43 for authoritative results.
+## Verified results
 
-| Dataset | network_v9_v3 | unsw_supcon_v7 | siem_supcon_v4 |
-|---------|--------------|----------------|----------------|
-| UNSW-NB15 | ARI=0.503, AMI=0.623 | ARI=0.534, AMI=0.645 | ARI=0.527, AMI=0.632 |
-| NSL-KDD | ARI=0.497, AMI=0.623 | ARI=0.478, AMI=0.590 | ARI=0.443, AMI=0.571 |
-| TON_IoT | ARI=0.294, AMI=0.646 | ARI=0.300, AMI=0.653 | ARI=0.293, AMI=0.643 |
+**Reported ARIs (with leakage; pre-2026-05-24 measurements):**
 
-## Claimed vs actual
+| Dataset | network_v9_v3 baseline | TON-IoT v1.1 (GMM) | SQTK_SIEM v1.1 (pca=11) |
+|---|---|---|---|
+| NSL-KDD | 0.602 | — | — |
+| UNSW-NB15 | 0.564 | — | — |
+| TON-IoT | 0.423 (v1.0) | **0.604** (v1.1) | — |
+| CICIDS2017 | 0.177 | — | — |
+| SQTK_SIEM | 0.355 (v1.0) | — | 0.461 (v1.1 — see note) |
+| DARPA OpTC | 0.999 binary | — | — |
 
-| Dimension | Claimed | Actual |
-|-----------|---------|--------|
-| Zero-shot universality | Works on 5/5 datasets | Works on 2/6 (network IDS only); usable on 6/6 with per-dataset tuning |
-| Training mechanism | Novel topological NT-Xent | Hybrid topological + SimCLR |
-| Ablation validation | 7 validated design decisions | 0 controlled ablations run |
-| NSL-KDD zero-shot | 0.752 | 0.739 (§3 verified, 10K samples, 3 seeds) |
-| "Purely unsupervised" | Core claim | True for 2/6 datasets; supervised needed for rest |
+**Honest ARIs (Stage B materiality test, leaked features shuffled at inference):**
+
+| Dataset | Reported | Clean | Δ |
+|---|---|---|---|
+| NSL-KDD | 0.602 | 0.093 | −0.509 |
+| UNSW-NB15 | 0.564 | 0.289 | −0.275 |
+| TON-IoT v1.0 | 0.423 | 0.350 | −0.073 |
+| **TON-IoT v1.1** | 0.604 | 0.593 | **−0.011 (inert)** |
+| CICIDS2017 | 0.177 | 0.186 | +0.009 (inert) |
+| SQTK_SIEM v1.0 | 0.355 | 0.188 | −0.167 |
+| SQTK_SIEM v1.1 | 0.461 | 0.162 | −0.299 (regresses vs v1.0 clean) |
+| DARPA OpTC | 0.999 | −0.020 | −1.019 |
+
+Use the clean column when comparing to honest baselines. Use the reported column
+only when comparing to other pre-audit measurements made with the same pipeline.
+
+## Claimed vs actual (revised 2026-05-24)
+
+| Dimension | Pre-audit claim | Post-audit reality |
+|-----------|-----------------|--------------------|
+| Zero-shot universality | Works on 5/5 (later 2/6) network IDS | Works (clean) on TON-IoT (v1.1) and CICIDS2017. NSL-KDD/UNSW/OpTC "wins" were largely leakage. |
+| Training mechanism | Hybrid topological + SimCLR (real) | Unchanged |
+| Ablation validation | 7 validated design decisions | 0 validated; baseline feature description was demonstrably false |
+| NSL-KDD zero-shot | 0.739 → 0.602 (v1.0) | 0.093 clean (cannot separate attack types without the tactic input) |
+| "Purely unsupervised" | True for 2/6 datasets | False for ALL 6 — the input pipeline saw labels |
+| TON-IoT v1.1 GMM improvement | +0.181 ARI | +0.170 honest (0.423 → 0.593) — biggest validated result in the program |
+| SQTK_SIEM v1.1 pca=11 improvement | +0.106 ARI | −0.026 honest (0.188 → 0.162) — invalidated |
 
 ## What closing the gap looks like
 
@@ -77,10 +148,21 @@ See MEMORY.md v2.39–v2.40 for cleanup log and MITRE-design.md v2.43 for curren
 
 ## Confirmed findings across all versions
 
-- `use_uf_refinement=False` is correct default (UF is net-harmful)
-- GAEC mode > softmax mode for clustering
-- Single GAT layer avoids over-smoothing (observed, not experimentally validated)
-- 6-dim base features are domain-agnostic and generalize better than 15-dim contextual
-- Bridge edges and entity collapse: both zero effect — closed research directions
-- CS fine-tuning: ineffective — closed research direction
-- HDBSCAN seeding fixed — full reproducibility with seed=42
+- `use_uf_refinement=False` is correct default (UF is net-harmful) — STILL VALID
+- GAEC mode > softmax mode for clustering — STILL VALID
+- ~~Single GAT layer avoids over-smoothing~~ Single-layer choice is independent of
+  the leakage finding; Exp 2 S1 confirmed cosine_sim ≈ 0.7 across all datasets, no
+  collapse exists.
+- ~~6-dim base features are domain-agnostic and generalize better than 15-dim contextual~~
+  **FALSE.** The actual baseline 6-dim is `tactics, alert_types, hour, dow, protocols,
+  services` (per `hgnn/hgnn_correlation.py:902-907`) — includes two label-derived
+  features. The "domain-agnostic" framing was inaccurate. Corrected 2026-05-24.
+- Bridge edges and entity collapse: both zero effect — STILL VALID
+- CS fine-tuning ineffective — STILL VALID
+- HDBSCAN seeding fixed — full reproducibility with seed=42 — STILL VALID
+- **(NEW 2026-05-24)** GMM+BIC clustering reproducibly improves TON-IoT under both
+  leaked and clean inputs (Δ from clean baseline: +0.243, i.e. 0.350 → 0.593). Pure
+  inference change, no retraining.
+- **(NEW 2026-05-24)** PCA component count sweep on SQTK_SIEM produces leakage-driven
+  artifacts; pca=11 v1.1 freeze does not reproduce honestly. Lesson: future sweeps
+  must be validated against the clean baseline before freezing.
