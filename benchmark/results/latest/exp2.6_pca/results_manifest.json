@@ -1,0 +1,264 @@
+{
+  "command": [
+    "C:\\Users\\rahul\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+    "-m",
+    "benchmark.run_benchmark",
+    "--datasets",
+    "benchmark/datasets_exp2.6.yaml",
+    "--output",
+    "benchmark/results/latest/exp2.6_pca/results.csv"
+  ],
+  "command_line": "C:\\Users\\rahul\\AppData\\Local\\Programs\\Python\\Python312\\python.exe -m benchmark.run_benchmark --datasets benchmark/datasets_exp2.6.yaml --output benchmark/results/latest/exp2.6_pca/results.csv",
+  "datasets": [
+    {
+      "benchmark_seeds": [
+        42,
+        43,
+        44
+      ],
+      "checkpoint_path": "E:\\Private\\MITRE-CORE 2\\MITRE-CORE_V3\\hgnn_checkpoints\\siem_supcon_v4\\best.pt",
+      "checkpoint_sha256": "f9f8fa058976ba2a07948e2616e7c4d83d927aa74271f8ff9f14e125505bc0bf",
+      "clustering_method": "hdbscan",
+      "engine_kwargs": {
+        "device": "cpu",
+        "hdbscan_cluster_selection_epsilon": 0.1,
+        "hdbscan_min_cluster_size": 5,
+        "hdbscan_pca_components": 8,
+        "num_layers": 1,
+        "use_geometric_confidence": true
+      },
+      "exclude_sample_seeds": [],
+      "excluded_split_paths": [],
+      "kind": "mitre_format",
+      "label_col": "alert_type",
+      "n_clusters": 14,
+      "name": "SQTK_SIEM-exp2.6-pca8",
+      "sample_seed": 42,
+      "sample_size": 5100,
+      "selected_row_count": 5100,
+      "source_path": "E:\\Private\\MITRE-CORE 2\\MITRE-CORE_V3\\datasets\\SQTK_SIEM\\mitre_core_format.csv",
+      "source_row_count": 5100,
+      "source_sha256": "ab2a63166dd79d570147de940edef242bb9e0304eccb1f79953c174874b5c617",
+      "split_group": "sqtk_siem",
+      "split_indices_path": "E:\\Private\\MITRE-CORE 2\\MITRE-CORE_V3\\benchmark\\splits\\sqtk_siem_5100_seed42.npy",
+      "split_indices_sha256": "99ba3167e5bfacb3056acf536a9096fb18c98112300a535339d919a096422a13"
+    },
+    {
+      "benchmark_seeds": [
+        42,
+        43,
+        44
+      ],
+      "checkpoint_path": "E:\\Private\\MITRE-CORE 2\\MITRE-CORE_V3\\hgnn_checkpoints\\siem_supcon_v4\\best.pt",
+      "checkpoint_sha256": "f9f8fa058976ba2a07948e2616e7c4d83d927aa74271f8ff9f14e125505bc0bf",
+      "clustering_method": "hdbscan",
+      "engine_kwargs": {
+        "device": "cpu",
+        "hdbscan_cluster_selection_epsilon": 0.1,
+        "hdbscan_min_cluster_size": 5,
+        "hdbscan_pca_components": 12,
+        "num_layers": 1,
+        "use_geometric_confidence": true
+      },
+      "exclude_sample_seeds": [],
+      "excluded_split_paths": [],
+      "kind": "mitre_format",
+      "label_col": "alert_type",
+      "n_clusters": 14,
+      "name": "SQTK_SIEM-exp2.6-pca12",
+      "sample_seed": 42,
+      "sample_size": 5100,
+      "selected_row_count": 5100,
+      "source_path": "E:\\Private\\MITRE-CORE 2\\MITRE-CORE_V3\\datasets\\SQTK_SIEM\\mitre_core_format.csv",
+      "source_row_count": 5100,
+      "source_sha256": "ab2a63166dd79d570147de940edef242bb9e0304eccb1f79953c174874b5c617",
+      "split_group": "sqtk_siem",
+      "split_indices_path": "E:\\Private\\MITRE-CORE 2\\MITRE-CORE_V3\\benchmark\\splits\\sqtk_siem_5100_seed42.npy",
+      "split_indices_sha256": "99ba3167e5bfacb3056acf536a9096fb18c98112300a535339d919a096422a13"
+    },
+    {
+      "benchmark_seeds": [
+        42,
+        43,
+        44
+      ],
+      "checkpoint_path": "E:\\Private\\MITRE-CORE 2\\MITRE-CORE_V3\\hgnn_checkpoints\\siem_supcon_v4\\best.pt",
+      "checkpoint_sha256": "f9f8fa058976ba2a07948e2616e7c4d83d927aa74271f8ff9f14e125505bc0bf",
+      "clustering_method": "hdbscan",
+      "engine_kwargs": {
+        "device": "cpu",
+        "hdbscan_cluster_selection_epsilon": 0.1,
+        "hdbscan_min_cluster_size": 5,
+        "hdbscan_pca_components": 20,
+        "num_layers": 1,
+        "use_geometric_confidence": true
+      },
+      "exclude_sample_seeds": [],
+      "excluded_split_paths": [],
+      "kind": "mitre_format",
+      "label_col": "alert_type",
+      "n_clusters": 14,
+      "name": "SQTK_SIEM-exp2.6-pca20",
+      "sample_seed": 42,
+      "sample_size": 5100,
+      "selected_row_count": 5100,
+      "source_path": "E:\\Private\\MITRE-CORE 2\\MITRE-CORE_V3\\datasets\\SQTK_SIEM\\mitre_core_format.csv",
+      "source_row_count": 5100,
+      "source_sha256": "ab2a63166dd79d570147de940edef242bb9e0304eccb1f79953c174874b5c617",
+      "split_group": "sqtk_siem",
+      "split_indices_path": "E:\\Private\\MITRE-CORE 2\\MITRE-CORE_V3\\benchmark\\splits\\sqtk_siem_5100_seed42.npy",
+      "split_indices_sha256": "99ba3167e5bfacb3056acf536a9096fb18c98112300a535339d919a096422a13"
+    },
+    {
+      "benchmark_seeds": [
+        42,
+        43,
+        44
+      ],
+      "checkpoint_path": "E:\\Private\\MITRE-CORE 2\\MITRE-CORE_V3\\hgnn_checkpoints\\siem_supcon_v4\\best.pt",
+      "checkpoint_sha256": "f9f8fa058976ba2a07948e2616e7c4d83d927aa74271f8ff9f14e125505bc0bf",
+      "clustering_method": "hdbscan",
+      "engine_kwargs": {
+        "device": "cpu",
+        "hdbscan_cluster_selection_epsilon": 0.1,
+        "hdbscan_min_cluster_size": 5,
+        "hdbscan_pca_components": 32,
+        "num_layers": 1,
+        "use_geometric_confidence": true
+      },
+      "exclude_sample_seeds": [],
+      "excluded_split_paths": [],
+      "kind": "mitre_format",
+      "label_col": "alert_type",
+      "n_clusters": 14,
+      "name": "SQTK_SIEM-exp2.6-pca32",
+      "sample_seed": 42,
+      "sample_size": 5100,
+      "selected_row_count": 5100,
+      "source_path": "E:\\Private\\MITRE-CORE 2\\MITRE-CORE_V3\\datasets\\SQTK_SIEM\\mitre_core_format.csv",
+      "source_row_count": 5100,
+      "source_sha256": "ab2a63166dd79d570147de940edef242bb9e0304eccb1f79953c174874b5c617",
+      "split_group": "sqtk_siem",
+      "split_indices_path": "E:\\Private\\MITRE-CORE 2\\MITRE-CORE_V3\\benchmark\\splits\\sqtk_siem_5100_seed42.npy",
+      "split_indices_sha256": "99ba3167e5bfacb3056acf536a9096fb18c98112300a535339d919a096422a13"
+    },
+    {
+      "benchmark_seeds": [
+        42,
+        43,
+        44
+      ],
+      "checkpoint_path": "E:\\Private\\MITRE-CORE 2\\MITRE-CORE_V3\\hgnn_checkpoints\\siem_supcon_v4\\best.pt",
+      "checkpoint_sha256": "f9f8fa058976ba2a07948e2616e7c4d83d927aa74271f8ff9f14e125505bc0bf",
+      "clustering_method": "hdbscan",
+      "engine_kwargs": {
+        "device": "cpu",
+        "hdbscan_cluster_selection_epsilon": 0.1,
+        "hdbscan_min_cluster_size": 5,
+        "hdbscan_pca_components": 64,
+        "num_layers": 1,
+        "use_geometric_confidence": true
+      },
+      "exclude_sample_seeds": [],
+      "excluded_split_paths": [],
+      "kind": "mitre_format",
+      "label_col": "alert_type",
+      "n_clusters": 14,
+      "name": "SQTK_SIEM-exp2.6-pca64",
+      "sample_seed": 42,
+      "sample_size": 5100,
+      "selected_row_count": 5100,
+      "source_path": "E:\\Private\\MITRE-CORE 2\\MITRE-CORE_V3\\datasets\\SQTK_SIEM\\mitre_core_format.csv",
+      "source_row_count": 5100,
+      "source_sha256": "ab2a63166dd79d570147de940edef242bb9e0304eccb1f79953c174874b5c617",
+      "split_group": "sqtk_siem",
+      "split_indices_path": "E:\\Private\\MITRE-CORE 2\\MITRE-CORE_V3\\benchmark\\splits\\sqtk_siem_5100_seed42.npy",
+      "split_indices_sha256": "99ba3167e5bfacb3056acf536a9096fb18c98112300a535339d919a096422a13"
+    }
+  ],
+  "datasets_config_path": "E:\\Private\\MITRE-CORE 2\\MITRE-CORE_V3\\benchmark\\datasets_exp2.6.yaml",
+  "gpu": {
+    "available": true,
+    "device_count": 1,
+    "devices": [
+      "NVIDIA GeForce RTX 5060 Ti"
+    ],
+    "peak_gpu_gb": 0.0
+  },
+  "host": {
+    "cpu_count": 16,
+    "machine": "AMD64",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "processor": "AMD64 Family 25 Model 33 Stepping 2, AuthenticAMD",
+    "python_executable": "C:\\Users\\rahul\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+    "release": "11",
+    "system": "Windows"
+  },
+  "methods": [
+    {
+      "entry": "kmeans_raw",
+      "name": "K-Means (raw)",
+      "type": "baseline"
+    },
+    {
+      "entry": "dbscan_raw",
+      "name": "DBSCAN (raw)",
+      "type": "baseline"
+    },
+    {
+      "entry": "hdbscan_raw",
+      "name": "HDBSCAN (raw)",
+      "type": "baseline"
+    },
+    {
+      "entry": "kmeans_emb",
+      "name": "K-Means (emb)",
+      "type": "baseline"
+    },
+    {
+      "entry": "spectral_emb",
+      "name": "Spectral (emb)",
+      "type": "baseline"
+    },
+    {
+      "entry": "hdbscan_emb",
+      "name": "HDBSCAN (emb)",
+      "type": "baseline"
+    },
+    {
+      "entry": "spectral_raw",
+      "name": "Spectral (raw)",
+      "type": "baseline"
+    },
+    {
+      "entry": "pca_kmeans",
+      "name": "PCA + K-Means",
+      "type": "baseline"
+    },
+    {
+      "entry": "pca_hdbscan",
+      "name": "PCA + HDBSCAN",
+      "type": "baseline"
+    },
+    {
+      "entry": "mitre_core_v3",
+      "name": "MITRE-CORE V3",
+      "type": "mitre_core_v3"
+    }
+  ],
+  "methods_config_path": "E:\\Private\\MITRE-CORE 2\\MITRE-CORE_V3\\benchmark\\methods.yaml",
+  "packages": {
+    "hdbscan": "0.8.41",
+    "numpy": "2.3.5",
+    "pandas": "2.3.1",
+    "python": "3.12.10",
+    "pyyaml": "6.0.2",
+    "scikit-learn": "1.8.0",
+    "torch": "2.10.0+cu128",
+    "torch-geometric": "2.7.0"
+  },
+  "peak_gpu_gb": 0.0,
+  "results_path": "E:\\Private\\MITRE-CORE 2\\MITRE-CORE_V3\\benchmark\\results\\latest\\exp2.6_pca\\results.csv",
+  "summary_path": "E:\\Private\\MITRE-CORE 2\\MITRE-CORE_V3\\benchmark\\results\\latest\\exp2.6_pca\\results_summary.csv",
+  "wall_time_seconds": 255.52870559999974
+}

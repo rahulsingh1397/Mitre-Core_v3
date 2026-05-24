@@ -11,7 +11,11 @@ REPO_ROOT = Path(__file__).parent.parent
 PLAN_PATH = REPO_ROOT / "docs" / "plans" / "MASTER_PLAN_v1.0.md"
 SHA256_PATH = REPO_ROOT / "docs" / "plans" / "MASTER_PLAN_v1.0.sha256"
 
+PLAN_v1_1_PATH = REPO_ROOT / "docs" / "plans" / "MASTER_PLAN_v1.1.md"
+SHA256_v1_1_PATH = REPO_ROOT / "docs" / "plans" / "MASTER_PLAN_v1.1.sha256"
+
 FROZEN_SHA256 = "a779e478496b427591e79b2f1808aec48a68c7459d28c0738e61650756a98b54"
+FROZEN_SHA256_v1_1 = "950ba7bfaf4ece0389ea663fc9f7568995641dc461a8aec08cc2ba99cd820234"
 
 
 def test_master_plan_v1_0_unchanged():
@@ -25,4 +29,18 @@ def test_master_plan_v1_0_unchanged():
         "  1. Create docs/plans/MASTER_PLAN_v1.1.md with a diff summary.\n"
         "  2. Update docs/plans/README.md to point at v1.1 as active.\n"
         "  3. Update the FROZEN_SHA256 constant in this test to match v1.1."
+    )
+
+
+def test_master_plan_v1_1_unchanged():
+    assert PLAN_v1_1_PATH.exists(), f"Master plan v1.1 missing: {PLAN_v1_1_PATH}"
+    assert SHA256_v1_1_PATH.exists(), f"Master plan v1.1 SHA256 file missing: {SHA256_v1_1_PATH}"
+
+    h = hashlib.sha256(PLAN_v1_1_PATH.read_bytes()).hexdigest()
+    assert h == FROZEN_SHA256_v1_1, (
+        f"MASTER_PLAN_v1.1.md has been modified (current SHA256: {h}).\n"
+        "Do not edit v1.1 in place. Instead:\n"
+        "  1. Create docs/plans/MASTER_PLAN_v1.2.md with a diff summary.\n"
+        "  2. Update docs/plans/README.md to point at v1.2 as active.\n"
+        "  3. Update the FROZEN_SHA256_v1_1 constant in this test to match v1.2."
     )

@@ -1164,6 +1164,8 @@ class EmbeddingConfidenceScorer:
         clustering_method: str = "hdbscan",
         n_clusters: Optional[int] = None,
         bgmm_n_components: int = 30,
+        gmm_bic_k_min: int = 2,
+        gmm_bic_k_max: int = 50,
         prototype_checkpoint_path: Optional[str] = None,
     ):
         self.min_cluster_size = min_cluster_size
@@ -1185,6 +1187,8 @@ class EmbeddingConfidenceScorer:
         self.clustering_method = clustering_method
         self.n_clusters = n_clusters
         self.bgmm_n_components = bgmm_n_components
+        self.gmm_bic_k_min = gmm_bic_k_min
+        self.gmm_bic_k_max = gmm_bic_k_max
         self.prototype_checkpoint_path = prototype_checkpoint_path
         self.seed = seed
         self._pca = None
@@ -1343,6 +1347,37 @@ class EmbeddingConfidenceScorer:
             raw_labels = bgmm.predict(z_reduced.astype(np.float64))
             probs = bgmm.predict_proba(z_reduced.astype(np.float64)).max(axis=1).astype(np.float32)
             clusterer = type('obj', (object,), {'labels_': raw_labels, 'probabilities_': probs})()
+            self._clusterer = clusterer
+
+        elif self.clustering_method == "gmm":
+            from sklearn.mixture import GaussianMixture
+            k_min = self.gmm_bic_k_min
+            k_max = min(self.gmm_bic_k_max, max(k_min + 1, n // 5))
+            k_range = range(k_min, k_max + 1)
+            bic_scores = []
+            gmm_models = []
+            for k in k_range:
+                gmm = GaussianMixture(
+                    n_components=k,
+                    covariance_type="full",
+                    random_state=42,
+                    n_init=3,
+                    max_iter=200,
+                )
+                gmm.fit(z_reduced.astype(np.float64))
+                bic_scores.append(gmm.bic(z_reduced.astype(np.float64)))
+                gmm_models.append(gmm)
+            best_idx = int(np.argmin(bic_scores))
+            best_k = list(k_range)[best_idx]
+            best_gmm = gmm_models[best_idx]
+            raw_labels = best_gmm.predict(z_reduced.astype(np.float64))
+            probs = best_gmm.predict_proba(z_reduced.astype(np.float64)).max(axis=1).astype(np.float32)
+            logger.info(f"GMM+BIC selected k={best_k} from range [{k_min},{k_max}]")
+            class _GMMResult:
+                def __init__(self, labels_, probs_):
+                    self.labels_ = labels_
+                    self.probabilities_ = probs_
+            clusterer = _GMMResult(raw_labels, probs)
             self._clusterer = clusterer
 
         elif self.clustering_method == "prototype" and self.prototype_checkpoint_path:
@@ -1528,6 +1563,8 @@ class HGNNCorrelationEngine:
         clustering_method: str = "hdbscan",
         hdbscan_n_clusters: Optional[int] = None,
         bgmm_n_components: int = 30,
+        gmm_bic_k_min: int = 2,
+        gmm_bic_k_max: int = 50,
         prototype_checkpoint_path: Optional[str] = None,
         aggr_method: str = "mean",
         use_burstiness: bool = False,
@@ -1627,6 +1664,8 @@ class HGNNCorrelationEngine:
             clustering_method=clustering_method,
             n_clusters=hdbscan_n_clusters,
             bgmm_n_components=bgmm_n_components,
+            gmm_bic_k_min=gmm_bic_k_min,
+            gmm_bic_k_max=gmm_bic_k_max,
             prototype_checkpoint_path=self.prototype_checkpoint_path,
             seed=self.seed,
         ) if use_geometric_confidence else None

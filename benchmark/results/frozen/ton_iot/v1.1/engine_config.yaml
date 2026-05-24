@@ -1,0 +1,8 @@
+engine_kwargs:
+  device: cpu
+  num_layers: 1
+  hdbscan_pca_components: 16
+  use_geometric_confidence: true
+  clustering_method: gmm
+  gmm_bic_k_min: 2
+  gmm_bic_k_max: 20

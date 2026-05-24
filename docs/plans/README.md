@@ -2,13 +2,20 @@
 
 ## Active Master Plan
 
+**[MASTER_PLAN_v1.1.md](MASTER_PLAN_v1.1.md)** — frozen 2026-05-23
+- SHA256: `950BA7BFAF4ECE0389EA663FC9F7568995641DC461A8AEC08CC2BA99CD820234`
+- Git tag: `master-plan-v1.1`
+- Status: **ACTIVE — DO NOT EDIT IN PLACE**
+
+To deviate from this plan, create `MASTER_PLAN_v1.2.md` with a diff summary at the top.
+Update this README to point at the new active version. v1.1 stays immutable.
+
+## Superseded (Immutable)
+
 **[MASTER_PLAN_v1.0.md](MASTER_PLAN_v1.0.md)** — frozen 2026-05-19
 - SHA256: `a779e478496b427591e79b2f1808aec48a68c7459d28c0738e61650756a98b54`
 - Git tag: `master-plan-v1.0`
-- Status: **ACTIVE — DO NOT EDIT IN PLACE**
-
-To deviate from this plan, create `MASTER_PLAN_v1.1.md` with a diff summary at the top.
-Update this README to point at the new active version. v1.0 stays immutable.
+- Status: **SUPERSEDED — Read-only. v1.0 frozen artifacts remain immutable.**
 
 ## Alignment Recheck Protocol
 

@@ -60,3 +60,31 @@ heterogeneous."
 
 **Decision gate:** if Exp 2.5 or 2.6 produces ≥+0.05 ARI on any loser → freeze v1.1 immediately
 (pure engine_kwargs change, no retraining). If not, escalate to Exp 3.
+
+---
+
+## Update 2026-05-23 — H1 Verdict After Cheap Experiments
+
+The four cheap experiments (Exp 2 S1, 2.5, 2.5b, 2.6) have all run. Results:
+
+| Experiment | Dataset | Outcome | What it tested |
+|---|---|---|---|
+| 2 S1 | All 5 | REJECTED | No collapse exists |
+| 2.5 | TON-IoT | ✅ PASS (+0.181) | GMM+BIC fixes k-discovery |
+| 2.5b | CICIDS2017 | ❌ FAIL (Δ=−0.003, BIC picked k=14) | GMM+BIC alone insufficient |
+| 2.6 | SQTK_SIEM | ❌ FAIL (best 0.3806 < 0.382) | PCA tuning alone insufficient |
+
+**H1 verdict:** PARTIALLY CONFIRMED.
+- TON-IoT failure WAS clustering-layer (HDBSCAN k-discovery). Fixed.
+- CICIDS2017 failure is NOT clustering-layer. BIC selected k=14 (one below true k=15) and ARI did not move. The 72.9% BENIGN class lacks sub-structure in the embedding space — no clusterer can find what isn't there.
+- SQTK_SIEM failure is NOT preprocessing alone. PCA sweep found pca12 as a 0.026 improvement but still 0.014 short of the baseline. Preprocessing helps; it's not the root cause.
+
+**Next experiments (embedding-space changes):**
+
+| Experiment | Targets | Cost | Rationale |
+|---|---|---|---|
+| Exp 3 — 15-dim features | CICIDS2017 (BENIGN sub-structure), SQTK_SIEM | ~4h GPU | Adds ports, bytes, severity, etc. — gives GNN more discriminative signal for high-cardinality majority classes |
+| Exp 4 — HGT architecture | NSL-KDD, UNSW-NB15 (push winners) | ~6h GPU | Type-specific attention; helps most when heterogeneity is rich; CICIDS2017 IP-only graph has only 2 active edge types |
+| Exp 5 — Heterogeneous PE | CICIDS2017, TON-IoT (sparse graphs) | ~3h GPU | Re-injects structural signal where edge variety is limited; conditional on Exp 4 result |
+
+**Recommended order:** Exp 3 next. Most directly targets the unsolved losers (CICIDS2017 + SQTK_SIEM) and is cheaper than Exp 4. If Exp 3 fixes either loser, that's a freeze. If Exp 3 fails, Exp 4 follows.
