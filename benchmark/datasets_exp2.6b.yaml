@@ -1,0 +1,52 @@
+datasets:
+  - name: SQTK_SIEM-exp2.6-pca11
+    enabled: true
+    kind: mitre_format
+    path: datasets/SQTK_SIEM/mitre_core_format.csv
+    split_group: sqtk_siem
+    label_col: alert_type
+    alt_label_cols:
+      - tactic
+      - campaign_id
+    checkpoint: hgnn_checkpoints/siem_supcon_v4/best.pt
+    seeds: [42, 43, 44]
+    sample_size: 5100
+    sample_seed: 42
+    stratified_sample: true
+    n_clusters: 14
+    hdbscan_min_cluster_size: 5
+    dbscan_eps: 0.3
+    clustering_method: hdbscan
+    engine_kwargs:
+      device: cpu
+      num_layers: 1
+      hdbscan_min_cluster_size: 5
+      hdbscan_pca_components: 11
+      hdbscan_cluster_selection_epsilon: 0.1
+      use_geometric_confidence: true
+
+  - name: SQTK_SIEM-exp2.6-pca13
+    enabled: true
+    kind: mitre_format
+    path: datasets/SQTK_SIEM/mitre_core_format.csv
+    split_group: sqtk_siem
+    label_col: alert_type
+    alt_label_cols:
+      - tactic
+      - campaign_id
+    checkpoint: hgnn_checkpoints/siem_supcon_v4/best.pt
+    seeds: [42, 43, 44]
+    sample_size: 5100
+    sample_seed: 42
+    stratified_sample: true
+    n_clusters: 14
+    hdbscan_min_cluster_size: 5
+    dbscan_eps: 0.3
+    clustering_method: hdbscan
+    engine_kwargs:
+      device: cpu
+      num_layers: 1
+      hdbscan_min_cluster_size: 5
+      hdbscan_pca_components: 13
+      hdbscan_cluster_selection_epsilon: 0.1
+      use_geometric_confidence: true
