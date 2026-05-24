@@ -1,0 +1,14 @@
+experiment,experiment_name,target_change,dataset,track,baseline_version,baseline_ari,treatment_ari,delta_ari,baseline_ami,treatment_ami,delta_ami,decision,frozen_version,frozen_path,commit,date,notes
+1,hard_negative_mining,loss: random→75% hard + 25% random,CICIDS2017,alert_type,v1.0,0.1771,0.1346,-0.0425,,,,rejected,,,99aaf5d,2026-05-22,Loss plateaued epoch 4/150; hard-mining collapse
+1,hard_negative_mining,loss: random→75% hard + 25% random,TON-IoT,alert_type,v1.0,0.4228,0.4319,+0.0091,,,,rejected,,,99aaf5d,2026-05-22,Below +0.05 threshold
+2.S1,collapse_diagnostic,diagnostic only (cosine_sim measure),SQTK_SIEM,alert_type,v1.0,0.3550,0.3550,0.0000,,,,diagnostic,,,,2026-05-23,No collapse exists; cosine_sim=0.79 not 0.958 (script bug fix)
+2.5,gmm_bic_clustering,clustering_method: hdbscan→gmm (k_max=30),CICIDS2017,alert_type,v1.0,0.1771,0.0820,-0.0951,,,,rejected,,,8e3e620,2026-05-23,BIC saturated at k_max=30; over-fragmented
+2.5,gmm_bic_clustering,clustering_method: hdbscan→gmm (k_max=20),TON-IoT,alert_type,v1.0,0.4228,0.6042,+0.1814,0.7054,0.8194,+0.1140,freeze_v1.1,v1.1,benchmark/results/frozen/ton_iot/v1.1/,8e3e620,2026-05-23,BIC selected k=20; biggest single-experiment lift
+2.5b,gmm_bic_clustering,clustering_method: hdbscan→gmm (k_max=15),CICIDS2017,alert_type,v1.0,0.1771,0.1737,-0.0033,,,,rejected,,,8e3e620,2026-05-23,BIC selected k=14; clusterer exonerated; embedding-space bottleneck
+2.6,pca_components,hdbscan_pca_components: 16→8,SQTK_SIEM,alert_type,v1.0,0.3550,0.3573,+0.0023,,,,rejected,,,8e3e620,2026-05-23,Below +0.05 threshold
+2.6,pca_components,hdbscan_pca_components: 16→12,SQTK_SIEM,alert_type,v1.0,0.3550,0.3806,+0.0256,,,,rejected,,,8e3e620,2026-05-23,Close but below 0.382 baseline target
+2.6,pca_components,hdbscan_pca_components: 16→20,SQTK_SIEM,alert_type,v1.0,0.3550,0.3531,-0.0019,,,,rejected,,,8e3e620,2026-05-23,Over-segmentation (45 clusters)
+2.6,pca_components,hdbscan_pca_components: 16→32,SQTK_SIEM,alert_type,v1.0,0.3550,0.3536,-0.0014,,,,rejected,,,8e3e620,2026-05-23,
+2.6,pca_components,hdbscan_pca_components: 16→64,SQTK_SIEM,alert_type,v1.0,0.3550,0.3534,-0.0016,,,,rejected,,,8e3e620,2026-05-23,
+2.6b,pca_components,hdbscan_pca_components: 16→11,SQTK_SIEM,alert_type,v1.0,0.3550,0.4608,+0.1058,0.6039,0.6423,+0.0384,freeze_v1.1,v1.1,benchmark/results/frozen/sqtk_siem/v1.1/,79ca7ac,2026-05-23,Knife-edge optimum; sensitivity documented in v1.1_baseline.md
+2.6b,pca_components,hdbscan_pca_components: 16→13,SQTK_SIEM,alert_type,v1.0,0.3550,0.3587,+0.0037,,,,rejected,,,7d62eda,2026-05-23,

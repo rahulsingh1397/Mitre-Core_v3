@@ -81,3 +81,15 @@ For the pre-freeze NSL-KDD execution history (Phases 0–5), see `docs/archive/v
 | 2026-05-21 | Stage 4 — Path A: V3 binary_ARI=0.999 (tied with HDBSCAN emb), >0.1 margin over all baselines; no sweep | `docs/datasets/optc/decision_log.md` |
 | 2026-05-21 | Stage 5 — dominant_confusion_accuracy demoted (sixth consecutive dataset, constant 1.0); standard ARI annotated as structurally low on 2-class; tactic track degenerate | `docs/datasets/optc/decision_log.md` |
 | 2026-05-21 | **v1.0 FROZEN** — V3 binary_ARI=0.999, AMI=0.203, ARI=0.059 (campaign_id track); near-perfect binary separation; 11 frozen artifacts; git tag `darpa-optc-v1.0` | `docs/datasets/optc/v1.0_baseline.md` |
+
+---
+
+## Experiments
+
+### V3 Ablation Record
+
+Started 2026-05-23. Single source of truth for all Part X experiment results, replacing
+the archived V2 placeholders. See `docs/ablations/v3_ablation_record.{csv,md}`.
+
+Currently 12 rows backfilled from Exp 1 / 2.5 / 2.5b / 2.6 / 2.6b. Each subsequent
+experiment appends one row per dataset benchmarked.
